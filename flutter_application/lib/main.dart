@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(MyApp());
 
@@ -158,6 +159,11 @@ class RegisterPage extends StatefulWidget {
   _RegisterPageState createState() => _RegisterPageState();
 }
 
+
+//TO-DO:
+//Scroll bar
+//Contacts (+ button)
+//User phone number
 class _RegisterPageState extends State<RegisterPage> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
@@ -209,6 +215,53 @@ class _RegisterPageState extends State<RegisterPage> {
           border:
           OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
+    final phoneNumber = TextField(
+      keyboardType: TextInputType.phone,
+      obscureText: false,
+      style: style,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Enter phone number",
+          border:
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    );
+    final emergencyContactText = DefaultTextStyle(style: style,
+        child: Text("Emergency contacts:",
+          textAlign: TextAlign.center,
+          style: style.copyWith(
+              color: Colors.black, fontWeight: FontWeight.bold),
+        )
+    );
+    final emergencyContact1 = TextField(
+      keyboardType: TextInputType.phone,
+      obscureText: false,
+      style: style,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Enter emergency contact number",
+          border:
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    );
+    final emergencyContact2 = TextField(
+      keyboardType: TextInputType.phone,
+      obscureText: false,
+      style: style,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Enter emergency contact number",
+          border:
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    );
+    final emergencyContact3 = TextField(
+      keyboardType: TextInputType.phone,
+      obscureText: false,
+      style: style,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Enter emergency contact number",
+          border:
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    );
     final createAccount = Material(
       elevation: 0.0,
       borderRadius: BorderRadius.circular(10.0),
@@ -241,12 +294,14 @@ class _RegisterPageState extends State<RegisterPage> {
     );
 
     return Scaffold(
-      body: Center(
+      body: SingleChildScrollView(
         child: Container(
           color: Colors.white,
-          child: Padding(
+          child:
+          Padding(
             padding: const EdgeInsets.all(36.0),
-            child: Column(
+            child:
+            Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -267,6 +322,18 @@ class _RegisterPageState extends State<RegisterPage> {
                 passwordField,
                 SizedBox(height: 25.0),
                 reEnterPassword,
+                SizedBox(height: 25.0),
+                phoneNumber,
+                SizedBox(
+                  height: 15.0,
+                ),
+                emergencyContactText,
+                SizedBox(height: 25.0),
+                emergencyContact1,
+                SizedBox(height: 25.0),
+                emergencyContact2,
+                SizedBox(height: 25.0),
+                emergencyContact3,
                 SizedBox(
                   height: 5.0,
                 ),
@@ -286,3 +353,4 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 }
+
