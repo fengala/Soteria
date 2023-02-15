@@ -209,27 +209,6 @@ class _RegisterPageState extends State<RegisterPage> {
           border:
           OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
-    // final loginButton = Material(
-    //   elevation: 5.0,
-    //   borderRadius: BorderRadius.circular(30.0),
-    //   color: Colors.amber,
-    //   child: MaterialButton(
-    //     minWidth: MediaQuery.of(context).size.width,
-    //     padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-    //     onPressed: () {},
-    //     child: Text("Login",
-    //         textAlign: TextAlign.center,
-    //         style: style.copyWith(
-    //             color: Colors.white, fontWeight: FontWeight.bold)),
-    //   ),
-    // );
-    // final hintText = DefaultTextStyle(style: style,
-    //     child: Text("Not Registered yet?",
-    //       textAlign: TextAlign.center,
-    //       style: style.copyWith(
-    //           color: Colors.black, fontWeight: FontWeight.bold),
-    //     )
-    // );
     final createAccount = Material(
       elevation: 0.0,
       borderRadius: BorderRadius.circular(10.0),
@@ -239,6 +218,22 @@ class _RegisterPageState extends State<RegisterPage> {
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () {},
         child: Text("Create Account",
+            textAlign: TextAlign.right,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+    final backButton = Material(
+      elevation: 0.0,
+      borderRadius: BorderRadius.circular(10.0),
+      color: Colors.amber,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+        },
+        child: Text("Back to Login",
             textAlign: TextAlign.right,
             style: style.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),
@@ -272,18 +267,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 passwordField,
                 SizedBox(height: 25.0),
                 reEnterPassword,
-                // SizedBox(
-                //   height: 35.0,
-                // ),
-                // loginButton,
-                // SizedBox(
-                //   height: 15.0,
-                // ),
-                // hintText,
                 SizedBox(
                   height: 5.0,
                 ),
                 createAccount,
+                SizedBox(
+                  height: 5.0,
+                ),
+                backButton,
                 SizedBox(
                   height: 5.0,
                 ),
