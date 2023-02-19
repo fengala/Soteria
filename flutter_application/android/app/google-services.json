@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "876016519305",
+    "project_id": "soteria-af3d3",
+    "storage_bucket": "soteria-af3d3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:876016519305:android:3f8157db275e7430555e58",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "876016519305-55ubglpgvbjrpfqdr0a9otvk3t9nl0b7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh0xArcCZG7ZbrkXd_LyUZh40dmZalGWk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "876016519305-55ubglpgvbjrpfqdr0a9otvk3t9nl0b7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "876016519305-0i6p7vdurrstamft7aqh7nifu6ebiaqu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterApplication"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

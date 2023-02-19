@@ -16,7 +16,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   mysql1: ^0.20.0
+  firebase_core: ^2.6.0
+  cloud_firestore: ^4.4.2
+  firebase_auth: ^4.2.8
 dev_dependencies:
+  flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
 # For information on the generic Dart part of this file, see the
@@ -29,7 +33,7 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
-    - logo.png
+    - assets/logo.png
 #    fonts:
 #      - family: Montserrat
 #        fonts:
