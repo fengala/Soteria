@@ -48,7 +48,58 @@ class _PetitionPageState extends State<PetitionPage> {
       body: listOfTweets(),
       floatingActionButton: FloatingActionButton(
         child: Icon(FontAwesomeIcons.pen),
-        onPressed: () {},
+        onPressed: () {
+          // Navigator.push(
+          //     context, MaterialPageRoute(builder: (context) => LoginPage()));
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: Text("Create a Petition"),
+                    // content: TextField(
+                    //   autofocus: true,
+                    //   decoration: InputDecoration(
+                    //       hintText: "Enter your petition description here"),
+                    // ),
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        TextField(
+                          autofocus: true,
+                          decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.grey, width: 2.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.grey, width: 2.0),
+                              ),
+                              hintStyle: TextStyle(fontSize: 15),
+                              hintText: "Enter your petition title here"),
+                        ),
+                        TextField(
+                          autofocus: true,
+                          decoration: InputDecoration(
+                              hintStyle: TextStyle(fontSize: 15),
+                              hintText: "Enter your petition description here"),
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                        ),
+                      ],
+                    ),
+                    actions: [
+                      TextButton(
+                        child: Text("CANCEL"),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                      TextButton(
+                        child: Text("OK"),
+                        onPressed: () => Navigator.pop(context),
+                      )
+                    ],
+                  ));
+        },
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
