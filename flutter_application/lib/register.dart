@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter/services.dart';
 import './services/auth.dart';
@@ -24,6 +26,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   TextEditingController text_widgets = TextEditingController();
   String name;
+  String last_name;
   String username;
   String password;
   String phone_number;
@@ -55,7 +58,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
     final lastName = TextField(
       onChanged: (text) {
-        name = name + text;
+        last_name = text;
       },
       obscureText: false,
       style: style,
@@ -171,8 +174,9 @@ class _RegisterPageState extends State<RegisterPage> {
             emergency_contact2,
             emergency_contact3
           ];
-          UserAuth auth;
-          await auth.createUser(username, password, name, phone_number, list);
+          name = name + last_name;
+          await UserAuth.createUser(
+              username, password, name, phone_number, list);
         },
         child: Text("Create Account",
             textAlign: TextAlign.right,

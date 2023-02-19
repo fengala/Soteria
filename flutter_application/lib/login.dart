@@ -1,8 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_ui/register.dart';
+import './services/auth.dart';
 
-void main() => runApp(MyApp());
+// void main() => runApp(MyApp());
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp().whenComplete(() {
+    print("completed");
+  });
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -42,11 +52,16 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  String email;
+  String password;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
   Widget build(BuildContext context) {
     final usernameField = TextField(
+      onChanged: (text) {
+        email = text;
+      },
       obscureText: false,
       style: style,
       decoration: InputDecoration(
@@ -56,6 +71,9 @@ class _LoginPageState extends State<LoginPage> {
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final passwordField = TextField(
+      onChanged: (text) {
+        password = text;
+      },
       obscureText: true,
       style: style,
       decoration: InputDecoration(
@@ -71,7 +89,14 @@ class _LoginPageState extends State<LoginPage> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {},
+        onPressed: () async {
+          try {
+            var user = await UserAuth.signIn(email, password);
+            print(user);
+          } catch (x) {
+            print("SOmething wrong");
+          }
+        },
         child: Text("Login",
             textAlign: TextAlign.center,
             style: style.copyWith(
