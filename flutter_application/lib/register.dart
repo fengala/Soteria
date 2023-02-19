@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter/services.dart';
 import './services/auth.dart';
@@ -51,7 +53,7 @@ class _RegisterPageState extends State<RegisterPage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "First Name",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final lastName = TextField(
       onChanged: (text) {
@@ -63,7 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "First Name",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final usernameField = TextField(
       onChanged: (text) {
@@ -75,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Email Address",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final passwordField = TextField(
       onChanged: (text) {
@@ -87,7 +89,7 @@ class _RegisterPageState extends State<RegisterPage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Password",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final reEnterPassword = TextField(
       obscureText: true,
@@ -96,7 +98,7 @@ class _RegisterPageState extends State<RegisterPage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Re-enter the password",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final phoneNumber = TextField(
       onChanged: (text) {
@@ -109,7 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Enter phone number",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final emergencyContactText = DefaultTextStyle(
         style: style,
@@ -117,7 +119,7 @@ class _RegisterPageState extends State<RegisterPage> {
           "Emergency contacts:",
           textAlign: TextAlign.center,
           style:
-              style.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
+          style.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
         ));
     final emergencyContact1 = TextField(
       onChanged: (text) {
@@ -130,7 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Enter emergency contact number",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final emergencyContact2 = TextField(
       onChanged: (text) {
@@ -143,7 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Enter emergency contact number",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final emergencyContact3 = TextField(
       onChanged: (text) {
@@ -156,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Enter emergency contact number",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final createAccount = Material(
       elevation: 0.0,
@@ -171,8 +173,7 @@ class _RegisterPageState extends State<RegisterPage> {
             emergency_contact2,
             emergency_contact3
           ];
-          UserAuth auth;
-          await auth.createUser(username, password, name, phone_number, list);
+          await UserAuth.createUser(username, password, name, phone_number, list);
         },
         child: Text("Create Account",
             textAlign: TextAlign.right,

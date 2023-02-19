@@ -5,7 +5,7 @@ class DatabaseService {
   DatabaseService({this.uid});
 
   final CollectionReference userRef =
-      FirebaseFirestore.instance.collection("users");
+  FirebaseFirestore.instance.collection("users");
 
   Future register(String useranme, String password, String name,
       List<String> emergency_contacts, String phone_number) async {

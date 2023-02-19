@@ -13,9 +13,9 @@ class User {
 
   User(
       {this.uid,
-      this.emergency_contacts,
-      this.name,
-      this.password,
-      this.phone_number,
-      this.username});
+        this.emergency_contacts,
+        this.name,
+        this.password,
+        this.phone_number,
+        this.username});
 }

@@ -1,8 +1,19 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_login_ui/auth/register.dart';
+import 'package:flutter_login_ui/register.dart';
 
-class login extends StatelessWidget {
+// void main() => runApp(MyApp());
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp().whenComplete(() {
+    print("completed");
+  });
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -51,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Email",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final passwordField = TextField(
       obscureText: true,
@@ -60,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Password",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final loginButton = Material(
       elevation: 5.0,
@@ -82,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
           "Not Registered yet?",
           textAlign: TextAlign.center,
           style:
-              style.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
+          style.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
         ));
     final createAccount = Material(
       elevation: 0.0,
