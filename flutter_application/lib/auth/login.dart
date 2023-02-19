@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_login_ui/register.dart';
+import 'package:flutter_login_ui/auth/register.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
+class login extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
