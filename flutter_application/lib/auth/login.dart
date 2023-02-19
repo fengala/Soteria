@@ -24,6 +24,7 @@ class login extends StatelessWidget {
     );
   }
 }
+
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
   // This widget is the home page of your application. It is stateful, meaning
@@ -37,12 +38,12 @@ class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
+
 class _LoginPageState extends State<LoginPage> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
   Widget build(BuildContext context) {
-
     final usernameField = TextField(
       obscureText: false,
       style: style,
@@ -50,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Email",
           border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final passwordField = TextField(
       obscureText: true,
@@ -59,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Password",
           border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final loginButton = Material(
       elevation: 5.0,
@@ -75,13 +76,14 @@ class _LoginPageState extends State<LoginPage> {
                 color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
-    final hintText = DefaultTextStyle(style: style,
-        child: Text("Not Registered yet?",
+    final hintText = DefaultTextStyle(
+        style: style,
+        child: Text(
+          "Not Registered yet?",
           textAlign: TextAlign.center,
-          style: style.copyWith(
-              color: Colors.black, fontWeight: FontWeight.bold),
-        )
-    );
+          style:
+              style.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
+        ));
     final createAccount = Material(
       elevation: 0.0,
       borderRadius: BorderRadius.circular(10.0),
@@ -90,7 +92,8 @@ class _LoginPageState extends State<LoginPage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => RegisterPage()));
         },
         child: Text("Create Account",
             textAlign: TextAlign.right,
@@ -143,6 +146,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-
-
