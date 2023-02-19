@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_login_ui/petitionpage.dart';
 import 'package:flutter_login_ui/register.dart';
 
 void main() => runApp(MyApp());
@@ -71,7 +72,10 @@ class _LoginPageState extends State<LoginPage> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => PetitionPage()));
+        },
         child: Text("Login",
             textAlign: TextAlign.center,
             style: style.copyWith(
