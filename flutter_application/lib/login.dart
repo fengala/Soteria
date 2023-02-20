@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_login_ui/home.dart';
 import 'package:flutter_login_ui/petitionpage.dart';
 import 'package:flutter_login_ui/register.dart';
 
@@ -74,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => PetitionPage()));
+              context, MaterialPageRoute(builder: (context) => HomePage()));
         },
         child: Text("Login",
             textAlign: TextAlign.center,

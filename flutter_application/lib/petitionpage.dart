@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'events.dart';
+import 'home.dart';
+import 'login.dart';
 import 'tweets.dart';
+import 'package:pandabar/pandabar.dart';
 
 class PetitionP extends StatelessWidget {
   @override
@@ -27,10 +31,11 @@ class PetitionPage extends StatefulWidget {
 class _PetitionPageState extends State<PetitionPage> {
   @override
   Widget build(BuildContext context) {
+    String page = 'Grey';
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: Color.fromARGB(230, 231, 213, 19),
+        backgroundColor: Colors.amber,
         leading: Container(
           margin: const EdgeInsets.all(10.0),
           //child: CircleAvatar(
@@ -101,28 +106,105 @@ class _PetitionPageState extends State<PetitionPage> {
                   ));
         },
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            buildBottomIconButton(Icons.home, Colors.blue),
-            buildBottomIconButton(Icons.search, Colors.black45),
-            buildBottomIconButton(Icons.notifications, Colors.black45),
-            buildBottomIconButton(Icons.mail_outline, Colors.black45),
-          ],
-        ),
+      extendBody: true,
+      bottomNavigationBar: PandaBar(
+        buttonData: [
+          PandaBarButtonData(
+            id: 1,
+            icon: Icons.home,
+            title: 'Home',
+          ),
+          PandaBarButtonData(
+            id: 2,
+            icon: Icons.edit_document,
+            title: 'Petitions',
+          ),
+          PandaBarButtonData(
+            id: 3,
+            icon: Icons.event,
+            title: 'Events',
+          ),
+          PandaBarButtonData(
+            id: 4,
+            icon: Icons.lightbulb,
+            title: 'Resources',
+          ),
+        ],
+        onChange: (id) {
+          setState(() {
+            page = id;
+          });
+          Navigator.push(context, newMethod(id));
+        },
+        buttonColor: Colors.white,
+        buttonSelectedColor: Colors.amber,
+        fabIcon: Icon(Icons.sos, size: 40),
+        fabColors: [Colors.amber, Colors.amber],
+        onFabButtonPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => LoginPage()));
+        },
       ),
+      // extendBody: true,
+      // bottomNavigationBar: PandaBar(
+      //   buttonData: [
+      //     PandaBarButtonData(
+      //       id: 'Grey',
+      //       icon: Icons.home,
+      //       title: 'Home',
+      //     ),
+      //     PandaBarButtonData(
+      //       id: 'Blue',
+      //       icon: Icons.edit_document,
+      //       title: 'Petitions',
+      //     ),
+      //     PandaBarButtonData(
+      //       id: 'Red',
+      //       icon: Icons.event,
+      //       title: 'Events',
+      //     ),
+      //     PandaBarButtonData(
+      //       id: 'Resources',
+      //       icon: Icons.lightbulb,
+      //       title: 'Resources',
+      //     ),
+      //   ],
+      //   onChange: (id) {
+      //     setState(() {
+      //       page = id;
+      //       // Navigator.push(
+      //       //     context, MaterialPageRoute(builder: (context) => LoginPage()));
+      //     });
+      //     // Navigator.push(
+      //     //     context, MaterialPageRoute(builder: ((context) => LoginPage())));
+      //   },
+      //   buttonColor: Colors.white,
+      //   buttonSelectedColor: Colors.amber,
+      //   fabIcon: Icon(Icons.sos, size: 40),
+      //   fabColors: [Colors.amber, Colors.amber],
+      //   onFabButtonPressed: () {
+      //     Navigator.push(
+      //         context, MaterialPageRoute(builder: (context) => LoginPage()));
+      //   },
+      // ),
     );
   }
 
-  Widget buildBottomIconButton(IconData icon, Color color) {
-    return IconButton(
-      icon: Icon(
-        icon,
-        color: color,
-      ),
-      onPressed: () {},
-    );
+  MaterialPageRoute<dynamic> newMethod(id) {
+    switch (id) {
+      case 1:
+        PandaBar(buttonSelectedColor: Colors.red);
+        return MaterialPageRoute(builder: ((context) => HomePage()));
+      case 2:
+        return MaterialPageRoute(builder: ((context) => PetitionPage()));
+      case 3:
+        PandaBar(buttonSelectedColor: Colors.red);
+        return MaterialPageRoute(builder: ((context) => EventsPage()));
+      case 4:
+        return MaterialPageRoute(builder: ((context) => PetitionPage()));
+      default:
+        return MaterialPageRoute(builder: ((context) => HomePage()));
+    }
   }
 
   Widget listOfTweets() {
