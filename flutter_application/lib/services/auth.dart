@@ -23,6 +23,16 @@ class UserAuth {
         await auth.signInWithEmailAndPassword(email: email, password: password);
 
     User user = res.user;
+    print(res);
     return user;
+  }
+
+  static String errors(String code) {
+    switch (code) {
+      case 'EMAIL_ALREADY_IN_USE':
+        return "This email is already in use";
+      default:
+        return "Authentication Failed";
+    }
   }
 }

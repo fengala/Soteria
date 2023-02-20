@@ -92,9 +92,24 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () async {
           try {
             var user = await UserAuth.signIn(email, password);
-            print(user);
+            print("hello");
           } catch (x) {
-            print("SOmething wrong");
+            try {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  content: Container(
+                      height: 90,
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Text(UserAuth.errors(x.code)))));
+            } catch (x) {
+              print(x);
+            }
           }
         },
         child: Text("Login",

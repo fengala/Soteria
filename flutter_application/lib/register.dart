@@ -29,6 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String last_name;
   String username;
   String password;
+  String password2;
   String phone_number;
   String emergency_contact1;
   String emergency_contact2;
@@ -47,6 +48,19 @@ class _RegisterPageState extends State<RegisterPage> {
     final firstName = TextField(
       onChanged: (text) {
         name = text;
+
+        /*  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                content: Container(
+                    height: 90,
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Text("Mandatory"))));*/
       },
       obscureText: false,
       style: style,
@@ -59,6 +73,20 @@ class _RegisterPageState extends State<RegisterPage> {
     final lastName = TextField(
       onChanged: (text) {
         last_name = text;
+        if (last_name == null) {
+          /*ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                content: Container(
+                    height: 90,
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Text("Mandatory"))));*/
+        }
       },
       obscureText: false,
       style: style,
@@ -71,6 +99,21 @@ class _RegisterPageState extends State<RegisterPage> {
     final usernameField = TextField(
       onChanged: (text) {
         username = text;
+        if (username == null) {
+          /* ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                content: Container(
+                    height: 90,
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Text("Mandatory"))));
+                    */
+        }
       },
       obscureText: false,
       style: style,
@@ -93,6 +136,9 @@ class _RegisterPageState extends State<RegisterPage> {
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final reEnterPassword = TextField(
+      onChanged: (text) {
+        password2 = text;
+      },
       obscureText: true,
       style: style,
       decoration: InputDecoration(
@@ -174,9 +220,40 @@ class _RegisterPageState extends State<RegisterPage> {
             emergency_contact2,
             emergency_contact3
           ];
+
+          if (password != password2) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                content: Container(
+                    height: 90,
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Text("Passwords don't match"))));
+          }
           name = name + last_name;
-          await UserAuth.createUser(
-              username, password, name, phone_number, list);
+          try {
+            var res = await UserAuth.createUser(
+                username, password, name, phone_number, list);
+          } catch (x) {
+            print(x);
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                content: Container(
+                    height: 90,
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Text(x.code))));
+          }
         },
         child: Text("Create Account",
             textAlign: TextAlign.right,
