@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_login_ui/petitionpage.dart';
 import 'package:flutter_login_ui/register.dart';
 import './services/auth.dart';
 
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
 }
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.title}) : super(key: key);
+  LoginPage({Key? key, required this.title}) : super(key: key);
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -52,8 +53,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String email;
-  String password;
+  late String email;
+  late String password;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
@@ -94,8 +95,10 @@ class _LoginPageState extends State<LoginPage> {
             var user = await UserAuth.signIn(email, password);
             print(user);
           } catch (x) {
-            print("SOmething wrong");
+            print("Something wrong");
           }
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => PetitionPage()));
         },
         child: Text("Login",
             textAlign: TextAlign.center,
@@ -120,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => RegisterPage()));
+              context, MaterialPageRoute(builder: (context) => RegisterPage(title: 'title',)));
         },
         child: Text("Create Account",
             textAlign: TextAlign.right,

@@ -1,12 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/petitionpage.dart';
 //import 'package:flutter/services.dart';
 import './services/auth.dart';
 import 'login.dart';
 
 class RegisterPage extends StatefulWidget {
-  RegisterPage({Key key, this.title}) : super(key: key);
+  RegisterPage({Key? key, required this.title}) : super(key: key);
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -25,14 +26,14 @@ class RegisterPage extends StatefulWidget {
 //User phone number
 class _RegisterPageState extends State<RegisterPage> {
   TextEditingController text_widgets = TextEditingController();
-  String name;
-  String last_name;
-  String username;
-  String password;
-  String phone_number;
-  String emergency_contact1;
-  String emergency_contact2;
-  String emergency_contact3;
+  late String name;
+  late String last_name;
+  late String username;
+  late String password;
+  late String phone_number;
+  late String emergency_contact1;
+  late String emergency_contact2;
+  late String emergency_contact3;
 
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
@@ -177,6 +178,8 @@ class _RegisterPageState extends State<RegisterPage> {
           name = name + last_name;
           await UserAuth.createUser(
               username, password, name, phone_number, list);
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => PetitionPage()));
         },
         child: Text("Create Account",
             textAlign: TextAlign.right,
@@ -193,7 +196,7 @@ class _RegisterPageState extends State<RegisterPage> {
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => LoginPage()));
+              context, MaterialPageRoute(builder: (context) => LoginPage(title: 'title',)));
         },
         child: Text("Back to Login",
             textAlign: TextAlign.right,

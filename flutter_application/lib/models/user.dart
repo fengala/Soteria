@@ -12,10 +12,10 @@ class User {
   final String username;
 
   User(
-      {this.uid,
-        this.emergency_contacts,
-        this.name,
-        this.password,
-        this.phone_number,
-        this.username});
+      {required this.uid,
+        required this.emergency_contacts,
+        required this.name,
+        required this.password,
+        required this.phone_number,
+        required this.username});
 }
