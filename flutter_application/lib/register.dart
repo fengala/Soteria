@@ -35,12 +35,50 @@ class _RegisterPageState extends State<RegisterPage> {
   String emergency_contact2;
   String emergency_contact3;
 
+  String error_message;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
   void dispose() {
     text_widgets.dispose();
     super.dispose();
+  }
+
+  // GlobalKey<_RegisterPageState> form_key = GlobalKey();
+
+  String validate_first_name(String val) {
+    if (val == null || val.isEmpty) {
+      return "This field is mandatory";
+    }
+    return null;
+  }
+
+  String validate_last_name(String val) {
+    if (val == null || val.isEmpty) {
+      return "This field is mandatory";
+    }
+    return null;
+  }
+
+  String validate_username(String val) {
+    if (val == null || val.isEmpty) {
+      return "This field is mandatory";
+    }
+    return null;
+  }
+
+  String validate_password(String val) {
+    if (val == null || val.isEmpty) {
+      return "This field is mandatory";
+    }
+    return null;
+  }
+
+  String validate_phone(String val) {
+    if (val == null || val.isEmpty) {
+      return "This field is mandatory";
+    }
+    return null;
   }
 
   @override
@@ -99,21 +137,6 @@ class _RegisterPageState extends State<RegisterPage> {
     final usernameField = TextField(
       onChanged: (text) {
         username = text;
-        if (username == null) {
-          /* ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                behavior: SnackBarBehavior.floating,
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                content: Container(
-                    height: 90,
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    child: Text("Mandatory"))));
-                    */
-        }
       },
       obscureText: false,
       style: style,
@@ -168,7 +191,7 @@ class _RegisterPageState extends State<RegisterPage> {
           style:
               style.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
         ));
-    final emergencyContact1 = TextField(
+    final emergencyContact1 = TextFormField(
       onChanged: (text) {
         emergency_contact1 = text;
       },
@@ -181,7 +204,7 @@ class _RegisterPageState extends State<RegisterPage> {
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
-    final emergencyContact2 = TextField(
+    final emergencyContact2 = TextFormField(
       onChanged: (text) {
         emergency_contact2 = text;
       },
@@ -194,7 +217,7 @@ class _RegisterPageState extends State<RegisterPage> {
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
-    final emergencyContact3 = TextField(
+    final emergencyContact3 = TextFormField(
       onChanged: (text) {
         emergency_contact3 = text;
       },
@@ -230,15 +253,46 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 90,
                     padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: Colors.amber,
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     child: Text("Passwords don't match"))));
           }
-          name = name + last_name;
+
           try {
-            var res = await UserAuth.createUser(
-                username, password, name, phone_number, list);
+            if (name == null ||
+                name.isEmpty ||
+                password == null ||
+                password.isEmpty ||
+                username == null ||
+                username.isEmpty ||
+                phone_number == null ||
+                phone_number.isEmpty ||
+                emergency_contact1 == null ||
+                emergency_contact1.isEmpty ||
+                emergency_contact2.isEmpty ||
+                emergency_contact2 == null ||
+                emergency_contact3.isEmpty ||
+                emergency_contact3 == null ||
+                last_name == null ||
+                last_name.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  elevation: 100,
+                  content: Container(
+                      height: 120,
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Text("There are a few fields missing\n"))));
+            } else {
+              name = name + last_name;
+              var res = await UserAuth.createUser(
+                  username, password, name, phone_number, list);
+            }
           } catch (x) {
             print(x);
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -249,7 +303,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 90,
                     padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: Colors.red,
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     child: Text(x.code))));

@@ -103,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 90,
                       padding: EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: Colors.red,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
                       child: Text(UserAuth.errors(x.code)))));
