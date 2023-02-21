@@ -6,7 +6,7 @@ import 'login.dart';
 import 'tweets.dart';
 import 'package:pandabar/pandabar.dart';
 
-class EventsP extends StatelessWidget {
+class TP extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,19 +16,19 @@ class EventsP extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: EventsPage(),
+      home: TPage(),
     );
   }
 }
 
-class EventsPage extends StatefulWidget {
-  EventsPage({Key key}) : super(key: key);
+class TPage extends StatefulWidget {
+  TPage({Key key}) : super(key: key);
 
   @override
-  _EventsPageState createState() => _EventsPageState();
+  TePage createState() => TePage();
 }
 
-class _EventsPageState extends State<EventsPage> {
+class TePage extends State<TPage> {
   @override
   Widget build(BuildContext context) {
     int page = 1;
@@ -43,7 +43,7 @@ class _EventsPageState extends State<EventsPage> {
           //  ),
         ),
         title: Text(
-          'Events Page',
+          'Home Page',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,

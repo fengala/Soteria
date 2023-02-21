@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_login_ui/home.dart';
+import 'package:flutter_login_ui/startpoint.dart';
 import 'package:flutter_login_ui/petitionpage.dart';
 import 'package:flutter_login_ui/register.dart';
 

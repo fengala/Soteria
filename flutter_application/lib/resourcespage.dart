@@ -6,29 +6,29 @@ import 'login.dart';
 import 'tweets.dart';
 import 'package:pandabar/pandabar.dart';
 
-class EventsP extends StatelessWidget {
+class ResourceP extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Events',
+      title: 'Resources',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: EventsPage(),
+      home: ResourcesPage(),
     );
   }
 }
 
-class EventsPage extends StatefulWidget {
-  EventsPage({Key key}) : super(key: key);
+class ResourcesPage extends StatefulWidget {
+  ResourcesPage({Key key}) : super(key: key);
 
   @override
-  _EventsPageState createState() => _EventsPageState();
+  _ResourcesPageState createState() => _ResourcesPageState();
 }
 
-class _EventsPageState extends State<EventsPage> {
+class _ResourcesPageState extends State<ResourcesPage> {
   @override
   Widget build(BuildContext context) {
     int page = 1;
@@ -43,7 +43,7 @@ class _EventsPageState extends State<EventsPage> {
           //  ),
         ),
         title: Text(
-          'Events Page',
+          'Resources Page',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
