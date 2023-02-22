@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_login_ui/register.dart';
 import './services/auth.dart';
 import './services/database.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 // void main() => runApp(MyApp());
 
 void main() async {
@@ -93,7 +93,9 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () async {
           try {
             email = email.trim();
+            password = password.trim();
             var user = await UserAuth.signIn(email, password);
+            //r  print(UserAuth.user.uid);
 
             try {
               String val = await user.getIdToken();
