@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../models/user.dart';
+
 class DatabaseService {
   final String uid;
   DatabaseService({this.uid});
@@ -16,5 +18,28 @@ class DatabaseService {
       'emergency_contacts': emergency_contacts,
       'phone_number': phone_number
     });
+  }
+
+  Future getUser(String uid) async {
+    print(uid);
+    print("It is here");
+    final value = await userRef.doc(uid).get();
+
+    final data = value.data() as Map<String, dynamic>;
+    print(data);
+    /* UserModel user = new UserModel(
+        uid,
+        data['name'] as String,
+        data['username'] as String,
+        data['password'] as String,
+        data['emergency_contacts'] as List<String>,
+        data['phone_number'] as String);
+    return user;
+    */
+    return data;
+  }
+
+  Stream<QuerySnapshot> get User {
+    return userRef.snapshots();
   }
 }

@@ -1,21 +1,22 @@
-class User {
-  final String uid;
+class UserModel {
+  String uid;
 
-  final String name;
+  String name;
 
-  final String password;
+  String password;
 
-  final String phone_number;
+  String phone_number;
 
-  final List<String> emergency_contacts;
+  List<String> emergency_contacts;
 
-  final String username;
+  String username;
 
-  User(
-      {this.uid,
-        this.emergency_contacts,
-        this.name,
-        this.password,
-        this.phone_number,
-        this.username});
+  UserModel(uid, name, username, password, emergency_contacts, phone_number) {
+    this.uid = uid;
+    this.name = name;
+    this.username = username;
+    this.password = password;
+    this.emergency_contacts = emergency_contacts;
+    this.phone_number = phone_number;
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_login_ui/models/User.dart';
 import 'database.dart';
 
 class UserAuth {
@@ -23,6 +24,7 @@ class UserAuth {
         await auth.signInWithEmailAndPassword(email: email, password: password);
 
     User user = res.user;
+
     print(res);
     return user;
   }

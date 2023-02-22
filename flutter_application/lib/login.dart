@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_ui/register.dart';
 import './services/auth.dart';
+import './services/database.dart';
 
 // void main() => runApp(MyApp());
 
@@ -91,25 +92,39 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () async {
           try {
+            email = email.trim();
             var user = await UserAuth.signIn(email, password);
+
+            try {
+              String val = await user.getIdToken();
+              print(val.runtimeType);
+              var user_detail = await DatabaseService().getUser(user.uid);
+
+              print(user_detail['username']);
+              print(user_detail);
+              print(user_detail.runtimeType);
+            } catch (e, stacktrace) {
+              print(e);
+              print(stacktrace);
+              print("error");
+            }
             print("hello");
           } catch (x) {
-            try {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                  content: Container(
-                      height: 90,
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                      ),
-                      child: Text(UserAuth.errors(x.code)))));
-            } catch (x) {
-              print(x);
-            }
+            print("There has been an exception");
+            print(x);
+
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                content: Container(
+                    height: 90,
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Text(UserAuth.errors(x.code)))));
           }
         },
         child: Text("Login",
