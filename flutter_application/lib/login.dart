@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_login_ui/petitionpage.dart';
 import 'package:flutter_login_ui/register.dart';
 import './services/auth.dart';
 
@@ -39,7 +38,7 @@ class MyApp extends StatelessWidget {
 }
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key, required this.title}) : super(key: key);
+  LoginPage({Key key, this.title}) : super(key: key);
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -53,8 +52,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late String email;
-  late String password;
+  String email;
+  String password;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
@@ -93,12 +92,25 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () async {
           try {
             var user = await UserAuth.signIn(email, password);
-            print(user);
+            print("hello");
           } catch (x) {
-            print("Something wrong");
+            try {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  content: Container(
+                      height: 90,
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Text(UserAuth.errors(x.code)))));
+            } catch (x) {
+              print(x);
+            }
           }
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => PetitionPage()));
         },
         child: Text("Login",
             textAlign: TextAlign.center,
@@ -123,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => RegisterPage(title: 'title',)));
+              context, MaterialPageRoute(builder: (context) => RegisterPage()));
         },
         child: Text("Create Account",
             textAlign: TextAlign.right,

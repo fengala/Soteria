@@ -10,12 +10,11 @@ class UserAuth {
     UserCredential res = await auth.createUserWithEmailAndPassword(
         email: email, password: password);
 
-    User? user = res.user;
+    User user = res.user;
 
-    await DatabaseService(uid: user!.uid)
+    await DatabaseService(uid: user.uid)
         .register(email, password, name, emergency_contacts, phone_number);
 
-    print(user);
     return user;
   }
 
@@ -23,7 +22,17 @@ class UserAuth {
     UserCredential res =
         await auth.signInWithEmailAndPassword(email: email, password: password);
 
-    User? user = res.user;
+    User user = res.user;
+    print(res);
     return user;
+  }
+
+  static String errors(String code) {
+    switch (code) {
+      case 'EMAIL_ALREADY_IN_USE':
+        return "This email is already in use";
+      default:
+        return "Authentication Failed";
+    }
   }
 }

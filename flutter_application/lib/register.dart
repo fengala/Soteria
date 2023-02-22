@@ -1,13 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_login_ui/petitionpage.dart';
 //import 'package:flutter/services.dart';
 import './services/auth.dart';
 import 'login.dart';
 
 class RegisterPage extends StatefulWidget {
-  RegisterPage({Key? key, required this.title}) : super(key: key);
+  RegisterPage({Key key, this.title}) : super(key: key);
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -26,15 +25,17 @@ class RegisterPage extends StatefulWidget {
 //User phone number
 class _RegisterPageState extends State<RegisterPage> {
   TextEditingController text_widgets = TextEditingController();
-  late String name;
-  late String last_name;
-  late String username;
-  late String password;
-  late String phone_number;
-  late String emergency_contact1;
-  late String emergency_contact2;
-  late String emergency_contact3;
+  String name;
+  String last_name;
+  String username;
+  String password;
+  String password2;
+  String phone_number;
+  String emergency_contact1;
+  String emergency_contact2;
+  String emergency_contact3;
 
+  String error_message;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
@@ -43,11 +44,61 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
+  // GlobalKey<_RegisterPageState> form_key = GlobalKey();
+
+  String validate_first_name(String val) {
+    if (val == null || val.isEmpty) {
+      return "This field is mandatory";
+    }
+    return null;
+  }
+
+  String validate_last_name(String val) {
+    if (val == null || val.isEmpty) {
+      return "This field is mandatory";
+    }
+    return null;
+  }
+
+  String validate_username(String val) {
+    if (val == null || val.isEmpty) {
+      return "This field is mandatory";
+    }
+    return null;
+  }
+
+  String validate_password(String val) {
+    if (val == null || val.isEmpty) {
+      return "This field is mandatory";
+    }
+    return null;
+  }
+
+  String validate_phone(String val) {
+    if (val == null || val.isEmpty) {
+      return "This field is mandatory";
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final firstName = TextField(
       onChanged: (text) {
         name = text;
+
+        /*  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                content: Container(
+                    height: 90,
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Text("Mandatory"))));*/
       },
       obscureText: false,
       style: style,
@@ -60,6 +111,20 @@ class _RegisterPageState extends State<RegisterPage> {
     final lastName = TextField(
       onChanged: (text) {
         last_name = text;
+        if (last_name == null) {
+          /*ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                content: Container(
+                    height: 90,
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Text("Mandatory"))));*/
+        }
       },
       obscureText: false,
       style: style,
@@ -94,6 +159,9 @@ class _RegisterPageState extends State<RegisterPage> {
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final reEnterPassword = TextField(
+      onChanged: (text) {
+        password2 = text;
+      },
       obscureText: true,
       style: style,
       decoration: InputDecoration(
@@ -123,7 +191,7 @@ class _RegisterPageState extends State<RegisterPage> {
           style:
               style.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
         ));
-    final emergencyContact1 = TextField(
+    final emergencyContact1 = TextFormField(
       onChanged: (text) {
         emergency_contact1 = text;
       },
@@ -136,7 +204,7 @@ class _RegisterPageState extends State<RegisterPage> {
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
-    final emergencyContact2 = TextField(
+    final emergencyContact2 = TextFormField(
       onChanged: (text) {
         emergency_contact2 = text;
       },
@@ -149,7 +217,7 @@ class _RegisterPageState extends State<RegisterPage> {
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
-    final emergencyContact3 = TextField(
+    final emergencyContact3 = TextFormField(
       onChanged: (text) {
         emergency_contact3 = text;
       },
@@ -175,11 +243,71 @@ class _RegisterPageState extends State<RegisterPage> {
             emergency_contact2,
             emergency_contact3
           ];
-          name = name + last_name;
-          await UserAuth.createUser(
-              username, password, name, phone_number, list);
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => PetitionPage()));
+
+          if (password != password2) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                content: Container(
+                    height: 90,
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.amber,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Text("Passwords don't match"))));
+          }
+
+          try {
+            if (name == null ||
+                name.isEmpty ||
+                password == null ||
+                password.isEmpty ||
+                username == null ||
+                username.isEmpty ||
+                phone_number == null ||
+                phone_number.isEmpty ||
+                emergency_contact1 == null ||
+                emergency_contact1.isEmpty ||
+                emergency_contact2.isEmpty ||
+                emergency_contact2 == null ||
+                emergency_contact3.isEmpty ||
+                emergency_contact3 == null ||
+                last_name == null ||
+                last_name.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  elevation: 100,
+                  content: Container(
+                      height: 120,
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Text("There are a few fields missing\n"))));
+            } else {
+              name = name + last_name;
+              var res = await UserAuth.createUser(
+                  username, password, name, phone_number, list);
+            }
+          } catch (x) {
+            print(x);
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                content: Container(
+                    height: 90,
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Text(x.code))));
+          }
         },
         child: Text("Create Account",
             textAlign: TextAlign.right,
@@ -196,7 +324,7 @@ class _RegisterPageState extends State<RegisterPage> {
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => LoginPage(title: 'title',)));
+              context, MaterialPageRoute(builder: (context) => LoginPage()));
         },
         child: Text("Back to Login",
             textAlign: TextAlign.right,
