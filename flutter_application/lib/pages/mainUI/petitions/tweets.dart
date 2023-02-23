@@ -1,4 +1,3 @@
-// import 'package:twitter_clone/tweet.dart';
 import 'tweet.dart';
 
 var tweets = [

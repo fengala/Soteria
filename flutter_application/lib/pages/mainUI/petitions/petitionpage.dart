@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'events.dart';
-import 'startpoint.dart';
-import 'login.dart';
 import 'tweets.dart';
-import 'package:pandabar/pandabar.dart';
 
 class PetitionP extends StatelessWidget {
   @override
@@ -37,9 +33,6 @@ class _PetitionPageState extends State<PetitionPage> {
         backgroundColor: Colors.amber,
         leading: Container(
           margin: const EdgeInsets.all(10.0),
-          //child: CircleAvatar(
-          //backgroundImage: AssetImage('nanou.jpeg'),
-          //  ),
         ),
         title: Text(
           'Petition Board',

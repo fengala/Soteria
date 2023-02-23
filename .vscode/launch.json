@@ -9,7 +9,7 @@
             "cwd": "flutter_application",
             "request": "launch",
             "type": "dart",
-            "program": "/Users/maas/VSCodeProjects/Soteria/flutter_application/lib/login.dart"
+            "program": "/Users/maas/VSCodeProjects/Soteria/flutter_application/lib/pages/authentication/login.dart"
         },
         {
             "name": "flutter_application (profile mode)",

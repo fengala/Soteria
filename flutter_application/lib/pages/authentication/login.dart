@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_login_ui/startpoint.dart';
-import 'package:flutter_login_ui/petitionpage.dart';
-import 'package:flutter_login_ui/register.dart';
+import './../navigation/startpoint.dart';
+import './register.dart';
 
 void main() => runApp(MyApp());
 
@@ -120,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  height: 155.0,
+                  height: 300.0, //155.0,
                   child: Image.asset(
                     "assets/logo.png",
                     fit: BoxFit.contain,
