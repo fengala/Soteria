@@ -5,7 +5,7 @@ import './auth.dart';
 
 class DatabaseService {
   final String uid;
-  DatabaseService({required this.uid});
+  DatabaseService({this.uid});
 
   final CollectionReference userRef =
       FirebaseFirestore.instance.collection("users");

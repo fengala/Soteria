@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter/services.dart';
-import './services/auth.dart';
+import '../../services/auth.dart';
 import 'login.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -308,6 +308,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     child: Text(x.code))));
           }
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => LoginPage()));
         },
         child: Text("Create Account",
             textAlign: TextAlign.right,

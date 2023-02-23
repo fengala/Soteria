@@ -10,25 +10,24 @@ class Tweet extends StatelessWidget {
   final String votes;
 
   const Tweet(
-      {Key? key,
-      required this.username,
-      required this.name,
-      required this.description,
-      required this.comments,
-      required this.votes})
+      {Key key,
+       this.username,
+       this.name,
+       this.description,
+       this.comments,
+       this.votes})
       : super(key: key);
 
   factory Tweet.fromFirestore(
   DocumentSnapshot<Map<String, dynamic>> snapshot,
-    SnapshotOptions?options,
   ) {
   final data = snapshot.data();
     return Tweet(
-      username: data?['username'],
-      name: data?['name'],
-      description: data?['description'],
-      comments: data?['comments'],
-      votes: data?['votes'], key: data?['key'],
+      username: data['username'],
+      name: data['name'],
+      description: data['description'],
+      comments: data['comments'],
+      votes: data['votes'], key: data['key'],
     );
   }
 

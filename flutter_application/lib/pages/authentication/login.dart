@@ -1,9 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_login_ui/register.dart';
-import './services/auth.dart';
-import './services/database.dart';
+import 'package:flutter_login_ui/pages/mainUI/petitionpage.dart';
+import 'package:flutter_login_ui/pages/authentication/register.dart';
+import '../../services/auth.dart';
+import '../../services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // void main() => runApp(MyApp());
 
@@ -128,6 +129,8 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     child: Text(UserAuth.errors(x.code)))));
           }
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => PetitionPage()));
         },
         child: Text("Login",
             textAlign: TextAlign.center,

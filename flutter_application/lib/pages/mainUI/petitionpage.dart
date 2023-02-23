@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'models/tweets.dart';
+import '../../models/tweets.dart';
 
 class PetitionP extends StatelessWidget {
   @override
@@ -18,7 +18,7 @@ class PetitionP extends StatelessWidget {
 }
 
 class PetitionPage extends StatefulWidget {
-  PetitionPage({Key? key}) : super(key: key);
+  PetitionPage({Key key}) : super(key: key);
 
   @override
   _PetitionPageState createState() => _PetitionPageState();
