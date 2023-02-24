@@ -1,46 +1,27 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Tweet extends StatelessWidget {
+  final String avatar;
   final String username;
   final String name;
-  final String description;
+  final String timeAgo;
+  final String text;
   final String comments;
-  final String votes;
+  final String retweets;
+  final String favorites;
 
   const Tweet(
       {Key key,
-       this.username,
-       this.name,
-       this.description,
-       this.comments,
-       this.votes})
+      @required this.avatar,
+      @required this.username,
+      @required this.name,
+      @required this.timeAgo,
+      @required this.text,
+      @required this.comments,
+      @required this.retweets,
+      @required this.favorites})
       : super(key: key);
-
-  factory Tweet.fromFirestore(
-  DocumentSnapshot<Map<String, dynamic>> snapshot,
-  ) {
-  final data = snapshot.data();
-    return Tweet(
-      username: data['username'],
-      name: data['name'],
-      description: data['description'],
-      comments: data['comments'],
-      votes: data['votes'], key: data['key'],
-    );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      if (name != null) "name": name,
-      if (username != null) "username": username,
-      if (description != null) "description": description,
-      if (comments != null) "comments": comments,
-      if (votes != null) "votes": votes,
-    };
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +72,12 @@ class Tweet extends StatelessWidget {
           //),
           //),
         ),
+        Text(
+          '@$name · $timeAgo',
+          style: TextStyle(
+            color: Colors.grey,
+          ),
+        ),
         Spacer(),
         IconButton(
           icon: Icon(
@@ -106,7 +93,7 @@ class Tweet extends StatelessWidget {
 
   Widget tweetText() {
     return Text(
-      name,
+      text,
       overflow: TextOverflow.clip,
     );
   }
@@ -119,7 +106,7 @@ class Tweet extends StatelessWidget {
         children: [
           tweetIconButton(FontAwesomeIcons.comment, this.comments),
           //tweetIconButton(FontAwesomeIcons.retweet, this.retweets),
-          tweetIconButton(FontAwesomeIcons.heart, this.votes),
+          tweetIconButton(FontAwesomeIcons.heart, this.favorites),
           //tweetIconButton(FontAwesomeIcons.share, ''),
         ],
       ),
