@@ -62,7 +62,7 @@ class DatabaseService {
       'username': username,
       'tile': title,
       'description': descprition,
-      'num_upvotes': 10,
+      'num_upvotes': 0,
       'num_comments': 0,
       'replies': replies
     });

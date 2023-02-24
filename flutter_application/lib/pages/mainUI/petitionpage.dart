@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/services/auth.dart';
 import 'package:flutter_login_ui/services/database.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../models/tweets.dart';
@@ -26,6 +27,16 @@ class PetitionPage extends StatefulWidget {
 }
 
 class _PetitionPageState extends State<PetitionPage> {
+  final myController = TextEditingController();
+  final myController2 = TextEditingController();
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    myController2.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,8 +75,9 @@ class _PetitionPageState extends State<PetitionPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           TextField(
+                            controller: myController,
                             autofocus: true,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.grey, width: 2.0),
@@ -78,8 +90,9 @@ class _PetitionPageState extends State<PetitionPage> {
                                 hintText: "Enter your petition title here"),
                           ),
                           TextField(
+                            controller: myController2,
                             autofocus: true,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 hintStyle: TextStyle(fontSize: 15),
                                 hintText:
                                     "Enter your petition description here"),
@@ -96,10 +109,13 @@ class _PetitionPageState extends State<PetitionPage> {
                         TextButton(
                           child: Text("OK"),
                           onPressed: () async {
+                            var user = await DatabaseService()
+                                .getUser(UserAuth.auth.currentUser.uid);
+
                             var pet = await DatabaseService().addPetition(
-                                "Userhello",
-                                "Howdy",
-                                "dkjfbsdjklfbdskjlfnbdslkfnlsd skfnjndsklfjs");
+                                user['username'],
+                                myController.text,
+                                myController2.text);
                             Navigator.pop(context);
                           },
                         )
