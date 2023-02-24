@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_ui/pages/mainUI/petitionpage.dart';
 import 'package:flutter_login_ui/pages/authentication/register.dart';
+import 'package:flutter_login_ui/pages/navigation/startpoint.dart';
 import '../../services/auth.dart';
 import '../../services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -103,6 +104,9 @@ class _LoginPageState extends State<LoginPage> {
               print(val.runtimeType);
               var user_detail = await DatabaseService().getUser(user.uid);
 
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => HomeP()));
+
               print(user_detail['username']);
               print(user_detail);
               print(user_detail.runtimeType);
@@ -129,8 +133,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     child: Text(UserAuth.errors(x.code)))));
           }
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => PetitionPage()));
         },
         child: Text("Login",
             textAlign: TextAlign.center,

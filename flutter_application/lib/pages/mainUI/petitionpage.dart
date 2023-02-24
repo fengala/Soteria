@@ -30,7 +30,7 @@ class _PetitionPageState extends State<PetitionPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: Color.fromARGB(230, 231, 213, 19),
+        backgroundColor: Colors.amber,
         leading: Container(
           margin: const EdgeInsets.all(10.0),
           //child: CircleAvatar(
@@ -46,31 +46,61 @@ class _PetitionPageState extends State<PetitionPage> {
         ),
       ),
       body: listOfTweets(),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(FontAwesomeIcons.pen),
-        onPressed: () {},
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            buildBottomIconButton(Icons.home, Colors.blue),
-            buildBottomIconButton(Icons.search, Colors.black45),
-            buildBottomIconButton(Icons.notifications, Colors.black45),
-            buildBottomIconButton(Icons.mail_outline, Colors.black45),
-          ],
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 40.0),
+        child: FloatingActionButton(
+          child: Icon(
+            FontAwesomeIcons.pen,
+            color: Colors.amber,
+          ),
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                      title: Text("Create a Petition"),
+                      content: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          TextField(
+                            autofocus: true,
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 2.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 2.0),
+                                ),
+                                hintStyle: TextStyle(fontSize: 15),
+                                hintText: "Enter your petition title here"),
+                          ),
+                          TextField(
+                            autofocus: true,
+                            decoration: InputDecoration(
+                                hintStyle: TextStyle(fontSize: 15),
+                                hintText:
+                                    "Enter your petition description here"),
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          child: Text("CANCEL"),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        TextButton(
+                          child: Text("OK"),
+                          onPressed: () => Navigator.pop(context),
+                        )
+                      ],
+                    ));
+          },
         ),
       ),
-    );
-  }
-
-  Widget buildBottomIconButton(IconData icon, Color color) {
-    return IconButton(
-      icon: Icon(
-        icon,
-        color: color,
-      ),
-      onPressed: () {},
     );
   }
 
@@ -83,7 +113,8 @@ class _PetitionPageState extends State<PetitionPage> {
         },
         separatorBuilder: (BuildContext context, int index) => Divider(
           height: 0,
-        ), itemCount: tweets.length,
+        ),
+        itemCount: tweets.length,
         //itemCount: tweets.length,
       ),
     );
