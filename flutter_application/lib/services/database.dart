@@ -9,6 +9,8 @@ class DatabaseService {
 
   final CollectionReference userRef =
       FirebaseFirestore.instance.collection("users");
+  final CollectionReference petRef =
+      FirebaseFirestore.instance.collection("Petitions");
 
   Future register(String username, String password, String name,
       List<String> emergency_contacts, String phone_number) async {
@@ -46,10 +48,23 @@ class DatabaseService {
         data['phone_number'] as String);
     return user;
     */
+
     return data;
   }
 
   Stream<QuerySnapshot> get User {
     return userRef.snapshots();
+  }
+
+  Future addPetition(String username, String title, String descprition) async {
+    List<String> replies;
+    return await FirebaseFirestore.instance.collection("Petitions").doc().set({
+      'username': username,
+      'tile': title,
+      'description': descprition,
+      'num_upvotes': 10,
+      'num_comments': 0,
+      'replies': replies
+    });
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/services/database.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../models/tweets.dart';
 
@@ -94,7 +95,13 @@ class _PetitionPageState extends State<PetitionPage> {
                         ),
                         TextButton(
                           child: Text("OK"),
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () async {
+                            var pet = await DatabaseService().addPetition(
+                                "Userhello",
+                                "Howdy",
+                                "dkjfbsdjklfbdskjlfnbdslkfnlsd skfnjndsklfjs");
+                            Navigator.pop(context);
+                          },
                         )
                       ],
                     ));
