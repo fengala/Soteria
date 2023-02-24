@@ -67,4 +67,10 @@ class DatabaseService {
       'replies': replies
     });
   }
+
+  Future getPetitions() async {
+    QuerySnapshot querySnapshot = await petRef.get();
+    final Dataa = querySnapshot.docs.map((doc) => doc.data()).toList();
+    return Dataa;
+  }
 }

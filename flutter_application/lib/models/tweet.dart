@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/services/database.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Tweet extends StatelessWidget {
   final String avatar;
   final String username;
   final String name;
-  final String timeAgo;
   final String text;
   final String comments;
   final String retweets;
@@ -16,7 +16,6 @@ class Tweet extends StatelessWidget {
       @required this.avatar,
       @required this.username,
       @required this.name,
-      @required this.timeAgo,
       @required this.text,
       @required this.comments,
       @required this.retweets,
@@ -73,7 +72,7 @@ class Tweet extends StatelessWidget {
           //),
         ),
         Text(
-          '@$name · $timeAgo',
+          '@$name',
           style: TextStyle(
             color: Colors.grey,
           ),

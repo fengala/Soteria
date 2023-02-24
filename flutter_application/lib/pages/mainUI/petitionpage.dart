@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/services/auth.dart';
 import 'package:flutter_login_ui/services/database.dart';
@@ -57,7 +59,7 @@ class _PetitionPageState extends State<PetitionPage> {
           ),
         ),
       ),
-      body: listOfTweets(),
+      body: petitionList(),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 40.0),
         child: FloatingActionButton(
@@ -103,9 +105,10 @@ class _PetitionPageState extends State<PetitionPage> {
                       ),
                       actions: [
                         TextButton(
-                          child: Text("CANCEL"),
-                          onPressed: () => Navigator.pop(context),
-                        ),
+                            child: Text("CANCEL"),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            }),
                         TextButton(
                           child: Text("OK"),
                           onPressed: () async {
@@ -127,19 +130,53 @@ class _PetitionPageState extends State<PetitionPage> {
     );
   }
 
-  Widget listOfTweets() {
-    return Container(
-      color: Colors.white,
-      child: ListView.separated(
-        itemBuilder: (BuildContext context, int index) {
-          return tweets[index];
-        },
-        separatorBuilder: (BuildContext context, int index) => Divider(
-          height: 0,
-        ),
-        itemCount: tweets.length,
-        //itemCount: tweets.length,
-      ),
+  Widget petitionList() {
+    Future load() async {
+      var myFuture = await getAllPetitions() as List;
+      return myFuture;
+    }
+
+    return FutureBuilder(
+      future: getAllPetitions(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<dynamic> petitions = snapshot.data;
+          return Container(
+            color: Colors.white,
+            child: ListView.separated(
+              itemBuilder: (BuildContext context, int index) {
+                return petitions[index];
+              },
+              separatorBuilder: (BuildContext context, int index) => Divider(
+                height: 0,
+              ),
+              itemCount: petitions.length,
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error fetching petitions'));
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
+  // return Container(
+  //   color: Colors.white,
+  //   child: ListView.separated(
+  //     itemBuilder: (BuildContext context, int index) {
+  //       // var myFuture = await getPetitions() as List;
+
+  //       // List<dynamic> tweets = myFuture as List;
+  //       List<Object> list = load() as List<Object>;
+  //       return list[index];
+  //       // return tweets[index];
+  //     },
+  //     separatorBuilder: (BuildContext context, int index) => Divider(
+  //       height: 0,
+  //     ),
+  //     itemCount: 5, //tweets.length,
+  //     //itemCount: tweets.length,
+  //   ),
+  // );
 }
