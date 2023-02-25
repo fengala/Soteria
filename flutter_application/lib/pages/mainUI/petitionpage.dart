@@ -31,6 +31,14 @@ class PetitionPage extends StatefulWidget {
 class _PetitionPageState extends State<PetitionPage> {
   final myController = TextEditingController();
   final myController2 = TextEditingController();
+  Future<List<dynamic>> _petitionsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _petitionsFuture = getAllPetitions();
+  }
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -58,8 +66,25 @@ class _PetitionPageState extends State<PetitionPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              setState(() {
+                _petitionsFuture = getAllPetitions();
+              });
+            },
+          ),
+        ],
       ),
-      body: petitionList(),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          setState(() {
+            _petitionsFuture = getAllPetitions();
+          });
+        },
+        child: petitionList(),
+      ), //petitionList(),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 40.0),
         child: FloatingActionButton(
