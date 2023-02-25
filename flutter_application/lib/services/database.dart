@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../models/user.dart';
-import './auth.dart';
+import 'package:intl/intl.dart';
 
 class DatabaseService {
   final String uid;
@@ -64,13 +65,19 @@ class DatabaseService {
       'description': descprition,
       'num_upvotes': 0,
       'num_comments': 0,
-      'replies': replies
+      'replies': replies,
+      'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
     });
   }
 
   Future getPetitions() async {
     QuerySnapshot querySnapshot = await petRef.get();
-    final Dataa = querySnapshot.docs.map((doc) => doc.data()).toList();
+    // final Dataa = querySnapshot.docs.map((doc) => doc.data()).toList();
+    final Dataa = querySnapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      final id = doc.id;
+      return {...data, 'id': id};
+    }).toList();
     return Dataa;
   }
 }

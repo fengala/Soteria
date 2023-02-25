@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login_ui/services/database.dart';
+import 'package:flutter_login_ui/models/tweetdetails.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Tweet extends StatelessWidget {
@@ -10,6 +10,9 @@ class Tweet extends StatelessWidget {
   final String comments;
   final String retweets;
   final String favorites;
+  final String time;
+  final String id;
+  final String description;
 
   const Tweet(
       {Key key,
@@ -19,7 +22,10 @@ class Tweet extends StatelessWidget {
       @required this.text,
       @required this.comments,
       @required this.retweets,
-      @required this.favorites})
+      @required this.time,
+      @required this.favorites,
+      @required this.id,
+      @required this.description})
       : super(key: key);
 
   @override
@@ -30,7 +36,7 @@ class Tweet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           tweetAvatar(),
-          tweetBody(),
+          tweetBody(context),
         ],
       ),
     );
@@ -39,18 +45,15 @@ class Tweet extends StatelessWidget {
   Widget tweetAvatar() {
     return Container(
       margin: const EdgeInsets.all(10.0),
-      //child: CircleAvatar(
-      //backgroundImage: NetworkImage(this.avatar),
-      //),
     );
   }
 
-  Widget tweetBody() {
+  Widget tweetBody(BuildContext context) {
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          tweetHeader(),
+          tweetHeader(context),
           tweetText(),
           tweetButtons(),
         ],
@@ -58,7 +61,7 @@ class Tweet extends StatelessWidget {
     );
   }
 
-  Widget tweetHeader() {
+  Widget tweetHeader(BuildContext context) {
     return Row(
       children: [
         Container(
@@ -72,19 +75,42 @@ class Tweet extends StatelessWidget {
           //),
         ),
         Text(
-          '@$name',
+          '@$name · $time',
           style: TextStyle(
             color: Colors.grey,
           ),
         ),
         Spacer(),
-        IconButton(
-          icon: Icon(
-            FontAwesomeIcons.plus,
-            size: 14.0,
-            color: Colors.grey,
+        // IconButton(
+        //   icon: Icon(
+        //     FontAwesomeIcons.plus,
+        //     size: 14.0,
+        //     color: Colors.grey,
+        //   ),
+        //   onPressed: () {
+        //     print('Pressed ID: $id');
+        //   },
+        // ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => tweetdetails(
+                  title: text,
+                  description: description,
+                  replies: ["Reply 1", "Reply 2", "Reply 3"],
+                ),
+              ),
+            );
+          },
+          child: IconButton(
+            icon: Icon(
+              FontAwesomeIcons.plus,
+              size: 14.0,
+              color: Colors.grey,
+            ),
           ),
-          onPressed: () {},
         ),
       ],
     );
@@ -104,9 +130,7 @@ class Tweet extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           tweetIconButton(FontAwesomeIcons.comment, this.comments),
-          //tweetIconButton(FontAwesomeIcons.retweet, this.retweets),
           tweetIconButton(FontAwesomeIcons.heart, this.favorites),
-          //tweetIconButton(FontAwesomeIcons.share, ''),
         ],
       ),
     );
