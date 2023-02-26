@@ -238,7 +238,7 @@ class _RegisterPageState extends State<RegisterPage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () async {
-          List<String> list = [
+          List list = [
             emergency_contact1,
             emergency_contact2,
             emergency_contact3
@@ -289,8 +289,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       child: Text("There are a few fields missing\n"))));
             } else {
-              name = name + last_name;
-              var res = await UserAuth.createUser(
+              name = name + " " + last_name;
+               UserAuth userAuth = new UserAuth();
+              var res = await userAuth.createUser(
                   username, password, name, phone_number, list);
             }
           } catch (x) {
