@@ -111,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                   user_detail['name'],
                   user_detail['username'],
                   user_detail['password'],
-                  emergency_contacts,
+                  user_detail['emergency_contacts'],
                   user_detail['phone_number']);
 
               Navigator.push(
