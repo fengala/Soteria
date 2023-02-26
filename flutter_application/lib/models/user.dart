@@ -7,7 +7,7 @@ class UserModel {
 
   String phone_number;
 
-  List<String> emergency_contacts;
+  List emergency_contacts;
 
   String username;
 
