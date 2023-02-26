@@ -8,7 +8,7 @@ class UserAuth {
   User user;
   UserModel user1;
 
-  static Future createUser(String email, String password, String name,
+    Future createUser(String email, String password, String name,
       String phone_number,  emergency_contacts) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     UserCredential res = await auth.createUserWithEmailAndPassword(
@@ -24,7 +24,7 @@ class UserAuth {
     return user;
   }
 
-  static Future signIn(String email, String password) async {
+   Future signIn(String email, String password) async {
     UserCredential res =
         await auth.signInWithEmailAndPassword(email: email, password: password);
 
