@@ -1,19 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_login_ui/models/User.dart';
+import '../models/user.dart';
 import 'database.dart';
 
 class UserAuth {
   static final FirebaseAuth auth = FirebaseAuth.instance;
 
-  static User user;
+  User user;
+  UserModel user1;
 
   static Future createUser(String email, String password, String name,
-      String phone_number, List<String> emergency_contacts) async {
+      String phone_number,  emergency_contacts) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     UserCredential res = await auth.createUserWithEmailAndPassword(
         email: email, password: password);
 
-    user = res.user;
+    this.user = res.user;
 
     print(user.uid);
 
@@ -40,5 +41,23 @@ class UserAuth {
       default:
         return "Authentication Failed";
     }
+  }
+  Future resetPassword(String password) async {
+    this.user.updatePassword(password);
+    this.user.sendEmailVerification();
+
+    var res = await DatabaseService(uid: user.uid).resetPassword(password);
+    return res;
+  }
+
+  static Future staySignedIn() async {
+    var res = await auth.setPersistence(Persistence.LOCAL);
+
+    return res;
+  }
+
+     Future SignOut() async {
+    var res = await auth.signOut();
+    return res;
   }
 }
