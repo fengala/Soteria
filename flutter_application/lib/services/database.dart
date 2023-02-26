@@ -15,7 +15,7 @@ class DatabaseService {
       FirebaseFirestore.instance.collection("Petitions");
 
   Future register(String username, String password, String name,
-      List<String> emergency_contacts, String phone_number) async {
+       emergency_contacts, String phone_number) async {
     return await userRef.doc(uid).set({
       'username': username,
       'password': password,
@@ -26,7 +26,7 @@ class DatabaseService {
   }
 
   Future updateUser(String username, String password, String name,
-      List<String> emergency_contacts, String phone_number) async {
+       emergency_contacts, String phone_number) async {
     return await userRef.doc(uid).set({
       'username': username,
       'password': password,
