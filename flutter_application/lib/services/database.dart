@@ -89,6 +89,12 @@ class DatabaseService {
     final data = value.data() as Map<String, dynamic>;
     return data;
   }
+  
+  Future resetPassword(String password) async {
+    return await userRef.doc(uid).set({
+      'password': password,
+    });
+  }
 
 
 
