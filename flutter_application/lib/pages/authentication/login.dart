@@ -6,6 +6,7 @@ import 'package:flutter_login_ui/pages/authentication/register.dart';
 import 'package:flutter_login_ui/pages/navigation/startpoint.dart';
 import '../../services/auth.dart';
 import '../../services/database.dart';
+import '../../models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // void main() => runApp(MyApp());
 
@@ -96,13 +97,22 @@ class _LoginPageState extends State<LoginPage> {
           try {
             email = email.trim();
             password = password.trim();
-            var user = await UserAuth.signIn(email, password);
+             UserAuth userAuth = new UserAuth();
+             var user = await userAuth.signIn(email, password);
+            //r  print(UserAuth.user.uid);
             //r  print(UserAuth.user.uid);
 
             try {
               String val = await user.getIdToken();
               print(val.runtimeType);
               var user_detail = await DatabaseService().getUser(user.uid);
+                userAuth.user1 = new UserModel(
+                  user.uid,
+                  user_detail['name'],
+                  user_detail['username'],
+                  user_detail['password'],
+                  emergency_contacts,
+                  user_detail['phone_number']);
 
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => HomeP()));
