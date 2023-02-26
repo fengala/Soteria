@@ -6,7 +6,8 @@ import 'package:intl/intl.dart';
 
 class DatabaseService {
   final String uid;
-  DatabaseService({this.uid});
+  final String pid;
+  DatabaseService({this.uid, this.pid});
 
   final CollectionReference userRef =
       FirebaseFirestore.instance.collection("users");
@@ -40,16 +41,6 @@ class DatabaseService {
 
     final data = value.data() as Map<String, dynamic>;
 
-    /* UserModel user = new UserModel(
-        uid,
-        data['name'] as String,
-        data['username'] as String,
-        data['password'] as String,
-        data['emergency_contacts'] as List<String>,
-        data['phone_number'] as String);
-    return user;
-    */
-
     return data;
   }
 
@@ -80,4 +71,25 @@ class DatabaseService {
     }).toList();
     return Dataa;
   }
+
+  Future updatePet(String username, String title, String descprition, String upvotes,
+      String comments, List<String> replies) async {
+    return await petRef.doc(pid).set({
+      'username': username,
+      'tile': title,
+      'description': descprition,
+      'num_upvotes': upvotes,
+      'num_comments': comments,
+      'replies': replies,
+    });
+  }
+
+  Future getPet(String pid) async {
+    final value = await petRef.doc(pid).get();
+    final data = value.data() as Map<String, dynamic>;
+    return data;
+  }
+
+
+
 }

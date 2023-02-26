@@ -1,7 +1,6 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/models/tweetdetails.dart';
+import 'package:flutter_login_ui/services/database.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Tweet extends StatelessWidget {
@@ -167,12 +166,13 @@ class Tweet extends StatelessWidget {
     return Row(
       children: [
         IconButton(
-          icon: const Icon(FontAwesomeIcons.heart),
           onPressed: () {
             print("Pressed Upvote");
             this.favorites = (int.parse(this.favorites) + 1).toString();
             print(this.favorites);
+            icon = FontAwesomeIcons.solidHeart;
           },
+          icon: Icon(icon),
           iconSize: 16.0,
           color: Colors.black45,
         ),
