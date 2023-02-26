@@ -130,7 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
       style: style,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "First Name",
+          hintText: "Last Name",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );

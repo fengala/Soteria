@@ -124,6 +124,7 @@ class _PetitionPageState extends State<PetitionPage> {
                                 hintText:
                                     "Enter your petition description here"),
                             keyboardType: TextInputType.multiline,
+                            minLines: null,
                             maxLines: null,
                           ),
                         ],
@@ -135,7 +136,7 @@ class _PetitionPageState extends State<PetitionPage> {
                               Navigator.pop(context);
                             }),
                         TextButton(
-                          child: Text("OK"),
+                          child: Text("CREATE"),
                           onPressed: () async {
                             var user = await DatabaseService()
                                 .getUser(UserAuth.auth.currentUser.uid);

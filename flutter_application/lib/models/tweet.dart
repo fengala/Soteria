@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/models/tweetdetails.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,23 +9,23 @@ class Tweet extends StatelessWidget {
   final String username;
   final String name;
   final String text;
-  final String comments;
-  final String retweets;
-  final String favorites;
+  String comments;
+  String retweets;
+  String favorites;
   final String time;
   final String id;
   final String description;
 
-  const Tweet(
+  Tweet(
       {Key key,
       @required this.avatar,
       @required this.username,
       @required this.name,
       @required this.text,
-      @required this.comments,
       @required this.retweets,
+        @required this.comments,
       @required this.time,
-      @required this.favorites,
+        @required this.favorites,
       @required this.id,
       @required this.description})
       : super(key: key);
@@ -129,19 +131,49 @@ class Tweet extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          tweetIconButton(FontAwesomeIcons.comment, this.comments),
-          tweetIconButton(FontAwesomeIcons.heart, this.favorites),
+          tweetIconButton1(FontAwesomeIcons.comment, this.comments),
+          tweetIconButton2(FontAwesomeIcons.heart, this.favorites),
         ],
       ),
     );
   }
 
-  Widget tweetIconButton(IconData icon, String text) {
+  Widget tweetIconButton1(IconData icon, String text) {
     return Row(
       children: [
-        Icon(
-          icon,
-          size: 16.0,
+        IconButton(
+            icon: const Icon(FontAwesomeIcons.comment),
+            onPressed: () {
+              print("Pressed Comment");
+            },
+            iconSize: 16.0,
+            color: Colors.black45,
+        ),
+        Container(
+          margin: const EdgeInsets.all(6.0),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.black45,
+              fontSize: 14.0,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget tweetIconButton2(IconData icon, String text) {
+    return Row(
+      children: [
+        IconButton(
+          icon: const Icon(FontAwesomeIcons.heart),
+          onPressed: () {
+            print("Pressed Upvote");
+            this.favorites = (int.parse(this.favorites) + 1).toString();
+            print(this.favorites);
+          },
+          iconSize: 16.0,
           color: Colors.black45,
         ),
         Container(
