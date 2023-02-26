@@ -3,9 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/services/database.dart';
 //import 'package:flutter/services.dart';
-import './services/auth.dart';
+import '../../services/auth.dart';
 import 'login.dart';
-import 'models/User.dart';
+import '../../models/user.dart';
 
 class UpdatePage extends StatefulWidget {
   var myUser;
