@@ -295,6 +295,7 @@ class _UpdatePageState extends State<UpdatePage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () async {
+          bool prompt = true;
           List list = [
             emergency_contact1,
             emergency_contact2,
@@ -302,6 +303,7 @@ class _UpdatePageState extends State<UpdatePage> {
           ];
 
           if (password != password2) {
+            prompt = false;
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: Colors.transparent,
@@ -335,6 +337,7 @@ class _UpdatePageState extends State<UpdatePage> {
                 emergency_contact3 == null ||
                 last_name == null ||
                 last_name.isEmpty) {
+              prompt = false;
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   behavior: SnackBarBehavior.floating,
                   backgroundColor: Colors.transparent,
@@ -397,10 +400,13 @@ class _UpdatePageState extends State<UpdatePage> {
                           style.copyWith(color: Colors.green,),
                         )),
                   ])));
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => TPage()));
+          if (prompt){
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => TPage(myUser: this.myUser, userAuth: this.userAuth,)));
+          }
+
         },
-        child: Text("Update  Account",
+        child: Text("Update Account",
             textAlign: TextAlign.right,
             style: style.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),
