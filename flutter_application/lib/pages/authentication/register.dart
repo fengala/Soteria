@@ -309,6 +309,22 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     child: Text(x.code))));
           }
+          showDialog(context: context, builder: (context) => AlertDialog(
+            title: Text("Success!"),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Icon(Icons.check),
+                DefaultTextStyle(
+                    style: style,
+                    child: Text(
+                      "We have successfully sent a verification mail to your mail address",
+                      textAlign: TextAlign.center,
+                      style:
+                      style.copyWith(color: Colors.green,),
+                    )),
+          ])));
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => LoginPage()));
         },
