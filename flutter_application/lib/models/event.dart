@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login_ui/models/tweetdetails.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'eventdetails.dart';
 
 class Event extends StatelessWidget {
   final String avatar;
@@ -31,33 +32,33 @@ class Event extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          tweetAvatar(),
-          tweetBody(context),
+          eventAvatar(),
+          eventBody(context),
         ],
       ),
     );
   }
 
-  Widget tweetAvatar() {
+  Widget eventAvatar() {
     return Container(
       margin: const EdgeInsets.all(10.0),
     );
   }
 
-  Widget tweetBody(BuildContext context) {
+  Widget eventBody(BuildContext context) {
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          tweetHeader(context),
-          tweetText(),
-          tweetButtons(),
+          eventHeader(context),
+          eventText(),
+          eventButtons(),
         ],
       ),
     );
   }
 
-  Widget tweetHeader(BuildContext context) {
+  Widget eventHeader(BuildContext context) {
     return Row(
       children: [
         Container(
@@ -92,8 +93,9 @@ class Event extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => tweetdetails(
+                builder: (context) => eventdetails(
                   title: title,
+                  time: time,
                   description: description,
                   replies: ["Reply 1", "Reply 2", "Reply 3"],
                 ),
@@ -112,27 +114,28 @@ class Event extends StatelessWidget {
     );
   }
 
-  Widget tweetText() {
+  Widget eventText() {
     return Text(
       title,
       overflow: TextOverflow.clip,
     );
   }
 
-  Widget tweetButtons() {
+  Widget eventButtons() {
     return Container(
       margin: const EdgeInsets.only(top: 10.0, right: 20.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          tweetIconButton1(FontAwesomeIcons.comment, this.comments),
-          tweetIconButton2(FontAwesomeIcons.heart, this.upvotes),
+          eventIconButton1(FontAwesomeIcons.comment, this.comments),
+          eventIconButton2(FontAwesomeIcons.heart, this.upvotes),
+          eventIconButton3(FontAwesomeIcons.calendarCheck, "RSVP")
         ],
       ),
     );
   }
 
-  Widget tweetIconButton1(IconData icon, String text) {
+  Widget eventIconButton1(IconData icon, String text) {
     return Row(
       children: [
         IconButton(
@@ -157,7 +160,7 @@ class Event extends StatelessWidget {
     );
   }
 
-  Widget tweetIconButton2(IconData icon, String text) {
+  Widget eventIconButton2(IconData icon, String text) {
     return Row(
       children: [
         IconButton(
@@ -168,6 +171,31 @@ class Event extends StatelessWidget {
             icon = FontAwesomeIcons.solidHeart;
           },
           icon: Icon(icon),
+          iconSize: 16.0,
+          color: Colors.black45,
+        ),
+        Container(
+          margin: const EdgeInsets.all(6.0),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.black45,
+              fontSize: 14.0,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget eventIconButton3(IconData icon, String text) {
+    return Row(
+      children: [
+        IconButton(
+          icon: const Icon(FontAwesomeIcons.calendarCheck),
+          onPressed: () {
+            print("Pressed RSVP");
+          },
           iconSize: 16.0,
           color: Colors.black45,
         ),

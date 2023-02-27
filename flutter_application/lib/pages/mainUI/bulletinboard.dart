@@ -1,10 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_login_ui/models/events.dart';
-import 'package:flutter_login_ui/services/auth.dart';
-import 'package:flutter_login_ui/services/database.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../models/events.dart';
 
 class BulletinBoardP extends StatelessWidget {
   @override
@@ -31,21 +27,7 @@ class BulletinBoardPage extends StatefulWidget {
 class _BulletinBoardState extends State<BulletinBoardPage> {
   final myController = TextEditingController();
   final myController2 = TextEditingController();
-  Future<List<dynamic>> _eventsFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _eventsFuture = getAllEvents();
-  }
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    myController.dispose();
-    myController2.dispose();
-    super.dispose();
-  }
+  final myController3 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -66,25 +48,8 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () {
-              setState(() {
-                _eventsFuture = getAllEvents();
-              });
-            },
-          ),
-        ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          setState(() {
-            _eventsFuture = getAllEvents();
-          });
-        },
-        child: eventList(),
-      ), //eventList(),
+      body: listOfEvents(),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 40.0),
         child: FloatingActionButton(
@@ -107,14 +72,25 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                         decoration: const InputDecoration(
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color: Colors.grey, width: 2.0),
+                                  color: Colors.black45, width: 3.0),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color: Colors.grey, width: 2.0),
+                                  color: Colors.black45, width: 2.0),
+                            ),
+                            hintStyle: TextStyle(fontSize: 20),
+                            hintText: "Enter your event title here"),
+                      ),
+                      TextField(
+                        controller: myController3,
+                        autofocus: true,
+                        decoration: const InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Colors.grey, width: 1.0),
                             ),
                             hintStyle: TextStyle(fontSize: 15),
-                            hintText: "Enter your Event title here"),
+                            hintText: "When is the event"),
                       ),
                       TextField(
                         controller: myController2,
@@ -122,7 +98,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                         decoration: const InputDecoration(
                             hintStyle: TextStyle(fontSize: 15),
                             hintText:
-                            "Enter your Event description here"),
+                            "Enter your event description here"),
                         keyboardType: TextInputType.multiline,
                         minLines: null,
                         maxLines: null,
@@ -137,16 +113,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                         }),
                     TextButton(
                       child: Text("CREATE"),
-                      onPressed: () async {
-                        var user = await DatabaseService()
-                            .getUser(UserAuth.auth.currentUser.uid);
-
-                        var pet = await DatabaseService().addEvent(
-                            user['username'],
-                            myController.text,
-                            myController2.text);
-                        Navigator.pop(context);
-                      },
+                      onPressed: () async {},
                     )
                   ],
                 ));
@@ -156,35 +123,25 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
     );
   }
 
-  Widget eventList() {
-    Future load() async {
-      var myFuture = await getAllEvents() as List;
-      return myFuture;
-    }
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    myController2.dispose();
+    myController3.dispose();
+    super.dispose();
+  }
 
-    return FutureBuilder(
-      future: getAllEvents(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          List<dynamic> events = snapshot.data;
-          return Container(
-            color: Colors.white,
-            child: ListView.separated(
-              itemBuilder: (BuildContext context, int index) {
-                return events[index];
-              },
-              separatorBuilder: (BuildContext context, int index) => Divider(
-                height: 0,
-              ),
-              itemCount: events.length,
-            ),
-          );
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error fetching events'));
-        } else {
-          return Center(child: CircularProgressIndicator());
-        }
-      },
+  Widget listOfEvents() {
+    return Container(
+      color: Colors.white,
+      child: ListView.separated(
+        itemBuilder: (BuildContext context, int index) {
+          return events[index];
+        },
+        separatorBuilder: (BuildContext context, int index) => Divider(
+          height: 0,
+        ), itemCount: events.length,
+      ),
     );
   }
 }
