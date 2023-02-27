@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/pages/mainUI/bulletinboard.dart';
 import 'package:pandabar/pandabar.dart';
 
 import '../authentication/login.dart';
-import '../mainUI/events.dart';
 import '../mainUI/homepage.dart';
 import '../mainUI/petitionpage.dart';
 import '../mainUI/resourcepage.dart';
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _children = [
     TP(),
     PetitionP(),
-    EventsP(),
+    BulletinBoardP(),
     ResourceP(),
     //TP()
   ];

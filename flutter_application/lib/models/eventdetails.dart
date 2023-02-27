@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
 
-class tweetdetails extends StatefulWidget {
+class eventdetails extends StatefulWidget {
   final String title;
   final String description;
+  final String time;
   final List<String> replies;
 
-  tweetdetails({
+  eventdetails({
     Key key,
     @required this.title,
     @required this.description,
     @required this.replies,
+    @required this.time,
   }) : super(key: key);
 
   @override
-  _TweetDetailsPageState createState() => _TweetDetailsPageState();
+  _EventDetailsPageState createState() => _EventDetailsPageState();
 }
 
-class _TweetDetailsPageState extends State<tweetdetails> {
+class _EventDetailsPageState extends State<eventdetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Petition",
+          "Events",
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
