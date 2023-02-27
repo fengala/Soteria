@@ -113,9 +113,9 @@ class _LoginPageState extends State<LoginPage> {
                   user_detail['password'],
                   user_detail['emergency_contacts'],
                   user_detail['phone_number']);
-
+                  print(userAuth.user1);
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => HomeP()));
+                  context, MaterialPageRoute(builder: (context) => HomeP(myUser: userAuth.user1, userAuth: userAuth,)));
 
               print(user_detail['username']);
               print(user_detail);
