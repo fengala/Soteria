@@ -86,7 +86,7 @@ class _PetitionPageState extends State<PetitionPage> {
         child: petitionList(),
       ), //petitionList(),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 80.0),
+        padding: const EdgeInsets.only(bottom: 40.0),
         child: FloatingActionButton(
           child: Icon(
             FontAwesomeIcons.pen,
@@ -170,6 +170,7 @@ class _PetitionPageState extends State<PetitionPage> {
           return Container(
             color: Colors.white,
             child: ListView.separated(
+              padding: const EdgeInsets.only(bottom: 80.0),
               itemBuilder: (BuildContext context, int index) {
                 return petitions[index];
               },
