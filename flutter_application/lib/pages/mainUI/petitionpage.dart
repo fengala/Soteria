@@ -170,7 +170,7 @@ class _PetitionPageState extends State<PetitionPage> {
           return Container(
             color: Colors.white,
             child: ListView.separated(
-              padding: const EdgeInsets.only(bottom: 120.0),
+              padding: const EdgeInsets.only(bottom: 150.0),
               itemBuilder: (BuildContext context, int index) {
                 return petitions[index];
               },
