@@ -57,7 +57,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       extendBody: true,
       body: _children[page],
-      bottomNavigationBar: PandaBar(
+      bottomNavigationBar:
+      PandaBar(
         buttonData: [
           PandaBarButtonData(
             id: 0,

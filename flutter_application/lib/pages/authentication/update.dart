@@ -8,6 +8,8 @@ import 'login.dart';
 import '../mainUI/homepage.dart';
 import '../../models/user.dart';
 import '../../services/auth.dart';
+import '../mainUI/homepage.dart';
+import '../navigation/startpoint.dart';
 
 class UpdatePage extends StatefulWidget {
   var myUser;
@@ -384,27 +386,26 @@ class _UpdatePageState extends State<UpdatePage> {
                     ),
                     child: Text(x.code))));
           }
-          showDialog(context: context, builder: (context) => AlertDialog(
-              title: Text("Success!"),
-              content: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Icon(Icons.check),
-                    DefaultTextStyle(
-                        style: style,
-                        child: Text(
-                          "Successfully updated account details!",
-                          textAlign: TextAlign.center,
-                          style:
-                          style.copyWith(color: Colors.green,),
-                        )),
-                  ])));
           if (prompt){
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => TPage(myUser: this.myUser, userAuth: this.userAuth,)));
+            showDialog(context: context, builder: (context) => AlertDialog(
+                title: Text("Success!"),
+                content: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Icon(Icons.check),
+                      DefaultTextStyle(
+                          style: style,
+                          child: Text(
+                            "Successfully updated account details!",
+                            textAlign: TextAlign.center,
+                            style:
+                            style.copyWith(color: Colors.green,),
+                          )),
+                    ])));
           }
-
         },
         child: Text("Update Account",
             textAlign: TextAlign.right,
@@ -419,8 +420,11 @@ class _UpdatePageState extends State<UpdatePage> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
-        onPressed: () {},
-        child: Text("Back to Login",
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HomeP(myUser: userAuth.user1, userAuth: userAuth,)));
+        },
+        child: Text("Back to Homepage",
             textAlign: TextAlign.right,
             style: style.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),

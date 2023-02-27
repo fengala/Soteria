@@ -177,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     return Scaffold(
-      body: SingleChildScrollView(
+      body: Center( child: SingleChildScrollView(
         child: Container(
           color: Colors.white,
           child: Padding(
@@ -216,6 +216,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ),
+      ),
       ),
     );
   }
