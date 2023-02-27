@@ -5,11 +5,15 @@ import 'package:flutter_login_ui/services/database.dart';
 //import 'package:flutter/services.dart';
 import '../../services/auth.dart';
 import 'login.dart';
+import '../mainUI/homepage.dart';
 import '../../models/user.dart';
+import '../../services/auth.dart';
 
 class UpdatePage extends StatefulWidget {
   var myUser;
-  UpdatePage({Key key, this.title, this.myUser}) : super(key: key);
+  var userAuth;
+  UpdatePage({Key key, this.title, this.myUser, this.userAuth}) : super(key: key);
+
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -20,7 +24,7 @@ class UpdatePage extends StatefulWidget {
   // always marked "final".
   final String title;
   @override
-  _UpdatePageState createState() => _UpdatePageState(myUser);
+  _UpdatePageState createState() => _UpdatePageState(myUser, userAuth);
 }
 
 //TO-DO:
@@ -29,6 +33,7 @@ class UpdatePage extends StatefulWidget {
 //User phone number
 class _UpdatePageState extends State<UpdatePage> {
   UserModel myUser;
+  UserAuth userAuth;
   String name = "";
   String last_name = "";
   String username = "";
@@ -38,7 +43,8 @@ class _UpdatePageState extends State<UpdatePage> {
   String emergency_contact1 = "";
   String emergency_contact2 = "";
   String emergency_contact3 = "";
-  _UpdatePageState(this.myUser) {
+  _UpdatePageState(this.myUser, this.userAuth) {
+
     name = myUser.name.split(" ")[0];
     last_name = myUser.name.split(" ")[1];
     username = myUser.username;
@@ -308,6 +314,8 @@ class _UpdatePageState extends State<UpdatePage> {
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     child: Text("Passwords don't match"))));
+          } else {
+            userAuth.resetPassword(password);
           }
 
           try {
@@ -373,6 +381,24 @@ class _UpdatePageState extends State<UpdatePage> {
                     ),
                     child: Text(x.code))));
           }
+          showDialog(context: context, builder: (context) => AlertDialog(
+              title: Text("Success!"),
+              content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Icon(Icons.check),
+                    DefaultTextStyle(
+                        style: style,
+                        child: Text(
+                          "Successfully updated account details!",
+                          textAlign: TextAlign.center,
+                          style:
+                          style.copyWith(color: Colors.green,),
+                        )),
+                  ])));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => TPage()));
         },
         child: Text("Update  Account",
             textAlign: TextAlign.right,
