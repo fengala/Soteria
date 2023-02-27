@@ -1,0 +1,38 @@
+import 'dart:convert';
+
+import 'package:flutter_login_ui/models/event.dart';
+import 'package:flutter_login_ui/services/database.dart';
+
+var events = getAllEvents();
+
+Future<List<Event>> getAllEvents() async {
+  List<Object> list =
+  await DatabaseService().getEvents() as List<Object>;
+  var length = list.length;
+  List<Event> events = [];
+
+  for (var i = 0; i < length; i++) {
+    String jsonString = jsonEncode(list[i]);
+    Map<String, dynamic> jsonMap = jsonDecode(jsonString);
+    String name = jsonMap['username'];
+    String title = jsonMap['tile'];
+    String desc = jsonMap['description'];
+    int upvotes = jsonMap['num_upvotes'];
+    int comments = jsonMap['num_comments'];
+    String time = jsonMap['time'];
+    String id = jsonMap['id'];
+    events.add(Event(
+      avatar:
+      'https://pbs.twimg.com/profile_images/1187814172307800064/MhnwJbxw_400x400.jpg',
+      name: name,
+      title: title,
+      comments: comments.toString(),
+      upvotes: upvotes.toString(),
+      time: time,
+      id: id,
+      description: desc,
+    ));
+    // print("Here!");
+  }
+  return events;
+}
