@@ -436,7 +436,7 @@ class _UpdatePageState extends State<UpdatePage> {
         child: Container(
           color: Colors.white,
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 60.0),
+            padding: const EdgeInsets.only(left: 36, right: 36, top: 36, bottom: 80.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
