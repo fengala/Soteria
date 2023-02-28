@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/models/replies.dart';
+import 'package:flutter_login_ui/models/reply.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../services/auth.dart';
@@ -65,60 +67,56 @@ class Event extends StatelessWidget {
     );
   }
 
+
   Widget eventHeader(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          margin: const EdgeInsets.only(right: 5.0),
-          //child: Text(
-          //this.username,
-          //style: TextStyle(
-          //color: Colors.black,
-          //fontWeight: FontWeight.bold,
-          //),
-          //),
-        ),
-        Text(
-          '@$name · $time',
-          style: TextStyle(
-            color: Colors.grey,
-          ),
-        ),
-        Spacer(),
-        // IconButton(
-        //   icon: Icon(
-        //     FontAwesomeIcons.plus,
-        //     size: 14.0,
-        //     color: Colors.grey,
-        //   ),
-        //   onPressed: () {
-        //     print('Pressed ID: $id');
-        //   },
-        // ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => eventdetails(
-                  title: title,
-                  time: time,
-                  when: when,
-                  description: description,
-                  replies: ["Reply 1", "Reply 2", "Reply 3"],
+    return FutureBuilder<List<Reply>>(
+      future: getAllRepliesEve(id),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text('Error loading replies');
+        } else if (!snapshot.hasData) {
+          return Text('Loading...');
+        } else {
+          List<Reply> replies = snapshot.data;
+          return Row(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(right: 5.0),
+              ),
+              Text(
+                '@$name · $time',
+                style: TextStyle(
+                  color: Colors.grey,
                 ),
               ),
-            );
-          },
-          child: IconButton(
-            icon: Icon(
-              FontAwesomeIcons.plus,
-              size: 14.0,
-              color: Colors.grey,
-            ),
-          ),
-        ),
-      ],
+              Spacer(),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => eventdetails(
+                        title: title,
+                        description: description,
+                        when: when,
+                        eid: id,
+                        replies: replies,
+                      ),
+                    ),
+                  );
+                },
+                child: IconButton(
+                  icon: Icon(
+                    FontAwesomeIcons.plus,
+                    size: 14.0,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
+      },
     );
   }
 
@@ -234,7 +232,6 @@ class Event extends StatelessWidget {
     );
   }
 
-
   Widget eventIconButton3(IconData icon, String text) {
     return Row(
       children: [
@@ -295,7 +292,5 @@ class Event extends StatelessWidget {
       ],
     );
   }
-
-
 
 }

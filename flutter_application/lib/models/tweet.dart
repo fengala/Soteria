@@ -71,7 +71,7 @@ class Tweet extends StatelessWidget {
 
   Widget tweetHeader(BuildContext context) {
     return FutureBuilder<List<Reply>>(
-      future: getAllReplies(id),
+      future: getAllRepliesPet(id),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text('Error loading replies');

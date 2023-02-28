@@ -124,11 +124,10 @@ class DatabaseService {
   // changed addPetition and made reply to petition
 
 
-  Future getReplies(String pid) async {
+  Future getRepliesPet(String pid) async {
     final value = await petRef.doc(pid).get();
     // final Data = querySnapshot.docs.map((doc) => doc.data()).toList();
     final data = value.data() as Map<String, dynamic>;
-    print(data['replies']);
     return data['replies'];
   }
 
@@ -224,6 +223,32 @@ class DatabaseService {
       return true;
     }
     return false;
+  }
+
+  Future addReplyToAEvent(String eid, String username, String reply) async {
+    final eve = await getEve(eid);
+    final list = List<Map>.from(eve['replies']);
+    Map map = {
+      'username': username,
+      'replyText': reply,
+      'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
+    };
+    list.add(map);
+    await eveRef.doc(eid).update({'replies': list});
+  }
+  // changed addPetition and made reply to petition
+
+
+  Future getRepliesEve(String eid) async {
+    final value = await eveRef.doc(eid).get();
+    final data = value.data() as Map<String, dynamic>;
+    return data['replies'];
+  }
+
+  Future getEve(String eid) async {
+    final value = await eveRef.doc(eid).get();
+    final data = value.data() as Map<String, dynamic>;
+    return data;
   }
 
 

@@ -51,7 +51,6 @@ Future<List<Event>> getAllEvents() async {
   return eves;
 }
 
-
 // var events = [
 //   Event(
 //     name: 'kgovil',
