@@ -73,7 +73,6 @@ Future<List<Event>> getAllEvents() async {
 
   for (var i = 0; i < length; i++) {
     String jsonString = jsonEncode(events[i]);
-    print(jsonString);
     Map<String, dynamic> jsonMap = jsonDecode(jsonString);
     String name = jsonMap['username'];
     String title = jsonMap['title'];
@@ -82,6 +81,7 @@ Future<List<Event>> getAllEvents() async {
     int comments = jsonMap['num_comments'];
     String time = jsonMap['time'];
     String id = jsonMap['id'];
+    String when = jsonMap['when'];
     int shape = 0;
     eves.add(Event(
         name: name,
@@ -90,8 +90,8 @@ Future<List<Event>> getAllEvents() async {
         upvotes: upvotes.toString(),
         time: time,
         id: id,
+        when: when,
         description: desc));
   }
-
   return eves;
 }

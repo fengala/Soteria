@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../models/events.dart';
+import '../../services/auth.dart';
+import '../../services/database.dart';
 
 class BulletinBoardP extends StatelessWidget {
   @override
@@ -152,7 +154,15 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                         }),
                     TextButton(
                       child: Text("CREATE"),
-                      onPressed: () async {},
+                      onPressed: () async {
+                        var user = await DatabaseService()
+                            .getUser(UserAuth.auth.currentUser.uid);
+
+                        var eve = await DatabaseService().addEvent(
+                            user['username'],
+                            myController.text, myController2.text, myController3.text);
+                        Navigator.pop(context);
+                      },
                     )
                   ],
                 ));

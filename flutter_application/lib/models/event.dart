@@ -11,6 +11,7 @@ class Event extends StatelessWidget {
   final String time;
   final String id;
   final String description;
+  final String when;
 
   Event(
       {Key key,
@@ -20,6 +21,7 @@ class Event extends StatelessWidget {
         @required this.upvotes,
         @required this.time,
         @required this.description,
+        @required this.when,
         @required this.id,})
       : super(key: key);
 

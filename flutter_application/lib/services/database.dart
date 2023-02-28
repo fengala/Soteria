@@ -162,18 +162,19 @@ class DatabaseService {
    * EVENTS
    */
 
-  // Future addEvent(String username, String title, String descprition) async {
-  //   List<String> replies;
-  //   return await FirebaseFirestore.instance.collection("Event").doc().set({
-  //     'username': username,
-  //     'tile': title,
-  //     'description': descprition,
-  //     'num_upvotes': 0,
-  //     'num_comments': 0,
-  //     'replies': replies,
-  //     'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
-  //   });
-  // }
+  Future addEvent(String username, String title, String when, String desc) async {
+    List<String> replies;
+    return await FirebaseFirestore.instance.collection("Event").doc().set({
+      'username': username,
+      'title': title,
+      'description': desc,
+      'when': when,
+      'num_upvotes': 0,
+      'num_comments': 0,
+      'replies': replies,
+      'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
+    });
+  }
 
   Future getEvents() async {
     QuerySnapshot querySnapshot = await eveRef.get();
