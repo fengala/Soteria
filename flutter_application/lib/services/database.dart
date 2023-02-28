@@ -162,7 +162,7 @@ class DatabaseService {
    * EVENTS
    */
 
-  Future addEvent(String username, String title, String when, String desc) async {
+  Future addEvent(String username, String title, String desc, String when) async {
     List<String> replies;
     return await FirebaseFirestore.instance.collection("Event").doc().set({
       'username': username,

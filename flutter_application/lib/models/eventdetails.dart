@@ -4,6 +4,7 @@ class eventdetails extends StatefulWidget {
   final String title;
   final String description;
   final String time;
+  final String when;
   final List<String> replies;
 
   eventdetails({
@@ -12,6 +13,7 @@ class eventdetails extends StatefulWidget {
     @required this.description,
     @required this.replies,
     @required this.time,
+    @required this.when,
   }) : super(key: key);
 
   @override
@@ -47,6 +49,13 @@ class _EventDetailsPageState extends State<eventdetails> {
                     style: TextStyle(
                       fontSize: 24.0,
                       fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    widget.when,
+                    style: TextStyle(
+                      fontSize: 21.0,
+                      fontWeight: FontWeight.w200,
                     ),
                   ),
                   SizedBox(height: 16.0),

@@ -38,7 +38,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
     super.initState();
     _BulletinFuture = getAllEvents();
   }
-  void initPetitionsFuture() {
+  void initBulletinFuture() {
     setState(() {
       _BulletinFuture = getAllEvents();
     });
@@ -61,9 +61,6 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
         backgroundColor: Colors.amber,
         leading: Container(
           margin: const EdgeInsets.all(10.0),
-          //child: CircleAvatar(
-          //backgroundImage: AssetImage('nanou.jpeg'),
-          //  ),
         ),
         title: Text(
           'Bulletin Board',
@@ -90,7 +87,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
           });
         },
         child: eventList(),
-      ), //petitionList(),
+      ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 40.0),
         child: FloatingActionButton(
@@ -196,18 +193,18 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
       future: getAllEvents(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          List<dynamic> petitions = snapshot.data;
+          List<dynamic> events = snapshot.data;
           return Container(
             color: Colors.white,
             child: ListView.separated(
               padding: const EdgeInsets.only(bottom: 150.0),
               itemBuilder: (BuildContext context, int index) {
-                return petitions[index];
+                return events[index];
               },
               separatorBuilder: (BuildContext context, int index) => Divider(
                 height: 0,
               ),
-              itemCount: petitions.length,
+              itemCount: events.length,
             ),
           );
         } else if (snapshot.hasError) {

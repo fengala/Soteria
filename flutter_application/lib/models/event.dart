@@ -96,6 +96,7 @@ class Event extends StatelessWidget {
                 builder: (context) => eventdetails(
                   title: title,
                   time: time,
+                  when: when,
                   description: description,
                   replies: ["Reply 1", "Reply 2", "Reply 3"],
                 ),
