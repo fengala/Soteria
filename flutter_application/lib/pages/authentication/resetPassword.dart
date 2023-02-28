@@ -220,7 +220,7 @@ class _resetPageState extends State<resetPage> {
     );
 
     return Scaffold(
-      body: SingleChildScrollView(
+      body: Center( child:SingleChildScrollView(
         child: Container(
           color: Colors.white,
           child: Padding(
@@ -256,6 +256,7 @@ class _resetPageState extends State<resetPage> {
           ),
         ),
       ),
+    ),
     );
   }
 }
