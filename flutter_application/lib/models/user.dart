@@ -12,6 +12,8 @@ class UserModel {
   String username;
 
   List upvotedPetitions;
+  List upvotedEvents;
+  List RSVPEvents;
 
   UserModel(uid, name, username, password, emergency_contacts, phone_number) {
     this.uid = uid;
@@ -21,5 +23,7 @@ class UserModel {
     this.emergency_contacts = emergency_contacts;
     this.phone_number = phone_number;
     this.upvotedPetitions = [];
+    this.upvotedEvents = [];
+    this.RSVPEvents = [];
   }
 }

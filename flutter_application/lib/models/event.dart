@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/models/replies.dart';
+import 'package:flutter_login_ui/models/reply.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../services/auth.dart';
+import '../services/database.dart';
 import 'eventdetails.dart';
 
 class Event extends StatelessWidget {
-  final String avatar;
   final String name;
   final String title;
   String comments;
@@ -12,17 +15,23 @@ class Event extends StatelessWidget {
   final String time;
   final String id;
   final String description;
+  final String when;
+
+  final int hasupvote;
+  final int hasRSVP;
 
   Event(
       {Key key,
         @required this.name,
         @required this.title,
         @required this.comments,
-        @required this.time,
         @required this.upvotes,
-        @required this.id,
+        @required this.time,
         @required this.description,
-        @required this.avatar})
+        @required this.when,
+        @required this.id,
+        @required this.hasupvote,
+        @required this.hasRSVP})
       : super(key: key);
 
   @override
@@ -58,59 +67,56 @@ class Event extends StatelessWidget {
     );
   }
 
+
   Widget eventHeader(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          margin: const EdgeInsets.only(right: 5.0),
-          //child: Text(
-          //this.username,
-          //style: TextStyle(
-          //color: Colors.black,
-          //fontWeight: FontWeight.bold,
-          //),
-          //),
-        ),
-        Text(
-          '@$name · $time',
-          style: TextStyle(
-            color: Colors.grey,
-          ),
-        ),
-        Spacer(),
-        // IconButton(
-        //   icon: Icon(
-        //     FontAwesomeIcons.plus,
-        //     size: 14.0,
-        //     color: Colors.grey,
-        //   ),
-        //   onPressed: () {
-        //     print('Pressed ID: $id');
-        //   },
-        // ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => eventdetails(
-                  title: title,
-                  time: time,
-                  description: description,
-                  replies: ["Reply 1", "Reply 2", "Reply 3"],
+    return FutureBuilder<List<Reply>>(
+      future: getAllRepliesEve(id),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text('Error loading replies');
+        } else if (!snapshot.hasData) {
+          return Text('Loading...');
+        } else {
+          List<Reply> replies = snapshot.data;
+          return Row(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(right: 5.0),
+              ),
+              Text(
+                '@$name · $time',
+                style: TextStyle(
+                  color: Colors.grey,
                 ),
               ),
-            );
-          },
-          child: IconButton(
-            icon: Icon(
-              FontAwesomeIcons.plus,
-              size: 14.0,
-              color: Colors.grey,
-            ),
-          ),
-        ),
-      ],
+              Spacer(),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => eventdetails(
+                        title: title,
+                        description: description,
+                        when: when,
+                        eid: id,
+                        replies: replies,
+                      ),
+                    ),
+                  );
+                },
+                child: IconButton(
+                  icon: Icon(
+                    FontAwesomeIcons.plus,
+                    size: 14.0,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
+      },
     );
   }
 
@@ -128,8 +134,12 @@ class Event extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           eventIconButton1(FontAwesomeIcons.comment, this.comments),
-          eventIconButton2(FontAwesomeIcons.heart, this.upvotes),
-          eventIconButton3(FontAwesomeIcons.calendarCheck, "RSVP")
+          this.hasupvote == 1
+              ? eventIconButton2_1(FontAwesomeIcons.heart, this.upvotes)
+              : eventIconButton2(FontAwesomeIcons.solidHeart, this.upvotes),
+          this.hasRSVP == 1
+              ? eventIconButton3_1(FontAwesomeIcons.calendarCheck, "RSVP")
+              : eventIconButton3(FontAwesomeIcons.solidCalendarCheck, "RSVP"),
         ],
       ),
     );
@@ -165,10 +175,44 @@ class Event extends StatelessWidget {
       children: [
         IconButton(
           onPressed: () {
+            print("Pressed Undo Upvote");
+            Future x = DatabaseService()
+                .userUpvoteCheckEve(id, UserAuth.auth.currentUser.uid, 1);
+            if (x == true) {
+              print(this.upvotes);
+              icon = FontAwesomeIcons.solidHeart;
+            }
+          },
+          icon: Icon(icon),
+          iconSize: 16.0,
+          color: Colors.amber,
+        ),
+        Container(
+          margin: const EdgeInsets.all(6.0),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.black45,
+              fontSize: 14.0,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget eventIconButton2_1(IconData icon, String text) {
+    return Row(
+      children: [
+        IconButton(
+          onPressed: () {
             print("Pressed Upvote");
-            this.upvotes = (int.parse(this.upvotes) + 1).toString();
-            print(this.upvotes);
-            icon = FontAwesomeIcons.solidHeart;
+            Future x = DatabaseService()
+                .userUpvoteCheckEve(id, UserAuth.auth.currentUser.uid, 1);
+            if (x == true) {
+              print(this.upvotes);
+              icon = FontAwesomeIcons.solidHeart;
+            }
           },
           icon: Icon(icon),
           iconSize: 16.0,
@@ -192,10 +236,46 @@ class Event extends StatelessWidget {
     return Row(
       children: [
         IconButton(
-          icon: const Icon(FontAwesomeIcons.calendarCheck),
           onPressed: () {
             print("Pressed RSVP");
+            Future x = DatabaseService()
+                .userRSVPCheckEve(id, UserAuth.auth.currentUser.uid);
+            if (x == true) {
+              icon = FontAwesomeIcons.calendarCheck;
+            }
           },
+          icon: Icon(icon),
+          iconSize: 16.0,
+          color: Colors.amber,
+        ),
+        Container(
+          margin: const EdgeInsets.all(6.0),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.black45,
+              fontSize: 14.0,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+
+  Widget eventIconButton3_1(IconData icon, String text) {
+    return Row(
+      children: [
+        IconButton(
+          onPressed: () {
+            print("Pressed RSVP 2");
+            Future x = DatabaseService()
+                .userRSVPCheckEve(id, UserAuth.auth.currentUser.uid);
+            if (x == true) {
+              icon = FontAwesomeIcons.solidCalendarCheck;
+            }
+          },
+          icon: Icon(icon),
           iconSize: 16.0,
           color: Colors.black45,
         ),
@@ -212,4 +292,5 @@ class Event extends StatelessWidget {
       ],
     );
   }
+
 }

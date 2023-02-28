@@ -70,7 +70,8 @@ class _HomePageState extends State<HomePage> {
           ),
           PandaBarButtonData(
             id: 1,
-            icon: Icons.edit_document,
+            icon: Icons.edit,
+            //was edit_document
             title: 'Petitions',
           ),
           PandaBarButtonData(

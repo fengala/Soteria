@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import '../../models/events.dart';
+import '../../services/auth.dart';
+import '../../services/database.dart';
 
 class BulletinBoardP extends StatelessWidget {
   @override
@@ -29,6 +32,27 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
   final myController2 = TextEditingController();
   final myController3 = TextEditingController();
 
+  Future<List<dynamic>> _BulletinFuture;
+  @override
+  void initState() {
+    super.initState();
+    _BulletinFuture = getAllEvents();
+  }
+  void initBulletinFuture() {
+    setState(() {
+      _BulletinFuture = getAllEvents();
+    });
+  }
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    myController2.dispose();
+    myController3.dispose();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,9 +61,6 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
         backgroundColor: Colors.amber,
         leading: Container(
           margin: const EdgeInsets.all(10.0),
-          //child: CircleAvatar(
-          //backgroundImage: AssetImage('nanou.jpeg'),
-          //  ),
         ),
         title: Text(
           'Bulletin Board',
@@ -48,8 +69,25 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              setState(() {
+                _BulletinFuture = getAllEvents();
+              });
+            },
+          ),
+        ],
       ),
-      body: listOfEvents(),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          setState(() {
+            _BulletinFuture = getAllEvents();
+          });
+        },
+        child: eventList(),
+      ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 40.0),
         child: FloatingActionButton(
@@ -113,7 +151,15 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                         }),
                     TextButton(
                       child: Text("CREATE"),
-                      onPressed: () async {},
+                      onPressed: () async {
+                        var user = await DatabaseService()
+                            .getUser(UserAuth.auth.currentUser.uid);
+
+                        var eve = await DatabaseService().addEvent(
+                            user['username'],
+                            myController.text, myController2.text, myController3.text);
+                        Navigator.pop(context);
+                      },
                     )
                   ],
                 ));
@@ -123,25 +169,54 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
     );
   }
 
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    myController.dispose();
-    myController2.dispose();
-    myController3.dispose();
-    super.dispose();
-  }
+  // Widget listOfEvents() {
+  //   return Container(
+  //     color: Colors.white,
+  //     child: ListView.separated(
+  //       itemBuilder: (BuildContext context, int index) {
+  //         return events[index];
+  //       },
+  //       separatorBuilder: (BuildContext context, int index) => Divider(
+  //         height: 0,
+  //       ), itemCount: events.length,
+  //     ),
+  //   );
+  // }
 
-  Widget listOfEvents() {
-    return Container(
-      color: Colors.white,
-      child: ListView.separated(
-        itemBuilder: (BuildContext context, int index) {
-          return events[index];
-        },
-        separatorBuilder: (BuildContext context, int index) => Divider(
-          height: 0,
-        ), itemCount: events.length,
-      ),
+  Widget eventList() {
+    Future load() async {
+      var myFuture = await getAllEvents() as List;
+      return myFuture;
+    }
+
+    return FutureBuilder(
+      future: getAllEvents(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<dynamic> events = snapshot.data;
+          return Container(
+            color: Colors.white,
+            child: ListView.separated(
+              padding: const EdgeInsets.only(bottom: 150.0),
+              itemBuilder: (BuildContext context, int index) {
+                return events[index];
+              },
+              separatorBuilder: (BuildContext context, int index) => Divider(
+                height: 0,
+              ),
+              itemCount: events.length,
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error fetching events'));
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
+
+
+
+
 }

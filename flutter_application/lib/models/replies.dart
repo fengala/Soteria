@@ -13,9 +13,9 @@ import 'reply.dart';
 
 //var replies = getAllReplies();
 
-Future<List<Reply>> getAllReplies(String pid) async {
+Future<List<Reply>> getAllRepliesPet(String pid) async {
   List<Object> petitions =
-      await DatabaseService().getReplies(pid) as List<Object>;
+      await DatabaseService().getRepliesPet(pid) as List<Object>;
   var length = petitions.length;
   List<Reply> tweeds = [];
 
@@ -34,4 +34,29 @@ Future<List<Reply>> getAllReplies(String pid) async {
   }
 
   return tweeds;
+}
+
+
+
+Future<List<Reply>> getAllRepliesEve(String eid) async {
+  List<Object> events =
+  await DatabaseService().getRepliesEve(eid) as List<Object>;
+  var length = events.length;
+  List<Reply> eve = [];
+
+  for (var i = 0; i < length; i++) {
+    String jsonString = jsonEncode(events[i]);
+    Map<String, dynamic> jsonMap = jsonDecode(jsonString);
+    String username = jsonMap['username'];
+    String replyText = jsonMap['replyText'];
+    String time = jsonMap['time'];
+
+    eve.add(Reply(
+      username: username,
+      replyText: replyText,
+      time: time,
+    ));
+  }
+
+  return eve;
 }

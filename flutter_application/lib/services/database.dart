@@ -54,46 +54,6 @@ class DatabaseService {
     return data;
   }
 
-  Future<bool> userUpvoteCheck(String pid, String uid, int change) async {
-    // Map person = getUser(uid) as Map;
-    final data = await getUser(uid);
-    // final upvotedPetitions = List<String>.from(userData['upvotedPetitions']);
-    final list = List<String>.from(data['upvotedPetitions']);
-    if (!list.contains(pid)) {
-      // print("Doesnt't contain");
-      if (change == 1) {
-        // print(list);
-        list.add(pid);
-        await userRef.doc(uid).update({'upvotedPetitions': list});
-        await petRef.doc(pid).update({'num_upvotes': FieldValue.increment(1)});
-      }
-      return true;
-    }
-    //print(list);
-    if (change == 1) {
-      list.remove(pid);
-      await userRef.doc(uid).update({'upvotedPetitions': list});
-      await petRef.doc(pid).update({'num_upvotes': FieldValue.increment(-1)});
-    }
-    // print("Contains");
-    return false;
-    // print(uid);
-    // print(list);
-    // print(data['username']);
-    // print(pid);
-    // return true;
-  }
-
-  Future<int> upvoteCountCheck(String pid) async {
-    // await petRef.doc(pid).update({'num_upvotes': FieldValue.increment(1)});
-    // await petRef.doc(pid).get({'num_upvotes'});
-    // print("Contains");
-    DocumentSnapshot snapshot = await petRef.doc(pid).get();
-    Map<String, dynamic> data = snapshot.data();
-    int numUpvotes = data['num_upvotes'];
-    return numUpvotes;
-  }
-
   Stream<QuerySnapshot> get User {
     return userRef.snapshots();
   }
@@ -150,16 +110,65 @@ class DatabaseService {
     return data;
   }
 
+  Future addReplyToAPetition(String pid, String username, String reply) async {
+    final pet = await getPet(pid);
+    final list = List<Map>.from(pet['replies']);
+    Map map = {
+      'username': username,
+      'replyText': reply,
+      'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
+    };
+    list.add(map);
+    await petRef.doc(pid).update({'replies': list});
+  }
+  // changed addPetition and made reply to petition
+
+
+  Future getRepliesPet(String pid) async {
+    final value = await petRef.doc(pid).get();
+    // final Data = querySnapshot.docs.map((doc) => doc.data()).toList();
+    final data = value.data() as Map<String, dynamic>;
+    return data['replies'];
+  }
+
+  Future<bool> userUpvoteCheckPet(String pid, String uid, int change) async {
+    final data = await getUser(uid);
+    final list = List<String>.from(data['upvotedPetitions']);
+    if (!list.contains(pid)) {
+      if (change == 1) {
+        list.add(pid);
+        await userRef.doc(uid).update({'upvotedPetitions': list});
+        await petRef.doc(pid).update({'num_upvotes': FieldValue.increment(1)});
+      }
+      return true;
+    }
+    if (change == 1) {
+      list.remove(pid);
+      await userRef.doc(uid).update({'upvotedPetitions': list});
+      await petRef.doc(pid).update({'num_upvotes': FieldValue.increment(-1)});
+    }
+    return false;
+  }
+
+  Future<int> upvoteCountCheckPet(String pid) async {
+    DocumentSnapshot snapshot = await petRef.doc(pid).get();
+    Map<String, dynamic> data = snapshot.data();
+    int numUpvotes = data['num_upvotes'];
+    return numUpvotes;
+  }
+
+
   /**
    * EVENTS
    */
 
-  Future addEvent(String username, String title, String descprition) async {
+  Future addEvent(String username, String title, String desc, String when) async {
     List<String> replies;
     return await FirebaseFirestore.instance.collection("Event").doc().set({
       'username': username,
-      'tile': title,
-      'description': descprition,
+      'title': title,
+      'description': desc,
+      'when': when,
       'num_upvotes': 0,
       'num_comments': 0,
       'replies': replies,
@@ -177,31 +186,70 @@ class DatabaseService {
     return Data;
   }
 
-  Future getEvent(String eid) async {
-    final value = await eveRef.doc(eid).get();
-    final data = value.data() as Map<String, dynamic>;
-    return data;
+
+  Future<bool> userUpvoteCheckEve(String eid, String uid, int change) async {
+    final data = await getUser(uid);
+    final list = List<String>.from(data['upvotedEvents']);
+    if (!list.contains(eid)) {
+      if (change == 1) {
+        list.add(eid);
+        await userRef.doc(uid).update({'upvotedEvents': list});
+        await eveRef.doc(eid).update({'num_upvotes': FieldValue.increment(1)});
+      }
+      return true;
+    }
+    if (change == 1) {
+      list.remove(eid);
+      await userRef.doc(uid).update({'upvotedEvents': list});
+      await eveRef.doc(eid).update({'num_upvotes': FieldValue.increment(-1)});
+    }
+    return false;
   }
 
-  Future addReplyToAPetition(String pid, String username, String reply) async {
-    final pet = await getPet(pid);
-    final list = List<Map>.from(pet['replies']);
+  Future<int> upvoteCountCheckEve(String eid) async {
+    DocumentSnapshot snapshot = await eveRef.doc(eid).get();
+    Map<String, dynamic> data = snapshot.data();
+    int numUpvotes = data['num_upvotes'];
+    return numUpvotes;
+  }
+
+  Future<bool> userRSVPCheckEve(String eid, String uid) async {
+    final data = await getUser(uid);
+    final list = List<String>.from(data['RSVPEvents']);
+    if (!list.contains(eid)) {
+      list.add(eid);
+      await userRef.doc(uid).update({'RSVPEvents': list});
+      await eveRef.doc(eid).update({'num_rsvp': FieldValue.increment(1)});
+      return true;
+    }
+    return false;
+  }
+
+  Future addReplyToAEvent(String eid, String username, String reply) async {
+    final eve = await getEve(eid);
+    final list = List<Map>.from(eve['replies']);
     Map map = {
       'username': username,
       'replyText': reply,
       'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
     };
     list.add(map);
-    await petRef.doc(pid).update({'replies': list});
+    await eveRef.doc(eid).update({'replies': list});
   }
-
   // changed addPetition and made reply to petition
 
-  Future getReplies(String pid) async {
-    final value = await petRef.doc(pid).get();
-    // final Dataa = querySnapshot.docs.map((doc) => doc.data()).toList();
+
+  Future getRepliesEve(String eid) async {
+    final value = await eveRef.doc(eid).get();
     final data = value.data() as Map<String, dynamic>;
-    print(data['replies']);
     return data['replies'];
   }
+
+  Future getEve(String eid) async {
+    final value = await eveRef.doc(eid).get();
+    final data = value.data() as Map<String, dynamic>;
+    return data;
+  }
+
+
 }
