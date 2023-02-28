@@ -1,39 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login_ui/models/replies.dart';
-import 'package:flutter_login_ui/models/tweetdetails.dart';
-import 'package:flutter_login_ui/pages/mainUI/petitionpage.dart';
-import 'package:flutter_login_ui/services/auth.dart';
+import 'package:flutter_login_ui/models/replydetails.dart';
 import 'package:flutter_login_ui/services/database.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'reply.dart';
-
-class Tweet extends StatelessWidget {
-  final String avatar;
+class Reply extends StatelessWidget {
+  final String replyText;
   final String username;
-  final String name;
-  final String text;
-  String comments;
-  String retweets;
-  String favorites;
   final String time;
-  final String id;
-  final String description;
-  final int i;
 
-  Tweet(
+  Reply(
       {Key key,
-      @required this.avatar,
       @required this.username,
-      @required this.name,
-      @required this.text,
-      @required this.retweets,
-      @required this.comments,
       @required this.time,
-      @required this.favorites,
-      @required this.id,
-      @required this.description,
-      @required this.i})
+      @required this.replyText})
       : super(key: key);
 
   @override
@@ -63,18 +42,13 @@ class Tweet extends StatelessWidget {
         children: [
           tweetHeader(context),
           tweetText(),
-          tweetButtons(),
+          //tweetButtons(),
         ],
       ),
     );
   }
 
   Widget tweetHeader(BuildContext context) {
-    Future load() async {
-      var myFuture = await DatabaseService().getReplies(id);
-      return myFuture as List<Reply>;
-    }
-
     return Row(
       children: [
         Container(
@@ -88,7 +62,7 @@ class Tweet extends StatelessWidget {
           //),
         ),
         Text(
-          '@$name · $time',
+          '@$username · $time',
           style: TextStyle(
             color: Colors.grey,
           ),
@@ -104,17 +78,18 @@ class Tweet extends StatelessWidget {
         //     print('Pressed ID: $id');
         //   },
         // ),
-        GestureDetector(
+        /*GestureDetector(
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => tweetdetails(
-                      title: text,
-                      description: description,
-                      pid: id,
-                      //replies: ["Reply 1", "Reply 2", "Reply 3"],
-                      replies: load() as List)),
+                builder: (context) => tweetdetails(
+                  title: text,
+                  description: description,
+                  pid: id,
+                  replies: ["Reply 1", "Reply 2", "Reply 3"],
+                ),
+              ),
             );
           },
           child: IconButton(
@@ -124,43 +99,32 @@ class Tweet extends StatelessWidget {
               color: Colors.grey,
             ),
           ),
-        ),
+        ),*/
       ],
     );
   }
 
   Widget tweetText() {
     return Text(
-      text,
+      replyText,
       overflow: TextOverflow.clip,
     );
   }
 
-  Widget tweetButtons() {
-    print("Yo $i");
+  /*Widget tweetButtons() {
     return Container(
       margin: const EdgeInsets.only(top: 10.0, right: 20.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           tweetIconButton1(FontAwesomeIcons.comment, this.comments),
-          this.i == 1
-              ? tweetIconButton21(FontAwesomeIcons.heart, this.favorites)
-              : tweetIconButton2(FontAwesomeIcons.solidHeart, this.favorites),
-          // tweetIconButton2(FontAwesomeIcons.car, this.favorites)
-          // tweetIconButton2(FontAwesomeIcons.heart, this.favorites),
-
-          // TweetIconButton2(
-          //     icon: FontAwesomeIcons.heart,
-          //     text: this.favorites,
-          //     tweetId: this.id,
-          //     userId: UserAuth.auth.currentUser.uid),
+          tweetIconButton2(FontAwesomeIcons.heart, this.favorites),
         ],
       ),
     );
-  }
+  }*/
 
-  Widget tweetIconButton1(IconData icon, String text) {
+  /*Widget tweetIconButton1(IconData icon, String text) {
     return Row(
       children: [
         IconButton(
@@ -183,51 +147,17 @@ class Tweet extends StatelessWidget {
         ),
       ],
     );
-  }
+  }*/
 
-  Widget tweetIconButton2(IconData icon, String text) {
+  /*Widget tweetIconButton2(IconData icon, String text) {
     return Row(
       children: [
         IconButton(
           onPressed: () {
             print("Pressed Upvote");
-            Future x = DatabaseService()
-                .userUpvoteCheck(id, UserAuth.auth.currentUser.uid, 1);
-            if (x == true) {
-              print(this.favorites);
-              icon = FontAwesomeIcons.solidHeart;
-            }
-          },
-          icon: Icon(icon),
-          iconSize: 16.0,
-          color: Colors.amber,
-        ),
-        Container(
-          margin: const EdgeInsets.all(6.0),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: Colors.black45,
-              fontSize: 14.0,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget tweetIconButton21(IconData icon, String text) {
-    return Row(
-      children: [
-        IconButton(
-          onPressed: () {
-            print("Pressed Upvote");
-            Future x = DatabaseService()
-                .userUpvoteCheck(id, UserAuth.auth.currentUser.uid, 1);
-            if (x == true) {
-              print(this.favorites);
-              icon = FontAwesomeIcons.solidHeart;
-            }
+            this.favorites = (int.parse(this.favorites) + 1).toString();
+            print(this.favorites);
+            icon = FontAwesomeIcons.solidHeart;
           },
           icon: Icon(icon),
           iconSize: 16.0,
@@ -245,5 +175,5 @@ class Tweet extends StatelessWidget {
         ),
       ],
     );
-  }
+  }*/
 }

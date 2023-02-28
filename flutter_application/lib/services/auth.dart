@@ -42,7 +42,7 @@ class UserAuth {
         return "Authentication Failed";
     }
   }
-  Future resetPassword(String password) async {
+   Future resetPassword(String password) async {
     this.user.updatePassword(password);
     this.user.sendEmailVerification();
 

@@ -116,7 +116,7 @@ class DatabaseService {
       'description': descprition,
       'num_upvotes': 0,
       'num_comments': 0,
-      'replies': replies,
+      'replies': [],
       'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
     });
   }
@@ -181,5 +181,27 @@ class DatabaseService {
     final value = await eveRef.doc(eid).get();
     final data = value.data() as Map<String, dynamic>;
     return data;
+  }
+
+  Future addReplyToAPetition(String pid, String username, String reply) async {
+    final pet = await getPet(pid);
+    final list = List<Map>.from(pet['replies']);
+    Map map = {
+      'username': username,
+      'replyText': reply,
+      'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
+    };
+    list.add(map);
+    await petRef.doc(pid).update({'replies': list});
+  }
+
+  // changed addPetition and made reply to petition
+
+  Future getReplies(String pid) async {
+    final value = await petRef.doc(pid).get();
+    // final Dataa = querySnapshot.docs.map((doc) => doc.data()).toList();
+    final data = value.data() as Map<String, dynamic>;
+    print(data['replies']);
+    return data['replies'] as List;
   }
 }
