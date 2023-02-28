@@ -56,6 +56,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool isChecked = false;
   String email;
   String password;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
@@ -99,6 +100,7 @@ class _LoginPageState extends State<LoginPage> {
             password = password.trim();
              UserAuth userAuth = new UserAuth();
              var user = await userAuth.signIn(email, password);
+             userAuth.user = user;
             //r  print(UserAuth.user.uid);
             //r  print(UserAuth.user.uid);
 
@@ -176,6 +178,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
 
+
     return Scaffold(
       body: Center( child: SingleChildScrollView(
         child: Container(
@@ -212,6 +215,32 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   height: 5.0,
                 ),
+                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  SizedBox(width: 5.0),
+                  Text("Remember Me",
+                      style: TextStyle(
+                          color: Colors.amber,
+                          fontSize: 12,
+                          fontFamily: 'Rubic')),
+                  SizedBox(
+                      height: 20.0,
+                      child: Theme(
+                        data: ThemeData(
+                            unselectedWidgetColor: Colors.amber // Your color
+                        ),
+                        child: Checkbox(
+                            activeColor: Colors.amber,
+                            value: isChecked,
+                            onChanged: (bool value) {
+                              setState(() {
+                                isChecked = value;
+                                if (isChecked) {
+                                  UserAuth.staySignedIn();
+                                }
+                              });
+                            },
+                      )))]),
+
               ],
             ),
           ),

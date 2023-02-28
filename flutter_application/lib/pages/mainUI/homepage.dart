@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/pages/authentication/login.dart';
 import '../authentication/update.dart';
 import '../authentication/register.dart';
 import '../../models/user.dart';
@@ -72,7 +73,7 @@ class TePage extends State<TPage> {
         ),
         actions: <Widget>[
           Padding(
-              padding: EdgeInsets.only(right: 20.0),
+              padding: EdgeInsets.only(right: 40.0),
               child: GestureDetector(
                 onTap: () {
                   try {
@@ -87,6 +88,26 @@ class TePage extends State<TPage> {
                 },
                 child: Icon(
                   Icons.account_circle,
+                  size: 26.0,
+                ),
+              )
+          ),
+          Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {
+                  try {
+                    this.userAuth.SignOut();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  } catch (e, stacktrace) {
+                    print(e);
+                    print(stacktrace);
+                  }
+                },
+                child: Icon(
+                  Icons.logout,
                   size: 26.0,
                 ),
               )
