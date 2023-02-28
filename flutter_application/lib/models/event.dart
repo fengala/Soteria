@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'eventdetails.dart';
 
 class Event extends StatelessWidget {
-  final String avatar;
   final String name;
   final String title;
   String comments;
@@ -18,11 +17,10 @@ class Event extends StatelessWidget {
         @required this.name,
         @required this.title,
         @required this.comments,
-        @required this.time,
         @required this.upvotes,
-        @required this.id,
+        @required this.time,
         @required this.description,
-        @required this.avatar})
+        @required this.id,})
       : super(key: key);
 
   @override
