@@ -1,35 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login_ui/models/replies.dart';
-import 'package:flutter_login_ui/models/tweetdetails.dart';
+import 'package:flutter_login_ui/models/replydetails.dart';
 import 'package:flutter_login_ui/services/database.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'reply.dart';
-
-class Tweet extends StatelessWidget {
-  final String avatar;
+class Reply extends StatelessWidget {
+  final String replyText;
   final String username;
-  final String name;
-  final String text;
-  String comments;
-  String retweets;
-  String favorites;
   final String time;
-  final String id;
-  final String description;
 
-  Tweet(
+  Reply(
       {Key key,
-      @required this.avatar,
       @required this.username,
-      @required this.name,
-      @required this.text,
-      @required this.retweets,
-      @required this.comments,
       @required this.time,
-      @required this.favorites,
-      @required this.id,
-      @required this.description})
+      @required this.replyText})
       : super(key: key);
 
   @override
@@ -59,18 +42,13 @@ class Tweet extends StatelessWidget {
         children: [
           tweetHeader(context),
           tweetText(),
-          tweetButtons(),
+          //tweetButtons(),
         ],
       ),
     );
   }
 
   Widget tweetHeader(BuildContext context) {
-    Future load() async {
-      var myFuture = await DatabaseService().getReplies(id);
-      return myFuture as List<Reply>;
-    }
-
     return Row(
       children: [
         Container(
@@ -84,7 +62,7 @@ class Tweet extends StatelessWidget {
           //),
         ),
         Text(
-          '@$name · $time',
+          '@$username · $time',
           style: TextStyle(
             color: Colors.grey,
           ),
@@ -100,17 +78,18 @@ class Tweet extends StatelessWidget {
         //     print('Pressed ID: $id');
         //   },
         // ),
-        GestureDetector(
+        /*GestureDetector(
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => tweetdetails(
-                      title: text,
-                      description: description,
-                      pid: id,
-                      //replies: ["Reply 1", "Reply 2", "Reply 3"],
-                      replies: load() as List)),
+                builder: (context) => tweetdetails(
+                  title: text,
+                  description: description,
+                  pid: id,
+                  replies: ["Reply 1", "Reply 2", "Reply 3"],
+                ),
+              ),
             );
           },
           child: IconButton(
@@ -120,19 +99,19 @@ class Tweet extends StatelessWidget {
               color: Colors.grey,
             ),
           ),
-        ),
+        ),*/
       ],
     );
   }
 
   Widget tweetText() {
     return Text(
-      text,
+      replyText,
       overflow: TextOverflow.clip,
     );
   }
 
-  Widget tweetButtons() {
+  /*Widget tweetButtons() {
     return Container(
       margin: const EdgeInsets.only(top: 10.0, right: 20.0),
       child: Row(
@@ -143,9 +122,9 @@ class Tweet extends StatelessWidget {
         ],
       ),
     );
-  }
+  }*/
 
-  Widget tweetIconButton1(IconData icon, String text) {
+  /*Widget tweetIconButton1(IconData icon, String text) {
     return Row(
       children: [
         IconButton(
@@ -168,9 +147,9 @@ class Tweet extends StatelessWidget {
         ),
       ],
     );
-  }
+  }*/
 
-  Widget tweetIconButton2(IconData icon, String text) {
+  /*Widget tweetIconButton2(IconData icon, String text) {
     return Row(
       children: [
         IconButton(
@@ -196,5 +175,5 @@ class Tweet extends StatelessWidget {
         ),
       ],
     );
-  }
+  }*/
 }
