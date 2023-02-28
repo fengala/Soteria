@@ -152,6 +152,9 @@ class _PetitionPageState extends State<PetitionPage> {
                                 myController.text,
                                 myController2.text);
                             Navigator.pop(context);
+                            setState(() {
+                              _petitionsFuture = getAllPetitions();
+                            });
                           },
                         )
                       ],

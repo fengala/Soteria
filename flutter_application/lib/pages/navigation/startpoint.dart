@@ -10,7 +10,7 @@ import '../mainUI/resourcepage.dart';
 class HomeP extends StatelessWidget {
   var myUser;
   var userAuth;
-  HomeP( {Key key , this.myUser, this.userAuth}): super(key : key);
+  HomeP({Key key, this.myUser, this.userAuth}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,7 +20,10 @@ class HomeP extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(myUser: this.myUser, userAuth: this.userAuth,),
+      home: HomePage(
+        myUser: this.myUser,
+        userAuth: this.userAuth,
+      ),
     );
   }
 }
@@ -31,7 +34,8 @@ class HomePage extends StatefulWidget {
   HomePage({Key key, this.myUser, this.userAuth}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState(myUser: this.myUser, userAuth:  this.userAuth);
+  _HomePageState createState() =>
+      _HomePageState(myUser: this.myUser, userAuth: this.userAuth);
 }
 
 class _HomePageState extends State<HomePage> {
@@ -57,8 +61,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       extendBody: true,
       body: _children[page],
-      bottomNavigationBar:
-      PandaBar(
+      bottomNavigationBar: PandaBar(
         buttonData: [
           PandaBarButtonData(
             id: 0,

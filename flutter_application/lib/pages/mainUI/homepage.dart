@@ -12,20 +12,19 @@ import '../../services/database.dart';
 import '../../models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
-
 class TP extends StatelessWidget {
   var myUser;
   var userAuth;
-  TP( {Key key  }) : super(key: key);
+  TP({Key key}) : super(key: key);
 
-  void setUser(var User){
+  void setUser(var User) {
     this.myUser = User;
   }
 
-  void setAuth(var auth){
+  void setAuth(var auth) {
     this.userAuth = auth;
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -35,7 +34,10 @@ class TP extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: TPage(myUser: this.myUser, userAuth: this.userAuth,),
+      home: TPage(
+        myUser: this.myUser,
+        userAuth: this.userAuth,
+      ),
     );
   }
 }
@@ -77,10 +79,12 @@ class TePage extends State<TPage> {
               child: GestureDetector(
                 onTap: () {
                   try {
-
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => UpdatePage(myUser:this.myUser, userAuth: this.userAuth,)));
+                    Navigator.of(context, rootNavigator: true)
+                        .pushReplacement(MaterialPageRoute(
+                            builder: (context) => UpdatePage(
+                                  myUser: this.myUser,
+                                  userAuth: this.userAuth,
+                                )));
                   } catch (e, stacktrace) {
                     print(e);
                     print(stacktrace);
@@ -90,16 +94,16 @@ class TePage extends State<TPage> {
                   Icons.account_circle,
                   size: 26.0,
                 ),
-              )
-          ),
+              )),
           Padding(
               padding: EdgeInsets.only(right: 20.0),
               child: GestureDetector(
                 onTap: () {
                   try {
                     this.userAuth.SignOut();
-                    Navigator.push(
-                        context,
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context) => LoginPage()));
+                    Navigator.of(context, rootNavigator: true).pushReplacement(
                         MaterialPageRoute(builder: (context) => LoginPage()));
                   } catch (e, stacktrace) {
                     print(e);
@@ -110,8 +114,7 @@ class TePage extends State<TPage> {
                   Icons.logout,
                   size: 26.0,
                 ),
-              )
-          ),
+              )),
         ],
       ),
     );

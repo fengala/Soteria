@@ -15,8 +15,8 @@ import '../authentication/resetPassword.dart';
 class UpdatePage extends StatefulWidget {
   var myUser;
   var userAuth;
-  UpdatePage({Key key, this.title, this.myUser, this.userAuth}) : super(key: key);
-
+  UpdatePage({Key key, this.title, this.myUser, this.userAuth})
+      : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -47,7 +47,6 @@ class _UpdatePageState extends State<UpdatePage> {
   String emergency_contact2 = "";
   String emergency_contact3 = "";
   _UpdatePageState(this.myUser, this.userAuth) {
-
     name = myUser.name.split(" ")[0];
     last_name = myUser.name.split(" ")[1];
     username = myUser.username;
@@ -345,25 +344,33 @@ class _UpdatePageState extends State<UpdatePage> {
                     ),
                     child: Text(x.code))));
           }
-          if (prompt){
+          if (prompt) {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => TPage(myUser: this.myUser, userAuth: this.userAuth,)));
-            showDialog(context: context, builder: (context) => AlertDialog(
-                title: Text("Success!"),
-                content: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Icon(Icons.check),
-                      DefaultTextStyle(
-                          style: style,
-                          child: Text(
-                            "Successfully updated account details!",
-                            textAlign: TextAlign.center,
-                            style:
-                            style.copyWith(color: Colors.green,),
-                          )),
-                    ])));
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TPage(
+                          myUser: this.myUser,
+                          userAuth: this.userAuth,
+                        )));
+            showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                    title: Text("Success!"),
+                    content: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Icon(Icons.check),
+                          DefaultTextStyle(
+                              style: style,
+                              child: Text(
+                                "Successfully updated account details!",
+                                textAlign: TextAlign.center,
+                                style: style.copyWith(
+                                  color: Colors.green,
+                                ),
+                              )),
+                        ])));
           }
         },
         child: Text("Update Account",
@@ -382,7 +389,12 @@ class _UpdatePageState extends State<UpdatePage> {
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomeP(myUser: userAuth.user1, userAuth: userAuth,)));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => HomeP(
+                        myUser: userAuth.user1,
+                        userAuth: userAuth,
+                      )));
         },
         child: Text("Back to Homepage",
             textAlign: TextAlign.right,
@@ -399,7 +411,12 @@ class _UpdatePageState extends State<UpdatePage> {
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => resetPage(myUser: userAuth.user1, userAuth: userAuth,)));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => resetPage(
+                        myUser: userAuth.user1,
+                        userAuth: userAuth,
+                      )));
         },
         child: Text("Reset Password",
             textAlign: TextAlign.right,
@@ -412,7 +429,8 @@ class _UpdatePageState extends State<UpdatePage> {
         child: Container(
           color: Colors.white,
           child: Padding(
-            padding: const EdgeInsets.only(left: 36, right: 36, top: 36, bottom: 120.0),
+            padding: const EdgeInsets.only(
+                left: 36, right: 36, top: 36, bottom: 120.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
