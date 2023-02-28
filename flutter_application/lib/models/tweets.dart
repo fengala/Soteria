@@ -35,11 +35,11 @@ Future<List<Tweet>> getAllPetitions() async {
     String time = jsonMap['time'];
     String id = jsonMap['id'];
     int shape = 0;
-    print("nope");
+    // print("nope");
     if (await DatabaseService()
             .userUpvoteCheck(id, UserAuth.auth.currentUser.uid, 0) ==
         true) {
-      print("hit");
+      // print("hit");
       shape = 1;
     }
     // print("##########");

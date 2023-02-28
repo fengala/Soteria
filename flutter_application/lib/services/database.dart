@@ -60,9 +60,9 @@ class DatabaseService {
     // final upvotedPetitions = List<String>.from(userData['upvotedPetitions']);
     final list = List<String>.from(data['upvotedPetitions']);
     if (!list.contains(pid)) {
-      print("Doesnt't contain");
+      // print("Doesnt't contain");
       if (change == 1) {
-        print(list);
+        // print(list);
         list.add(pid);
         await userRef.doc(uid).update({'upvotedPetitions': list});
         await petRef.doc(pid).update({'num_upvotes': FieldValue.increment(1)});
@@ -75,7 +75,7 @@ class DatabaseService {
       await userRef.doc(uid).update({'upvotedPetitions': list});
       await petRef.doc(pid).update({'num_upvotes': FieldValue.increment(-1)});
     }
-    print("Contains");
+    // print("Contains");
     return false;
     // print(uid);
     // print(list);
@@ -202,6 +202,6 @@ class DatabaseService {
     // final Dataa = querySnapshot.docs.map((doc) => doc.data()).toList();
     final data = value.data() as Map<String, dynamic>;
     print(data['replies']);
-    return data['replies'] as List;
+    return data['replies'];
   }
 }
