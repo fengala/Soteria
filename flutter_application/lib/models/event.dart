@@ -16,6 +16,7 @@ class Event extends StatelessWidget {
   final String when;
 
   final int hasupvote;
+  final int hasRSVP;
 
   Event(
       {Key key,
@@ -27,7 +28,8 @@ class Event extends StatelessWidget {
         @required this.description,
         @required this.when,
         @required this.id,
-        @required this.hasupvote,})
+        @required this.hasupvote,
+        @required this.hasRSVP})
       : super(key: key);
 
   @override
@@ -135,9 +137,11 @@ class Event extends StatelessWidget {
         children: [
           eventIconButton1(FontAwesomeIcons.comment, this.comments),
           this.hasupvote == 1
-              ? tweetIconButton2_1(FontAwesomeIcons.heart, this.upvotes)
-              : tweetIconButton2(FontAwesomeIcons.solidHeart, this.upvotes),
-          eventIconButton3(FontAwesomeIcons.calendarCheck, "RSVP")
+              ? eventIconButton2_1(FontAwesomeIcons.heart, this.upvotes)
+              : eventIconButton2(FontAwesomeIcons.solidHeart, this.upvotes),
+          this.hasRSVP == 1
+              ? eventIconButton3_1(FontAwesomeIcons.calendarCheck, "RSVP")
+              : eventIconButton3(FontAwesomeIcons.solidCalendarCheck, "RSVP"),
         ],
       ),
     );
@@ -168,13 +172,12 @@ class Event extends StatelessWidget {
     );
   }
 
-
-  Widget tweetIconButton2(IconData icon, String text) {
+  Widget eventIconButton2(IconData icon, String text) {
     return Row(
       children: [
         IconButton(
           onPressed: () {
-            print("Pressed Upvote");
+            print("Pressed Undo Upvote");
             Future x = DatabaseService()
                 .userUpvoteCheckEve(id, UserAuth.auth.currentUser.uid, 1);
             if (x == true) {
@@ -200,7 +203,7 @@ class Event extends StatelessWidget {
     );
   }
 
-  Widget tweetIconButton2_1(IconData icon, String text) {
+  Widget eventIconButton2_1(IconData icon, String text) {
     return Row(
       children: [
         IconButton(
@@ -236,10 +239,46 @@ class Event extends StatelessWidget {
     return Row(
       children: [
         IconButton(
-          icon: const Icon(FontAwesomeIcons.calendarCheck),
           onPressed: () {
             print("Pressed RSVP");
+            Future x = DatabaseService()
+                .userRSVPCheckEve(id, UserAuth.auth.currentUser.uid);
+            if (x == true) {
+              icon = FontAwesomeIcons.calendarCheck;
+            }
           },
+          icon: Icon(icon),
+          iconSize: 16.0,
+          color: Colors.amber,
+        ),
+        Container(
+          margin: const EdgeInsets.all(6.0),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.black45,
+              fontSize: 14.0,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+
+  Widget eventIconButton3_1(IconData icon, String text) {
+    return Row(
+      children: [
+        IconButton(
+          onPressed: () {
+            print("Pressed RSVP 2");
+            Future x = DatabaseService()
+                .userRSVPCheckEve(id, UserAuth.auth.currentUser.uid);
+            if (x == true) {
+              icon = FontAwesomeIcons.solidCalendarCheck;
+            }
+          },
+          icon: Icon(icon),
           iconSize: 16.0,
           color: Colors.black45,
         ),
@@ -256,4 +295,7 @@ class Event extends StatelessWidget {
       ],
     );
   }
+
+
+
 }

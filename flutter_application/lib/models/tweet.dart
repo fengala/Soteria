@@ -203,7 +203,7 @@ class Tweet extends StatelessWidget {
       children: [
         IconButton(
           onPressed: () {
-            print("Pressed Upvote");
+            print("Pressed Undo Upvote");
             Future x = DatabaseService()
                 .userUpvoteCheckPet(id, UserAuth.auth.currentUser.uid, 1);
             if (x == true) {
