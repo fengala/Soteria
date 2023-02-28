@@ -69,63 +69,114 @@ class Tweet extends StatelessWidget {
     );
   }
 
-  Widget tweetHeader(BuildContext context) {
-    Future load() async {
-      var myFuture = await DatabaseService().getReplies(id);
-      return myFuture as List<Reply>;
-    }
+  // Widget tweetHeader(BuildContext context) {
+  //   Future load() async {
+  //     var myFuture = await DatabaseService().getReplies(id);
+  //     return myFuture as List<Reply>;
+  //   }
 
-    return Row(
-      children: [
-        Container(
-          margin: const EdgeInsets.only(right: 5.0),
-          //child: Text(
-          //this.username,
-          //style: TextStyle(
-          //color: Colors.black,
-          //fontWeight: FontWeight.bold,
-          //),
-          //),
-        ),
-        Text(
-          '@$name · $time',
-          style: TextStyle(
-            color: Colors.grey,
-          ),
-        ),
-        Spacer(),
-        // IconButton(
-        //   icon: Icon(
-        //     FontAwesomeIcons.plus,
-        //     size: 14.0,
-        //     color: Colors.grey,
-        //   ),
-        //   onPressed: () {
-        //     print('Pressed ID: $id');
-        //   },
-        // ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => tweetdetails(
-                      title: text,
-                      description: description,
-                      pid: id,
-                      //replies: ["Reply 1", "Reply 2", "Reply 3"],
-                      replies: load() as List)),
-            );
-          },
-          child: IconButton(
-            icon: Icon(
-              FontAwesomeIcons.plus,
-              size: 14.0,
-              color: Colors.grey,
-            ),
-          ),
-        ),
-      ],
+  //   return Row(
+  //     children: [
+  //       Container(
+  //         margin: const EdgeInsets.only(right: 5.0),
+  //         //child: Text(
+  //         //this.username,
+  //         //style: TextStyle(
+  //         //color: Colors.black,
+  //         //fontWeight: FontWeight.bold,
+  //         //),
+  //         //),
+  //       ),
+  //       Text(
+  //         '@$name · $time',
+  //         style: TextStyle(
+  //           color: Colors.grey,
+  //         ),
+  //       ),
+  //       Spacer(),
+  //       // IconButton(
+  //       //   icon: Icon(
+  //       //     FontAwesomeIcons.plus,
+  //       //     size: 14.0,
+  //       //     color: Colors.grey,
+  //       //   ),
+  //       //   onPressed: () {
+  //       //     print('Pressed ID: $id');
+  //       //   },
+  //       // ),
+  //       GestureDetector(
+  //         onTap: () {
+  //           Navigator.push(
+  //             context,
+  //             MaterialPageRoute(
+  //                 builder: (context) => tweetdetails(
+  //                     title: text,
+  //                     description: description,
+  //                     pid: id,
+  //                     //replies: ["Reply 1", "Reply 2", "Reply 3"],
+  //                     replies: load() as List)),
+  //           );
+  //         },
+  //         child: IconButton(
+  //           icon: Icon(
+  //             FontAwesomeIcons.plus,
+  //             size: 14.0,
+  //             color: Colors.grey,
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
+
+  Widget tweetHeader(BuildContext context) {
+    return FutureBuilder<List<Reply>>(
+      future: getAllReplies(id),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text('Error loading replies');
+        } else if (!snapshot.hasData) {
+          return Text('Loading...');
+        } else {
+          List<Reply> replies = snapshot.data;
+          return Row(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(right: 5.0),
+              ),
+              Text(
+                '@$name · $time',
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
+              Spacer(),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => tweetdetails(
+                        title: text,
+                        description: description,
+                        pid: id,
+                        replies: replies,
+                      ),
+                    ),
+                  );
+                },
+                child: IconButton(
+                  icon: Icon(
+                    FontAwesomeIcons.plus,
+                    size: 14.0,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
+      },
     );
   }
 
