@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_login_ui/models/user.dart';
+import 'package:flutter_login_ui/services/auth.dart';
 
 import 'package:intl/intl.dart';
 
@@ -22,18 +24,19 @@ class DatabaseService {
    */
 
   Future register(String username, String password, String name,
-       emergency_contacts, String phone_number) async {
+      emergency_contacts, String phone_number) async {
     return await userRef.doc(uid).set({
       'username': username,
       'password': password,
       'name': name,
       'emergency_contacts': emergency_contacts,
-      'phone_number': phone_number
+      'phone_number': phone_number,
+      'upvotedPetitions': []
     });
   }
 
   Future updateUser(String username, String password, String name,
-       emergency_contacts, String phone_number) async {
+      emergency_contacts, String phone_number) async {
     return await userRef.doc(uid).set({
       'username': username,
       'password': password,
@@ -51,6 +54,46 @@ class DatabaseService {
     return data;
   }
 
+  Future<bool> userUpvoteCheck(String pid, String uid, int change) async {
+    // Map person = getUser(uid) as Map;
+    final data = await getUser(uid);
+    // final upvotedPetitions = List<String>.from(userData['upvotedPetitions']);
+    final list = List<String>.from(data['upvotedPetitions']);
+    if (!list.contains(pid)) {
+      print("Doesnt't contain");
+      if (change == 1) {
+        print(list);
+        list.add(pid);
+        await userRef.doc(uid).update({'upvotedPetitions': list});
+        await petRef.doc(pid).update({'num_upvotes': FieldValue.increment(1)});
+      }
+      return true;
+    }
+    //print(list);
+    if (change == 1) {
+      list.remove(pid);
+      await userRef.doc(uid).update({'upvotedPetitions': list});
+      await petRef.doc(pid).update({'num_upvotes': FieldValue.increment(-1)});
+    }
+    print("Contains");
+    return false;
+    // print(uid);
+    // print(list);
+    // print(data['username']);
+    // print(pid);
+    // return true;
+  }
+
+  Future<int> upvoteCountCheck(String pid) async {
+    // await petRef.doc(pid).update({'num_upvotes': FieldValue.increment(1)});
+    // await petRef.doc(pid).get({'num_upvotes'});
+    // print("Contains");
+    DocumentSnapshot snapshot = await petRef.doc(pid).get();
+    Map<String, dynamic> data = snapshot.data();
+    int numUpvotes = data['num_upvotes'];
+    return numUpvotes;
+  }
+
   Stream<QuerySnapshot> get User {
     return userRef.snapshots();
   }
@@ -60,7 +103,6 @@ class DatabaseService {
       'password': password,
     });
   }
-
 
   /**
    * PETITIONS
@@ -74,7 +116,7 @@ class DatabaseService {
       'description': descprition,
       'num_upvotes': 0,
       'num_comments': 0,
-      'replies': replies,
+      'replies': [],
       'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
     });
   }
@@ -90,8 +132,8 @@ class DatabaseService {
     return Dataa;
   }
 
-  Future updatePet(String username, String title, String descprition, String upvotes,
-      String comments, List<String> replies) async {
+  Future updatePet(String username, String title, String descprition,
+      String upvotes, String comments, List<String> replies) async {
     return await petRef.doc(pid).set({
       'username': username,
       'tile': title,
@@ -141,4 +183,25 @@ class DatabaseService {
     return data;
   }
 
+  Future addReplyToAPetition(String pid, String username, String reply) async {
+    final pet = await getPet(pid);
+    final list = List<Map>.from(pet['replies']);
+    Map map = {
+      'username': username,
+      'replyText': reply,
+      'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
+    };
+    list.add(map);
+    await petRef.doc(pid).update({'replies': list});
+  }
+
+  // changed addPetition and made reply to petition
+
+  Future getReplies(String pid) async {
+    final value = await petRef.doc(pid).get();
+    // final Dataa = querySnapshot.docs.map((doc) => doc.data()).toList();
+    final data = value.data() as Map<String, dynamic>;
+    print(data['replies']);
+    return data['replies'] as List;
+  }
 }

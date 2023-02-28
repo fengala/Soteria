@@ -39,6 +39,12 @@ class _PetitionPageState extends State<PetitionPage> {
     _petitionsFuture = getAllPetitions();
   }
 
+  void initPetitionsFuture() {
+    setState(() {
+      _petitionsFuture = getAllPetitions();
+    });
+  }
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
