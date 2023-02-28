@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/models/tweetdetails.dart';
+import 'package:flutter_login_ui/pages/mainUI/petitionpage.dart';
+import 'package:flutter_login_ui/services/auth.dart';
 import 'package:flutter_login_ui/services/database.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -14,6 +16,7 @@ class Tweet extends StatelessWidget {
   final String time;
   final String id;
   final String description;
+  final int i;
 
   Tweet(
       {Key key,
@@ -22,11 +25,12 @@ class Tweet extends StatelessWidget {
       @required this.name,
       @required this.text,
       @required this.retweets,
-        @required this.comments,
+      @required this.comments,
       @required this.time,
-        @required this.favorites,
+      @required this.favorites,
       @required this.id,
-      @required this.description})
+      @required this.description,
+      @required this.i})
       : super(key: key);
 
   @override
@@ -125,13 +129,24 @@ class Tweet extends StatelessWidget {
   }
 
   Widget tweetButtons() {
+    print("Yo $i");
     return Container(
       margin: const EdgeInsets.only(top: 10.0, right: 20.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           tweetIconButton1(FontAwesomeIcons.comment, this.comments),
-          tweetIconButton2(FontAwesomeIcons.heart, this.favorites),
+          this.i == 1
+              ? tweetIconButton21(FontAwesomeIcons.heart, this.favorites)
+              : tweetIconButton2(FontAwesomeIcons.solidHeart, this.favorites),
+          // tweetIconButton2(FontAwesomeIcons.car, this.favorites)
+          // tweetIconButton2(FontAwesomeIcons.heart, this.favorites),
+
+          // TweetIconButton2(
+          //     icon: FontAwesomeIcons.heart,
+          //     text: this.favorites,
+          //     tweetId: this.id,
+          //     userId: UserAuth.auth.currentUser.uid),
         ],
       ),
     );
@@ -141,12 +156,12 @@ class Tweet extends StatelessWidget {
     return Row(
       children: [
         IconButton(
-            icon: const Icon(FontAwesomeIcons.comment),
-            onPressed: () {
-              print("Pressed Comment");
-            },
-            iconSize: 16.0,
-            color: Colors.black45,
+          icon: const Icon(FontAwesomeIcons.comment),
+          onPressed: () {
+            print("Pressed Comment");
+          },
+          iconSize: 16.0,
+          color: Colors.black45,
         ),
         Container(
           margin: const EdgeInsets.all(6.0),
@@ -168,9 +183,43 @@ class Tweet extends StatelessWidget {
         IconButton(
           onPressed: () {
             print("Pressed Upvote");
-            this.favorites = (int.parse(this.favorites) + 1).toString();
-            print(this.favorites);
-            icon = FontAwesomeIcons.solidHeart;
+            Future x = DatabaseService()
+                .userUpvoteCheck(id, UserAuth.auth.currentUser.uid, 1);
+            if (x == true) {
+              print(this.favorites);
+              icon = FontAwesomeIcons.solidHeart;
+            }
+          },
+          icon: Icon(icon),
+          iconSize: 16.0,
+          color: Colors.amber,
+        ),
+        Container(
+          margin: const EdgeInsets.all(6.0),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.black45,
+              fontSize: 14.0,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget tweetIconButton21(IconData icon, String text) {
+    return Row(
+      children: [
+        IconButton(
+          onPressed: () {
+            print("Pressed Upvote");
+            Future x = DatabaseService()
+                .userUpvoteCheck(id, UserAuth.auth.currentUser.uid, 1);
+            if (x == true) {
+              print(this.favorites);
+              icon = FontAwesomeIcons.solidHeart;
+            }
           },
           icon: Icon(icon),
           iconSize: 16.0,
