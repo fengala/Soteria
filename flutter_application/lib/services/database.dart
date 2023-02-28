@@ -54,32 +54,6 @@ class DatabaseService {
     return data;
   }
 
-  Future<bool> userUpvoteCheck(String pid, String uid, int change) async {
-    final data = await getUser(uid);
-    final list = List<String>.from(data['upvotedPetitions']);
-    if (!list.contains(pid)) {
-      if (change == 1) {
-        list.add(pid);
-        await userRef.doc(uid).update({'upvotedPetitions': list});
-        await petRef.doc(pid).update({'num_upvotes': FieldValue.increment(1)});
-      }
-      return true;
-    }
-    if (change == 1) {
-      list.remove(pid);
-      await userRef.doc(uid).update({'upvotedPetitions': list});
-      await petRef.doc(pid).update({'num_upvotes': FieldValue.increment(-1)});
-    }
-    return false;
-  }
-
-  Future<int> upvoteCountCheck(String pid) async {
-    DocumentSnapshot snapshot = await petRef.doc(pid).get();
-    Map<String, dynamic> data = snapshot.data();
-    int numUpvotes = data['num_upvotes'];
-    return numUpvotes;
-  }
-
   Stream<QuerySnapshot> get User {
     return userRef.snapshots();
   }
@@ -158,6 +132,33 @@ class DatabaseService {
     return data['replies'];
   }
 
+  Future<bool> userUpvoteCheckPet(String pid, String uid, int change) async {
+    final data = await getUser(uid);
+    final list = List<String>.from(data['upvotedPetitions']);
+    if (!list.contains(pid)) {
+      if (change == 1) {
+        list.add(pid);
+        await userRef.doc(uid).update({'upvotedPetitions': list});
+        await petRef.doc(pid).update({'num_upvotes': FieldValue.increment(1)});
+      }
+      return true;
+    }
+    if (change == 1) {
+      list.remove(pid);
+      await userRef.doc(uid).update({'upvotedPetitions': list});
+      await petRef.doc(pid).update({'num_upvotes': FieldValue.increment(-1)});
+    }
+    return false;
+  }
+
+  Future<int> upvoteCountCheckPet(String pid) async {
+    DocumentSnapshot snapshot = await petRef.doc(pid).get();
+    Map<String, dynamic> data = snapshot.data();
+    int numUpvotes = data['num_upvotes'];
+    return numUpvotes;
+  }
+
+
   /**
    * EVENTS
    */
@@ -186,10 +187,31 @@ class DatabaseService {
     return Data;
   }
 
-  // Future getEvent(String eid) async {
-  //   final value = await eveRef.doc(eid).get();
-  //   final data = value.data() as Map<String, dynamic>;
-  //   return data;
-  // }
+
+  Future<bool> userUpvoteCheckEve(String eid, String uid, int change) async {
+    final data = await getUser(uid);
+    final list = List<String>.from(data['upvotedEvents']);
+    if (!list.contains(eid)) {
+      if (change == 1) {
+        list.add(eid);
+        await userRef.doc(uid).update({'upvotedEvents': list});
+        await eveRef.doc(eid).update({'num_upvotes': FieldValue.increment(1)});
+      }
+      return true;
+    }
+    if (change == 1) {
+      list.remove(eid);
+      await userRef.doc(uid).update({'upvotedEvents': list});
+      await eveRef.doc(eid).update({'num_upvotes': FieldValue.increment(-1)});
+    }
+    return false;
+  }
+
+  Future<int> upvoteCountCheckEve(String eid) async {
+    DocumentSnapshot snapshot = await eveRef.doc(eid).get();
+    Map<String, dynamic> data = snapshot.data();
+    int numUpvotes = data['num_upvotes'];
+    return numUpvotes;
+  }
 
 }

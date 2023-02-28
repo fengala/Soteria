@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../services/auth.dart';
+import '../services/database.dart';
 import 'eventdetails.dart';
 
 class Event extends StatelessWidget {
@@ -13,6 +15,8 @@ class Event extends StatelessWidget {
   final String description;
   final String when;
 
+  final int hasupvote;
+
   Event(
       {Key key,
         @required this.name,
@@ -22,7 +26,8 @@ class Event extends StatelessWidget {
         @required this.time,
         @required this.description,
         @required this.when,
-        @required this.id,})
+        @required this.id,
+        @required this.hasupvote,})
       : super(key: key);
 
   @override
@@ -129,7 +134,9 @@ class Event extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           eventIconButton1(FontAwesomeIcons.comment, this.comments),
-          eventIconButton2(FontAwesomeIcons.heart, this.upvotes),
+          this.hasupvote == 1
+              ? tweetIconButton2_1(FontAwesomeIcons.heart, this.upvotes)
+              : tweetIconButton2(FontAwesomeIcons.solidHeart, this.upvotes),
           eventIconButton3(FontAwesomeIcons.calendarCheck, "RSVP")
         ],
       ),
@@ -161,15 +168,50 @@ class Event extends StatelessWidget {
     );
   }
 
-  Widget eventIconButton2(IconData icon, String text) {
+
+  Widget tweetIconButton2(IconData icon, String text) {
     return Row(
       children: [
         IconButton(
           onPressed: () {
             print("Pressed Upvote");
-            this.upvotes = (int.parse(this.upvotes) + 1).toString();
-            print(this.upvotes);
-            icon = FontAwesomeIcons.solidHeart;
+            Future x = DatabaseService()
+                .userUpvoteCheckEve(id, UserAuth.auth.currentUser.uid, 1);
+            if (x == true) {
+              print(this.upvotes);
+              icon = FontAwesomeIcons.solidHeart;
+            }
+          },
+          icon: Icon(icon),
+          iconSize: 16.0,
+          color: Colors.amber,
+        ),
+        Container(
+          margin: const EdgeInsets.all(6.0),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.black45,
+              fontSize: 14.0,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget tweetIconButton2_1(IconData icon, String text) {
+    return Row(
+      children: [
+        IconButton(
+          onPressed: () {
+            print("Pressed Upvote");
+            Future x = DatabaseService()
+                .userUpvoteCheckEve(id, UserAuth.auth.currentUser.uid, 1);
+            if (x == true) {
+              print(this.upvotes);
+              icon = FontAwesomeIcons.solidHeart;
+            }
           },
           icon: Icon(icon),
           iconSize: 16.0,
@@ -188,6 +230,7 @@ class Event extends StatelessWidget {
       ],
     );
   }
+
 
   Widget eventIconButton3(IconData icon, String text) {
     return Row(

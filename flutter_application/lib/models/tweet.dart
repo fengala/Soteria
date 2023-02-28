@@ -69,66 +69,6 @@ class Tweet extends StatelessWidget {
     );
   }
 
-  // Widget tweetHeader(BuildContext context) {
-  //   Future load() async {
-  //     var myFuture = await DatabaseService().getReplies(id);
-  //     return myFuture as List<Reply>;
-  //   }
-
-  //   return Row(
-  //     children: [
-  //       Container(
-  //         margin: const EdgeInsets.only(right: 5.0),
-  //         //child: Text(
-  //         //this.username,
-  //         //style: TextStyle(
-  //         //color: Colors.black,
-  //         //fontWeight: FontWeight.bold,
-  //         //),
-  //         //),
-  //       ),
-  //       Text(
-  //         '@$name · $time',
-  //         style: TextStyle(
-  //           color: Colors.grey,
-  //         ),
-  //       ),
-  //       Spacer(),
-  //       // IconButton(
-  //       //   icon: Icon(
-  //       //     FontAwesomeIcons.plus,
-  //       //     size: 14.0,
-  //       //     color: Colors.grey,
-  //       //   ),
-  //       //   onPressed: () {
-  //       //     print('Pressed ID: $id');
-  //       //   },
-  //       // ),
-  //       GestureDetector(
-  //         onTap: () {
-  //           Navigator.push(
-  //             context,
-  //             MaterialPageRoute(
-  //                 builder: (context) => tweetdetails(
-  //                     title: text,
-  //                     description: description,
-  //                     pid: id,
-  //                     //replies: ["Reply 1", "Reply 2", "Reply 3"],
-  //                     replies: load() as List)),
-  //           );
-  //         },
-  //         child: IconButton(
-  //           icon: Icon(
-  //             FontAwesomeIcons.plus,
-  //             size: 14.0,
-  //             color: Colors.grey,
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-
   Widget tweetHeader(BuildContext context) {
     return FutureBuilder<List<Reply>>(
       future: getAllReplies(id),
@@ -188,7 +128,6 @@ class Tweet extends StatelessWidget {
   }
 
   Widget tweetButtons() {
-    print("Yo $i");
     return Container(
       margin: const EdgeInsets.only(top: 10.0, right: 20.0),
       child: Row(
@@ -196,16 +135,8 @@ class Tweet extends StatelessWidget {
         children: [
           tweetIconButton1(FontAwesomeIcons.comment, this.comments),
           this.i == 1
-              ? tweetIconButton21(FontAwesomeIcons.heart, this.favorites)
+              ? tweetIconButton2_1(FontAwesomeIcons.heart, this.favorites)
               : tweetIconButton2(FontAwesomeIcons.solidHeart, this.favorites),
-          // tweetIconButton2(FontAwesomeIcons.car, this.favorites)
-          // tweetIconButton2(FontAwesomeIcons.heart, this.favorites),
-
-          // TweetIconButton2(
-          //     icon: FontAwesomeIcons.heart,
-          //     text: this.favorites,
-          //     tweetId: this.id,
-          //     userId: UserAuth.auth.currentUser.uid),
         ],
       ),
     );
@@ -243,7 +174,7 @@ class Tweet extends StatelessWidget {
           onPressed: () {
             print("Pressed Upvote");
             Future x = DatabaseService()
-                .userUpvoteCheck(id, UserAuth.auth.currentUser.uid, 1);
+                .userUpvoteCheckPet(id, UserAuth.auth.currentUser.uid, 1);
             if (x == true) {
               print(this.favorites);
               icon = FontAwesomeIcons.solidHeart;
@@ -267,14 +198,14 @@ class Tweet extends StatelessWidget {
     );
   }
 
-  Widget tweetIconButton21(IconData icon, String text) {
+  Widget tweetIconButton2_1(IconData icon, String text) {
     return Row(
       children: [
         IconButton(
           onPressed: () {
             print("Pressed Upvote");
             Future x = DatabaseService()
-                .userUpvoteCheck(id, UserAuth.auth.currentUser.uid, 1);
+                .userUpvoteCheckPet(id, UserAuth.auth.currentUser.uid, 1);
             if (x == true) {
               print(this.favorites);
               icon = FontAwesomeIcons.solidHeart;
