@@ -10,6 +10,7 @@ import '../../models/user.dart';
 import '../../services/auth.dart';
 import '../mainUI/homepage.dart';
 import '../navigation/startpoint.dart';
+import '../authentication/resetPassword.dart';
 
 class UpdatePage extends StatefulWidget {
   var myUser;
@@ -114,12 +115,12 @@ class _UpdatePageState extends State<UpdatePage> {
     return null;
   }
 
-  String validate_password(String val) {
-    if (val == null || val.isEmpty) {
-      return "This field is mandatory";
-    }
-    return null;
-  }
+  // String validate_password(String val) {
+  //   if (val == null || val.isEmpty) {
+  //     return "This field is mandatory";
+  //   }
+  //   return null;
+  // }
 
   String validate_phone(String val) {
     if (val == null || val.isEmpty) {
@@ -200,31 +201,7 @@ class _UpdatePageState extends State<UpdatePage> {
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
-    final passwordField = TextField(
-      controller: TextEditingController(text: password),
-      onChanged: (text) {
-        password = text;
-      },
-      obscureText: true,
-      style: style,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Password",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-    );
-    final reEnterPassword = TextField(
-      onChanged: (text) {
-        password2 = text;
-      },
-      obscureText: true,
-      style: style,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Re-enter the password",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-    );
+
     final phoneNumber = TextField(
       controller: TextEditingController(text: phone_number),
       onChanged: (text) {
@@ -303,24 +280,6 @@ class _UpdatePageState extends State<UpdatePage> {
             emergency_contact2,
             emergency_contact3
           ];
-
-          if (password != password2) {
-            prompt = false;
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                behavior: SnackBarBehavior.floating,
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                content: Container(
-                    height: 90,
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    child: Text("Passwords don't match"))));
-          } else {
-            userAuth.resetPassword(password);
-          }
 
           try {
             if (name == null ||
@@ -413,6 +372,7 @@ class _UpdatePageState extends State<UpdatePage> {
                 color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
+
     final backButton = Material(
       elevation: 0.0,
       borderRadius: BorderRadius.circular(10.0),
@@ -430,7 +390,23 @@ class _UpdatePageState extends State<UpdatePage> {
                 color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
-
+    final reset = Material(
+      elevation: 0.0,
+      borderRadius: BorderRadius.circular(10.0),
+      color: Colors.amber,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => resetPage(myUser: userAuth.user1, userAuth: userAuth,)));
+        },
+        child: Text("Reset Password",
+            textAlign: TextAlign.right,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -455,10 +431,6 @@ class _UpdatePageState extends State<UpdatePage> {
                 SizedBox(height: 25.0),
                 usernameField,
                 SizedBox(height: 25.0),
-                passwordField,
-                SizedBox(height: 25.0),
-                reEnterPassword,
-                SizedBox(height: 25.0),
                 phoneNumber,
                 SizedBox(
                   height: 15.0,
@@ -478,6 +450,10 @@ class _UpdatePageState extends State<UpdatePage> {
                   height: 5.0,
                 ),
                 backButton,
+                SizedBox(
+                  height: 5.0,
+                ),
+                reset,
                 SizedBox(
                   height: 5.0,
                 ),
