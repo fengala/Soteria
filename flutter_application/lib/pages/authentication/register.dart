@@ -357,7 +357,7 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Container(
           color: Colors.white,
           child: Padding(
-            padding: const EdgeInsets.all(36.0),
+            padding: const EdgeInsets.only(left: 36, right: 36, top: 36, bottom: 120.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
