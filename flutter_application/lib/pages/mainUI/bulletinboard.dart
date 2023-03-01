@@ -31,6 +31,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
   final myController = TextEditingController();
   final myController2 = TextEditingController();
   final myController3 = TextEditingController();
+  final myController4 = TextEditingController();
 
   Future<List<dynamic>> _BulletinFuture;
   @override
@@ -49,6 +50,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
     myController.dispose();
     myController2.dispose();
     myController3.dispose();
+    myController4.dispose();
     super.dispose();
   }
 
@@ -141,6 +143,17 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                         minLines: null,
                         maxLines: null,
                       ),
+                      TextField(
+                        controller: myController4,
+                        autofocus: true,
+                        decoration: const InputDecoration(
+                            hintStyle: TextStyle(fontSize: 15),
+                            hintText:
+                            "Enter RSVP form (optional)"),
+                        keyboardType: TextInputType.multiline,
+                        minLines: null,
+                        maxLines: null,
+                      ),
                     ],
                   ),
                   actions: [
@@ -157,7 +170,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
 
                         var eve = await DatabaseService().addEvent(
                             user['username'],
-                            myController.text, myController2.text, myController3.text);
+                            myController.text, myController2.text, myController3.text, myController4.text);
                         Navigator.pop(context);
                       },
                     )
@@ -168,20 +181,6 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
       ),
     );
   }
-
-  // Widget listOfEvents() {
-  //   return Container(
-  //     color: Colors.white,
-  //     child: ListView.separated(
-  //       itemBuilder: (BuildContext context, int index) {
-  //         return events[index];
-  //       },
-  //       separatorBuilder: (BuildContext context, int index) => Divider(
-  //         height: 0,
-  //       ), itemCount: events.length,
-  //     ),
-  //   );
-  // }
 
   Widget eventList() {
     Future load() async {

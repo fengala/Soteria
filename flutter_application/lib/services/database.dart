@@ -163,7 +163,7 @@ class DatabaseService {
    * EVENTS
    */
 
-  Future addEvent(String username, String title, String desc, String when) async {
+  Future addEvent(String username, String title, String desc, String when, String form) async {
     List<String> replies;
     return await FirebaseFirestore.instance.collection("Event").doc().set({
       'username': username,
@@ -172,7 +172,8 @@ class DatabaseService {
       'when': when,
       'num_upvotes': 0,
       'num_comments': 0,
-      'replies': replies,
+      'replies': [],
+      'rsvp_form': form,
       'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
     });
   }
@@ -251,6 +252,13 @@ class DatabaseService {
     final value = await eveRef.doc(eid).get();
     final data = value.data() as Map<String, dynamic>;
     return data;
+  }
+
+  Future getFormCheck(String eid, String uid) async {
+    DocumentSnapshot snapshot = await eveRef.doc(eid).get();
+    Map<String, dynamic> data = snapshot.data();
+    String form = data['rsvp_form'];
+    return form;
   }
 
 

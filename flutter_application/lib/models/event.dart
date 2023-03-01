@@ -3,6 +3,7 @@ import 'package:flutter_login_ui/models/replies.dart';
 import 'package:flutter_login_ui/services/auth.dart';
 import 'package:flutter_login_ui/services/database.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'eventdetails.dart';
 import 'reply.dart';
@@ -17,6 +18,7 @@ class Event extends StatefulWidget {
   final String id;
   final String description;
   final int hasUpvote;
+  final String rsvp_form;
 
   Event({
     Key key,
@@ -29,6 +31,7 @@ class Event extends StatefulWidget {
     @required this.description,
     @required this.hasUpvote,
     @required this.when,
+    @required this.rsvp_form,
   }) : super(key: key);
 
   @override
@@ -137,10 +140,9 @@ class _EventState extends State<Event> {
         children: [
           eventIconButton1(FontAwesomeIcons.comment, this.widget.comments),
           this.widget.hasUpvote == 1
-              ? eventIconButton2_1(
-              FontAwesomeIcons.heart, this.widget.upvotes)
-              : eventIconButton2(
-              FontAwesomeIcons.solidHeart, this.widget.upvotes),
+              ? eventIconButton2_1(FontAwesomeIcons.heart, this.widget.upvotes)
+              : eventIconButton2(FontAwesomeIcons.solidHeart, this.widget.upvotes),
+          eventIconButton3(FontAwesomeIcons.calendarCheck, 'RSVP'),
         ],
       ),
     );
@@ -232,4 +234,44 @@ class _EventState extends State<Event> {
       ],
     );
   }
+
+
+  Widget eventIconButton3(IconData icon, String text) {
+    return Row(
+      children: [
+        IconButton(
+          onPressed: () async {
+            print("Pressed RSVP");
+            String form =  await DatabaseService()
+                .getFormCheck(widget.id, UserAuth.auth.currentUser.uid);
+            final uri = Uri.parse(form);
+            if (await canLaunchUrl(uri)) {
+              await launchUrl(uri);
+            } else {
+              throw 'Could not launch rsvp_form';
+            }
+            Future x2 = DatabaseService()
+                .userRSVPCheckEve(widget.id, UserAuth.auth.currentUser.uid);
+            if (x2 == true) {
+              icon = FontAwesomeIcons.calendarCheck;
+            }
+          },
+          icon: Icon(icon),
+          iconSize: 16.0,
+        ),
+        Container(
+          margin: const EdgeInsets.all(6.0),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.black45,
+              fontSize: 14.0,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+
 }
