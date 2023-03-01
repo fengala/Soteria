@@ -97,16 +97,17 @@ class _LoginPageState extends State<LoginPage> {
           try {
             email = email.trim();
             password = password.trim();
-             UserAuth userAuth = new UserAuth();
-             var user = await userAuth.signIn(email, password);
+            UserAuth userAuth = new UserAuth();
+            var user = await userAuth.signIn(email, password);
             //r  print(UserAuth.user.uid);
             //r  print(UserAuth.user.uid);
 
             try {
               String val = await user.getIdToken();
               print(val.runtimeType);
+              userAuth.user = user;
               var user_detail = await DatabaseService().getUser(user.uid);
-                userAuth.user1 = new UserModel(
+              userAuth.user1 = new UserModel(
                   user.uid,
                   user_detail['name'],
                   user_detail['username'],
