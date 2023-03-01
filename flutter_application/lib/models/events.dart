@@ -44,8 +44,7 @@ Future<List<Event>> getAllEvents() async {
         id: id,
         when: when,
         description: desc,
-        hasupvote: shape,
-        hasRSVP: shape2,
+        hasUpvote: shape,
     ));
   }
   return eves;

@@ -119,6 +119,7 @@ class DatabaseService {
       'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
     };
     list.add(map);
+    await petRef.doc(pid).update({'num_comments': FieldValue.increment(1)});
     await petRef.doc(pid).update({'replies': list});
   }
   // changed addPetition and made reply to petition
@@ -234,6 +235,7 @@ class DatabaseService {
       'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
     };
     list.add(map);
+    await eveRef.doc(eid).update({'num_comments': FieldValue.increment(1)});
     await eveRef.doc(eid).update({'replies': list});
   }
   // changed addPetition and made reply to petition

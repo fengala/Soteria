@@ -8,9 +8,9 @@ import 'package:flutter_login_ui/services/database.dart';
 
 class eventdetails extends StatefulWidget {
   final String title;
-  final String when;
   final String description;
   final List<Reply> replies;
+  final String when;
   final String eid;
 
   eventdetails({
@@ -18,8 +18,8 @@ class eventdetails extends StatefulWidget {
     @required this.title,
     @required this.description,
     @required this.replies,
-    @required this.when,
     @required this.eid,
+    @required this.when,
   }) : super(key: key);
 
   @override
@@ -31,7 +31,6 @@ class _EventDetailsPageState extends State<eventdetails> {
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed.
     myController2.dispose();
     super.dispose();
   }
@@ -66,13 +65,6 @@ class _EventDetailsPageState extends State<eventdetails> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                    widget.when,
-                    style: TextStyle(
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.w200,
-                    ),
-                  ),
                   SizedBox(height: 16.0),
                   Text(
                     widget.description,
@@ -84,12 +76,13 @@ class _EventDetailsPageState extends State<eventdetails> {
           ),
           Divider(height: 0.0),
           Expanded(
-            ///////////////////////////////////////////////////
             child: ListView.builder(
               itemCount: widget.replies.length,
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(widget.replies[index].replyText),
+                  subtitle: Text('@${widget.replies[index].username} '
+                      '· ${widget.replies[index].time}'),
                 );
               },
             ),

@@ -81,6 +81,8 @@ class _TweetDetailsPageState extends State<tweetdetails> {
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(widget.replies[index].replyText),
+                  subtitle: Text('@${widget.replies[index].username} '
+                      '· ${widget.replies[index].time}'),
                 );
               },
             ),
