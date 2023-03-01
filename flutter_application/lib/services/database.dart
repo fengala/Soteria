@@ -165,6 +165,12 @@ class DatabaseService {
 
   Future addEvent(String username, String title, String desc, String when, String form) async {
     List<String> replies;
+    int hform;
+    if (form.length > 0) {
+      hform = 1;
+    } else {
+      hform = 0;
+    }
     return await FirebaseFirestore.instance.collection("Event").doc().set({
       'username': username,
       'title': title,
@@ -174,6 +180,7 @@ class DatabaseService {
       'num_comments': 0,
       'replies': [],
       'rsvp_form': form,
+      'hasRSVP': hform,
       'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
     });
   }

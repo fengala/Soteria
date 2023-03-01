@@ -18,6 +18,7 @@ class Event extends StatefulWidget {
   final String id;
   final String description;
   final int hasUpvote;
+  final int hasRSVP;
   final String rsvp_form;
 
   Event({
@@ -31,6 +32,7 @@ class Event extends StatefulWidget {
     @required this.description,
     @required this.hasUpvote,
     @required this.when,
+    @required this.hasRSVP,
     @required this.rsvp_form,
   }) : super(key: key);
 
@@ -39,6 +41,7 @@ class Event extends StatefulWidget {
 }
 
 class _EventState extends State<Event> {
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -138,11 +141,13 @@ class _EventState extends State<Event> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          eventIconButton1(FontAwesomeIcons.comment, this.widget.comments),
+          eventIconButton1(FontAwesomeIcons.comments, this.widget.comments),
           this.widget.hasUpvote == 1
               ? eventIconButton2_1(FontAwesomeIcons.heart, this.widget.upvotes)
               : eventIconButton2(FontAwesomeIcons.solidHeart, this.widget.upvotes),
-          eventIconButton3(FontAwesomeIcons.calendarCheck, 'RSVP'),
+          this.widget.hasRSVP == 1
+              ? eventIconButton3(FontAwesomeIcons.calendarCheck, 'RSVP')
+              : eventIconButton3_X(FontAwesomeIcons.calendarXmark, ''),
         ],
       ),
     );
@@ -250,6 +255,7 @@ class _EventState extends State<Event> {
             } else {
               throw 'Could not launch rsvp_form';
             }
+
             Future x2 = DatabaseService()
                 .userRSVPCheckEve(widget.id, UserAuth.auth.currentUser.uid);
             if (x2 == true) {
@@ -274,4 +280,27 @@ class _EventState extends State<Event> {
   }
 
 
+  Widget eventIconButton3_X(IconData icon, String text) {
+    return Row(
+      children: [
+        IconButton(
+          onPressed: () async {
+            print("Pressed No RSVP");
+          },
+          icon: Icon(icon),
+          iconSize: 16.0,
+        ),
+        Container(
+          margin: const EdgeInsets.all(6.0),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.black45,
+              fontSize: 14.0,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
