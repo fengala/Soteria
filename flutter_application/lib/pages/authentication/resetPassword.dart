@@ -176,7 +176,7 @@ class _resetPageState extends State<resetPage> {
           }
           if (prompt){
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => TPage(myUser: this.myUser, userAuth: this.userAuth,)));
+                context, MaterialPageRoute(builder: (context) => HomeP(myUser: this.myUser, userAuth: this.userAuth,)));
             showDialog(context: context, builder: (context) => AlertDialog(
                 title: Text("Success!"),
                 content: Column(
@@ -210,7 +210,7 @@ class _resetPageState extends State<resetPage> {
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomeP(myUser: userAuth.user1, userAuth: userAuth,)));
+              context, MaterialPageRoute(builder: (context) => HomeP(myUser: this.myUser, userAuth: this.userAuth,)));
         },
         child: Text("Back to Homepage",
             textAlign: TextAlign.right,

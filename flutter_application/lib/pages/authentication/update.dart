@@ -392,8 +392,8 @@ class _UpdatePageState extends State<UpdatePage> {
               context,
               MaterialPageRoute(
                   builder: (context) => HomeP(
-                        myUser: userAuth.user1,
-                        userAuth: userAuth,
+                        myUser: this.myUser,
+                        userAuth: this.userAuth,
                       )));
         },
         child: Text("Back to Homepage",
@@ -414,8 +414,8 @@ class _UpdatePageState extends State<UpdatePage> {
               context,
               MaterialPageRoute(
                   builder: (context) => resetPage(
-                        myUser: userAuth.user1,
-                        userAuth: userAuth,
+                        myUser: this.myUser,
+                        userAuth: this.userAuth,
                       )));
         },
         child: Text("Reset Password",
@@ -425,7 +425,7 @@ class _UpdatePageState extends State<UpdatePage> {
       ),
     );
     return Scaffold(
-      body: SingleChildScrollView(
+      body: Center( child: SingleChildScrollView(
         child: Container(
           color: Colors.white,
           child: Padding(
@@ -479,6 +479,7 @@ class _UpdatePageState extends State<UpdatePage> {
             ),
           ),
         ),
+      ),
       ),
     );
   }
