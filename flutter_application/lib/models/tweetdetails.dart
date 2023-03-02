@@ -101,7 +101,7 @@ class _TweetDetailsPageState extends State<tweetdetails> {
                 context: context,
                 builder: (context) => AlertDialog(
                       title: Text("Enter Your Reply"),
-                      content: Column(
+                      content: SingleChildScrollView( child:Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
@@ -116,6 +116,7 @@ class _TweetDetailsPageState extends State<tweetdetails> {
                             maxLines: null,
                           ),
                         ],
+                      ),
                       ),
                       actions: [
                         TextButton(

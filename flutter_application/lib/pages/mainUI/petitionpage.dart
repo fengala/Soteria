@@ -104,7 +104,7 @@ class _PetitionPageState extends State<PetitionPage> {
                 context: context,
                 builder: (context) => AlertDialog(
                       title: Text("Create a Petition"),
-                      content: Column(
+                      content: SingleChildScrollView( child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
@@ -135,6 +135,7 @@ class _PetitionPageState extends State<PetitionPage> {
                             maxLines: null,
                           ),
                         ],
+                      ),
                       ),
                       actions: [
                         TextButton(
