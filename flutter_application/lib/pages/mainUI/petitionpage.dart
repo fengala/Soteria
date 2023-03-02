@@ -159,6 +159,20 @@ class _PetitionPageState extends State<PetitionPage> {
                         )
                       ],
                     ));
+            if (myController == null || myController2 == null) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  elevation: 100,
+                  content: Container(
+                      height: 120,
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Text("There are a few fields missing\n"))));
+            }
           },
         ),
       ),
