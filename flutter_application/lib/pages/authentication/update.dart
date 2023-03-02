@@ -357,7 +357,7 @@ class _UpdatePageState extends State<UpdatePage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => TPage(
+                    builder: (context) => HomeP (
                           myUser: this.myUser,
                           userAuth: this.userAuth,
                         )));
