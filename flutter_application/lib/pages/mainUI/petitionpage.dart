@@ -144,7 +144,10 @@ class _PetitionPageState extends State<PetitionPage> {
                         TextButton(
                           child: Text("CREATE"),
                           onPressed: () async {
-                            if (myController == null || myController2 == null) {
+                            print(myController.text);
+                            print(myController2.text);
+                            if (myController.text == "" ||
+                                myController2.text == "") {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                       behavior: SnackBarBehavior.floating,
@@ -152,7 +155,7 @@ class _PetitionPageState extends State<PetitionPage> {
                                       elevation: 100,
                                       content: Container(
                                           height: 120,
-                                          padding: EdgeInsets.all(16),
+                                          padding: EdgeInsets.only(bottom: 40),
                                           decoration: BoxDecoration(
                                             color: Colors.red,
                                             borderRadius: BorderRadius.all(
