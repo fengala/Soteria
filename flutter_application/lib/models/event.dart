@@ -20,6 +20,7 @@ class Event extends StatefulWidget {
   final int hasUpvote;
   final int hasRSVP;
   final String rsvp_form;
+  final int alreadyRSVP;
 
   Event({
     Key key,
@@ -34,6 +35,7 @@ class Event extends StatefulWidget {
     @required this.when,
     @required this.hasRSVP,
     @required this.rsvp_form,
+    @required this.alreadyRSVP,
   }) : super(key: key);
 
   @override
@@ -158,7 +160,9 @@ class _EventState extends State<Event> {
               : eventIconButton2(
               FontAwesomeIcons.solidHeart, this.widget.upvotes),
           this.widget.hasRSVP == 1
-              ? eventIconButton3(FontAwesomeIcons.calendarCheck, 'RSVP')
+              ? this.widget.alreadyRSVP == 1
+                  ? eventIconButton3_1(FontAwesomeIcons.solidCalendarCheck, 'RSVP')
+                  : eventIconButton3(FontAwesomeIcons.calendarCheck, 'RSVP')
               : eventIconButton3_X(FontAwesomeIcons.calendarXmark, ''),
         ],
       ),
@@ -295,8 +299,18 @@ class _EventState extends State<Event> {
                 },
               );
 
-
               print("RSVP: $rsvp");
+              if (rsvp) {
+                icon = FontAwesomeIcons.solidCalendarCheck;
+              } else {
+                icon = FontAwesomeIcons.calendarCheck;
+              }
+
+              Future x = DatabaseService().addRSVPConfirm(
+                  widget.id, UserAuth.auth.currentUser.uid);
+              if (x == true) {
+                icon = FontAwesomeIcons.solidCalendarCheck;
+              }
 
             } else {
               throw 'Could not launch rsvp_form';
@@ -304,6 +318,41 @@ class _EventState extends State<Event> {
           },
           icon: Icon(icon),
           iconSize: 16.0,
+        ),
+        Container(
+          margin: const EdgeInsets.all(6.0),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.black45,
+              fontSize: 14.0,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+
+  Widget eventIconButton3_1(IconData icon, String text) {
+    return Row(
+      children: [
+        IconButton(
+          onPressed: () async {
+            print("Pressed RSVP");
+            String form = await DatabaseService()
+                .getFormCheck(widget.id, UserAuth.auth.currentUser.uid);
+            final uri = Uri.parse(form);
+            if (await canLaunchUrl(uri)) {
+              await launchUrl(uri);
+              icon = FontAwesomeIcons.solidCalendarCheck;
+            } else {
+              throw 'Could not launch rsvp_form';
+            }
+          },
+            icon: Icon(icon),
+            iconSize: 16.0,
+            color: Colors.amber,
         ),
         Container(
           margin: const EdgeInsets.all(6.0),
