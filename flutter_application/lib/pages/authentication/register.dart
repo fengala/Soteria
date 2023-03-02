@@ -23,6 +23,10 @@ class RegisterPage extends StatefulWidget {
 //Scroll bar
 //Contacts (+ button)
 //User phone number
+
+
+
+//add .trim
 class _RegisterPageState extends State<RegisterPage> {
   TextEditingController text_widgets = TextEditingController();
   String name;

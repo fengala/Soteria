@@ -151,28 +151,32 @@ class _PetitionPageState extends State<PetitionPage> {
                                 user['name'],
                                 myController.text,
                                 myController2.text);
-                            Navigator.pop(context);
-                            setState(() {
-                              _petitionsFuture = getAllPetitions();
-                            });
+                            if (myController == null || myController2 == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      behavior: SnackBarBehavior.floating,
+                                      backgroundColor: Colors.transparent,
+                                      elevation: 100,
+                                      content: Container(
+                                          height: 120,
+                                          padding: EdgeInsets.all(16),
+                                          decoration: BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                          ),
+                                          child: Text(
+                                              "There are a few fields missing\n"))));
+                            } else {
+                              Navigator.pop(context);
+                              setState(() {
+                                _petitionsFuture = getAllPetitions();
+                              });
+                            }
                           },
                         )
                       ],
                     ));
-            if (myController == null || myController2 == null) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Colors.transparent,
-                  elevation: 100,
-                  content: Container(
-                      height: 120,
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                      ),
-                      child: Text("There are a few fields missing\n"))));
-            }
           },
         ),
       ),
@@ -211,22 +215,22 @@ class _PetitionPageState extends State<PetitionPage> {
       },
     );
   }
-  // return Container(
-  //   color: Colors.white,
-  //   child: ListView.separated(
-  //     itemBuilder: (BuildContext context, int index) {
-  //       // var myFuture = await getPetitions() as List;
+// return Container(
+//   color: Colors.white,
+//   child: ListView.separated(
+//     itemBuilder: (BuildContext context, int index) {
+//       // var myFuture = await getPetitions() as List;
 
-  //       // List<dynamic> tweets = myFuture as List;
-  //       List<Object> list = load() as List<Object>;
-  //       return list[index];
-  //       // return tweets[index];
-  //     },
-  //     separatorBuilder: (BuildContext context, int index) => Divider(
-  //       height: 0,
-  //     ),
-  //     itemCount: 5, //tweets.length,
-  //     //itemCount: tweets.length,
-  //   ),
-  // );
+//       // List<dynamic> tweets = myFuture as List;
+//       List<Object> list = load() as List<Object>;
+//       return list[index];
+//       // return tweets[index];
+//     },
+//     separatorBuilder: (BuildContext context, int index) => Divider(
+//       height: 0,
+//     ),
+//     itemCount: 5, //tweets.length,
+//     //itemCount: tweets.length,
+//   ),
+// );
 }
