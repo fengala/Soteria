@@ -29,6 +29,7 @@ class PetitionPage extends StatefulWidget {
 }
 
 class _PetitionPageState extends State<PetitionPage> {
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   final myController = TextEditingController();
   final myController2 = TextEditingController();
   Future<List<dynamic>> _petitionsFuture;
@@ -148,21 +149,22 @@ class _PetitionPageState extends State<PetitionPage> {
                             print(myController2.text);
                             if (myController.text == "" ||
                                 myController2.text == "") {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      behavior: SnackBarBehavior.floating,
-                                      backgroundColor: Colors.transparent,
-                                      elevation: 100,
-                                      content: Container(
-                                          height: 120,
-                                          padding: EdgeInsets.only(bottom: 40),
-                                          decoration: BoxDecoration(
-                                            color: Colors.red,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
-                                          ),
-                                          child: Text(
-                                              "There are a few fields missing\n"))));
+                              showDialog(context: context, builder: (context) => AlertDialog(
+                                  title: Text("Error"),
+                                  content: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Icon(Icons.close),
+                                        DefaultTextStyle(
+                                            style: style,
+                                            child: Text(
+                                              "A few fields are missing!",
+                                              textAlign: TextAlign.center,
+                                              style:
+                                              style.copyWith(color: Colors.red,),
+                                            )),
+                                      ])));
                             } else {
                               var user = await DatabaseService()
                                   .getUser(UserAuth.auth.currentUser.uid);
