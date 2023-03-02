@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/models/replies.dart';
 import 'package:flutter_login_ui/models/reply.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_login_ui/services/auth.dart';
@@ -24,13 +26,45 @@ class tweetdetails extends StatefulWidget {
   _TweetDetailsPageState createState() => _TweetDetailsPageState();
 }
 
+Future _petitionsFuture;
+
 class _TweetDetailsPageState extends State<tweetdetails> {
   final myController2 = TextEditingController();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  bool _mounted = false;
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> petitionsStream() {
+    return firestore.collection('Petitions').snapshots();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _mounted = true;
+
+    _petitionsFuture = getAllRepliesPet(widget.pid);
+    petitionsStream().listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
+      // Trigger an automatic update
+      if (_mounted) {
+        setState(() {
+          initPetitionsFuture();
+        });
+      }
+    });
+  }
+
+  void initPetitionsFuture() {
+    setState(() {
+      _petitionsFuture = getAllRepliesPet(widget.pid);
+    });
+  }
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     myController2.dispose();
+    _mounted = false;
+
     super.dispose();
   }
 
@@ -73,18 +107,9 @@ class _TweetDetailsPageState extends State<tweetdetails> {
               ),
             ),
           ),
-          Divider(height: 0.0),
           Expanded(
-            ///////////////////////////////////////////////////
-            child: ListView.builder(
-              itemCount: widget.replies.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(widget.replies[index].replyText),
-                  subtitle: Text('@${widget.replies[index].username} '
-                      '· ${widget.replies[index].time}'),
-                );
-              },
+            child: Container(
+              child: replyList(),
             ),
           ),
         ],
@@ -124,17 +149,21 @@ class _TweetDetailsPageState extends State<tweetdetails> {
                               Navigator.pop(context);
                             }),
                         TextButton(
-                          child: Text("REPLY"),
-                          onPressed: () async {
-                            var user = await DatabaseService()
-                                .getUser(UserAuth.auth.currentUser.uid);
+                            child: Text("REPLY"),
+                            onPressed: () async {
+                              var user = await DatabaseService()
+                                  .getUser(UserAuth.auth.currentUser.uid);
 
-                            var pet = await DatabaseService()
-                                .addReplyToAPetition(widget.pid,
-                                    user['username'], myController2.text);
-                            Navigator.pop(context);
-                          },
-                        )
+                              var pet = await DatabaseService()
+                                  .addReplyToAPetition(widget.pid,
+                                      user['username'], myController2.text);
+                              Navigator.pop(context);
+                              if (_mounted) {
+                                setState(() {
+                                  initPetitionsFuture();
+                                });
+                              }
+                            })
                       ],
                     ));
           },
@@ -143,6 +172,33 @@ class _TweetDetailsPageState extends State<tweetdetails> {
     );
   }
 
+  Widget replyList() {
+    return FutureBuilder(
+      future: getAllRepliesPet(widget.pid),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<dynamic> replies = snapshot.data;
+          return Container(
+            color: Colors.white,
+            child: ListView.separated(
+              padding: const EdgeInsets.only(bottom: 150.0),
+              itemBuilder: (BuildContext context, int index) {
+                return replies[index];
+              },
+              separatorBuilder: (BuildContext context, int index) => Divider(
+                height: 0,
+              ),
+              itemCount: replies.length,
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error fetching replies'));
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    );
+  }
   /*Widget petitionList() {
     Future load() async {
       var myFuture = await getAllPetitions() as List;

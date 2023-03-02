@@ -348,7 +348,7 @@ class _UpdatePageState extends State<UpdatePage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => TPage(
+                    builder: (context) => HomeP(
                           myUser: this.myUser,
                           userAuth: this.userAuth,
                         )));
@@ -425,61 +425,62 @@ class _UpdatePageState extends State<UpdatePage> {
       ),
     );
     return Scaffold(
-      body: Center( child: SingleChildScrollView(
-        child: Container(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.only(
-                left: 36, right: 36, top: 36, bottom: 120.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: 155.0,
-                  child: Image.asset(
-                    "assets/logo.png",
-                    fit: BoxFit.contain,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 36, right: 36, top: 36, bottom: 120.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 155.0,
+                    child: Image.asset(
+                      "assets/logo.png",
+                      fit: BoxFit.contain,
+                    ),
                   ),
-                ),
-                SizedBox(height: 25.0),
-                firstName,
-                SizedBox(height: 25.0),
-                lastName,
-                SizedBox(height: 25.0),
-                usernameField,
-                SizedBox(height: 25.0),
-                phoneNumber,
-                SizedBox(
-                  height: 15.0,
-                ),
-                emergencyContactText,
-                SizedBox(height: 25.0),
-                emergencyContact1,
-                SizedBox(height: 25.0),
-                emergencyContact2,
-                SizedBox(height: 25.0),
-                emergencyContact3,
-                SizedBox(
-                  height: 5.0,
-                ),
-                createAccount,
-                SizedBox(
-                  height: 5.0,
-                ),
-                backButton,
-                SizedBox(
-                  height: 5.0,
-                ),
-                reset,
-                SizedBox(
-                  height: 5.0,
-                ),
-              ],
+                  SizedBox(height: 25.0),
+                  firstName,
+                  SizedBox(height: 25.0),
+                  lastName,
+                  SizedBox(height: 25.0),
+                  usernameField,
+                  SizedBox(height: 25.0),
+                  phoneNumber,
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  emergencyContactText,
+                  SizedBox(height: 25.0),
+                  emergencyContact1,
+                  SizedBox(height: 25.0),
+                  emergencyContact2,
+                  SizedBox(height: 25.0),
+                  emergencyContact3,
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  createAccount,
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  backButton,
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  reset,
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
       ),
     );
   }
