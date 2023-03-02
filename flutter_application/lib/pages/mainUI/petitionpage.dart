@@ -160,19 +160,20 @@ class _PetitionPageState extends State<PetitionPage> {
                                           ),
                                           child: Text(
                                               "There are a few fields missing\n"))));
+                            } else {
+                              var user = await DatabaseService()
+                                  .getUser(UserAuth.auth.currentUser.uid);
+
+                              var pet = await DatabaseService().addPetition(
+                                  user['name'],
+                                  myController.text,
+                                  myController2.text);
+
+                              Navigator.pop(context);
+                              setState(() {
+                                _petitionsFuture = getAllPetitions();
+                              });
                             }
-                            var user = await DatabaseService()
-                                .getUser(UserAuth.auth.currentUser.uid);
-
-                            var pet = await DatabaseService().addPetition(
-                                user['name'],
-                                myController.text,
-                                myController2.text);
-
-                            Navigator.pop(context);
-                            setState(() {
-                              _petitionsFuture = getAllPetitions();
-                            });
                           },
                         )
                       ],
