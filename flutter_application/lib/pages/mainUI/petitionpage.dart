@@ -172,6 +172,7 @@ class _PetitionPageState extends State<PetitionPage> {
                               setState(() {
                                 _petitionsFuture = getAllPetitions();
                               });
+
                             }
                           },
                         )
