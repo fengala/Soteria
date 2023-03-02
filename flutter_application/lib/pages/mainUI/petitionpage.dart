@@ -148,7 +148,7 @@ class _PetitionPageState extends State<PetitionPage> {
                                 .getUser(UserAuth.auth.currentUser.uid);
 
                             var pet = await DatabaseService().addPetition(
-                                user['username'],
+                                user['name'],
                                 myController.text,
                                 myController2.text);
                             Navigator.pop(context);

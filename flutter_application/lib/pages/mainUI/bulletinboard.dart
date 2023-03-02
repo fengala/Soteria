@@ -169,7 +169,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                             .getUser(UserAuth.auth.currentUser.uid);
 
                         var eve = await DatabaseService().addEvent(
-                            user['username'],
+                            user['name'],
                             myController.text, myController2.text, myController3.text, myController4.text);
                         Navigator.pop(context);
                       },
