@@ -156,8 +156,7 @@ class _resetPageState extends State<resetPage> {
 
               print(myUser.password);
 
-              var res = await DatabaseService(uid: myUser.uid)
-                  .updateUser(myUser.username, password, myUser.name, myUser.emergency_contacts, myUser.phone_number);
+              var res = await DatabaseService(uid: myUser.uid).resetPassword(password);
             }
           } catch (x) {
             print(x);

@@ -35,6 +35,7 @@ Future<List<Tweet>> getAllPetitions() async {
     String time = jsonMap['time'];
     String id = jsonMap['id'];
     int shape = 0;
+
     if (await DatabaseService()
             .userUpvoteCheckPet(id, UserAuth.auth.currentUser.uid, 0) ==
         true) {

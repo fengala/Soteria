@@ -69,6 +69,7 @@ class _EventState extends State<Event> {
         children: [
           eventHeader(context),
           eventText(),
+          eventWhen(),
           eventButtons(),
         ],
       ),
@@ -108,6 +109,7 @@ class _EventState extends State<Event> {
                         description: widget.description,
                         eid: widget.id,
                         replies: replies,
+                        when: widget.when,
                       ),
                     ),
                   );
@@ -130,6 +132,13 @@ class _EventState extends State<Event> {
   Widget eventText() {
     return Text(
       widget.title,
+      overflow: TextOverflow.clip,
+      style: const TextStyle(fontWeight: FontWeight.bold),
+    );
+  }
+  Widget eventWhen() {
+    return Text(
+      widget.when,
       overflow: TextOverflow.clip,
     );
   }
@@ -171,7 +180,7 @@ class _EventState extends State<Event> {
             style: TextStyle(
               color: Colors.black45,
               fontSize: 14.0,
-            ),
+            )
           ),
         ),
       ],

@@ -31,18 +31,19 @@ class DatabaseService {
       'name': name,
       'emergency_contacts': emergency_contacts,
       'phone_number': phone_number,
-      'upvotedPetitions': []
+      'upvotedPetitions': [],
+      'upvotedEvents': [],
     });
   }
 
   Future updateUser(String username, String password, String name,
       emergency_contacts, String phone_number) async {
-    return await userRef.doc(uid).set({
+    return await userRef.doc(uid).update({
       'username': username,
       'password': password,
       'name': name,
       'emergency_contacts': emergency_contacts,
-      'phone_number': phone_number
+      'phone_number': phone_number,
     });
   }
 

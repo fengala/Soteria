@@ -63,6 +63,13 @@ class _EventDetailsPageState extends State<eventdetails> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  Text(
+                    widget.when,
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.w200,
+                    ),
+                  ),
                   SizedBox(height: 16.0),
                   Text(
                     widget.description,
