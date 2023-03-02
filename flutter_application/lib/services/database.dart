@@ -49,9 +49,7 @@ class DatabaseService {
 
   Future getUser(String uid) async {
     final value = await userRef.doc(uid).get();
-
     final data = value.data() as Map<String, dynamic>;
-
     return data;
   }
 

@@ -104,13 +104,14 @@ class _EventState extends State<Event> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => eventdetails(
-                        title: widget.title,
-                        description: widget.description,
-                        eid: widget.id,
-                        replies: replies,
-                        when: widget.when,
-                      ),
+                      builder: (context) =>
+                          eventdetails(
+                            title: widget.title,
+                            description: widget.description,
+                            eid: widget.id,
+                            replies: replies,
+                            when: widget.when,
+                          ),
                     ),
                   );
                 },
@@ -136,6 +137,7 @@ class _EventState extends State<Event> {
       style: const TextStyle(fontWeight: FontWeight.bold),
     );
   }
+
   Widget eventWhen() {
     return Text(
       widget.when,
@@ -153,7 +155,8 @@ class _EventState extends State<Event> {
           eventIconButton1(FontAwesomeIcons.comments, this.widget.comments),
           this.widget.hasUpvote == 1
               ? eventIconButton2_1(FontAwesomeIcons.heart, this.widget.upvotes)
-              : eventIconButton2(FontAwesomeIcons.solidHeart, this.widget.upvotes),
+              : eventIconButton2(
+              FontAwesomeIcons.solidHeart, this.widget.upvotes),
           this.widget.hasRSVP == 1
               ? eventIconButton3(FontAwesomeIcons.calendarCheck, 'RSVP')
               : eventIconButton3_X(FontAwesomeIcons.calendarXmark, ''),
@@ -176,11 +179,11 @@ class _EventState extends State<Event> {
         Container(
           margin: const EdgeInsets.all(6.0),
           child: Text(
-            text,
-            style: TextStyle(
-              color: Colors.black45,
-              fontSize: 14.0,
-            )
+              text,
+              style: TextStyle(
+                color: Colors.black45,
+                fontSize: 14.0,
+              )
           ),
         ),
       ],
@@ -249,46 +252,6 @@ class _EventState extends State<Event> {
     );
   }
 
-
-  Widget eventIconButton3(IconData icon, String text) {
-    return Row(
-      children: [
-        IconButton(
-          onPressed: () async {
-            print("Pressed RSVP");
-            String form =  await DatabaseService()
-                .getFormCheck(widget.id, UserAuth.auth.currentUser.uid);
-            final uri = Uri.parse(form);
-            if (await canLaunchUrl(uri)) {
-              await launchUrl(uri);
-            } else {
-              throw 'Could not launch rsvp_form';
-            }
-
-            Future x2 = DatabaseService()
-                .userRSVPCheckEve(widget.id, UserAuth.auth.currentUser.uid);
-            if (x2 == true) {
-              icon = FontAwesomeIcons.calendarCheck;
-            }
-          },
-          icon: Icon(icon),
-          iconSize: 16.0,
-        ),
-        Container(
-          margin: const EdgeInsets.all(6.0),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: Colors.black45,
-              fontSize: 14.0,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-
   Widget eventIconButton3_X(IconData icon, String text) {
     return Row(
       children: [
@@ -308,6 +271,85 @@ class _EventState extends State<Event> {
               fontSize: 14.0,
             ),
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget eventIconButton3(IconData icon, String text) {
+    return Row(
+      children: [
+        IconButton(
+          onPressed: () async {
+            print("Pressed RSVP");
+            String form = await DatabaseService()
+                .getFormCheck(widget.id, UserAuth.auth.currentUser.uid);
+            final uri = Uri.parse(form);
+            if (await canLaunchUrl(uri)) {
+              await launchUrl(uri);
+
+              bool rsvp = await showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return RSVPDialog();
+                },
+              );
+
+
+              print("RSVP: $rsvp");
+
+            } else {
+              throw 'Could not launch rsvp_form';
+            }
+          },
+          icon: Icon(icon),
+          iconSize: 16.0,
+        ),
+        Container(
+          margin: const EdgeInsets.all(6.0),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.black45,
+              fontSize: 14.0,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+
+
+class RSVPDialog extends StatefulWidget {
+  @override
+  _RSVPDialogState createState() => _RSVPDialogState();
+}
+
+class _RSVPDialogState extends State<RSVPDialog> {
+  bool _rsvp = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("RSVP"),
+      content: Text("Have you RSVP'd for this event?"),
+      actions: <Widget>[
+        TextButton(
+          child: Text("No"),
+          onPressed: () {
+            Navigator.pop(context, false); // Return false when 'No' button clicked
+          },
+        ),
+        TextButton(
+          child: Text("Yes"),
+          onPressed: () {
+            setState(() {
+              _rsvp = true;
+            });
+            Navigator.pop(context, true); // Return true when 'Yes' button clicked
+          },
         ),
       ],
     );
