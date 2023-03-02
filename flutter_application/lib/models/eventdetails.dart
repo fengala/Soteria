@@ -48,7 +48,7 @@ class _EventDetailsPageState extends State<eventdetails> {
         foregroundColor: Colors.black,
         elevation: 1,
       ),
-      body: Column(
+      body: SingleChildScrollView( child: Column(
         children: [
           Expanded(
             child: Container(
@@ -94,6 +94,7 @@ class _EventDetailsPageState extends State<eventdetails> {
           ),
         ],
       ),
+      ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 40.0),
         child: FloatingActionButton(
@@ -106,7 +107,7 @@ class _EventDetailsPageState extends State<eventdetails> {
                 context: context,
                 builder: (context) => AlertDialog(
                   title: Text("Enter Your Reply"),
-                  content: Column(
+                  content: SingleChildScrollView( child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -121,6 +122,7 @@ class _EventDetailsPageState extends State<eventdetails> {
                         maxLines: null,
                       ),
                     ],
+                  ),
                   ),
                   actions: [
                     TextButton(

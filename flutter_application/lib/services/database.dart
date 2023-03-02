@@ -33,6 +33,7 @@ class DatabaseService {
       'phone_number': phone_number,
       'upvotedPetitions': [],
       'upvotedEvents': [],
+      'RSVPEvents': [],
     });
   }
 
@@ -49,9 +50,7 @@ class DatabaseService {
 
   Future getUser(String uid) async {
     final value = await userRef.doc(uid).get();
-
     final data = value.data() as Map<String, dynamic>;
-
     return data;
   }
 
@@ -226,10 +225,19 @@ class DatabaseService {
   Future<bool> userRSVPCheckEve(String eid, String uid) async {
     final data = await getUser(uid);
     final list = List<String>.from(data['RSVPEvents']);
+    if (list.contains(eid)) {
+      return true;
+    }
+    return false;
+  }
+
+
+  Future<bool> addRSVPConfirm(String eid, String uid) async {
+    final data = await getUser(uid);
+    final list = List<String>.from(data['RSVPEvents']);
     if (!list.contains(eid)) {
       list.add(eid);
       await userRef.doc(uid).update({'RSVPEvents': list});
-      await eveRef.doc(eid).update({'num_rsvp': FieldValue.increment(1)});
       return true;
     }
     return false;

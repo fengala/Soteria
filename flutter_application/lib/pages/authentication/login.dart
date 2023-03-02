@@ -95,13 +95,30 @@ class _LoginPageState extends State<LoginPage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () async {
-
+        if (email == null || password == null) {
+          showDialog(context: context, builder: (context) => AlertDialog(
+              title: Text("Error"),
+              content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Icon(Icons.close),
+                    DefaultTextStyle(
+                        style: style,
+                        child: Text(
+                          "A few fields are missing!",
+                          textAlign: TextAlign.center,
+                          style:
+                          style.copyWith(color: Colors.red,),
+                        )),
+                  ])));
+        } else {
           try {
             email = email.trim();
             password = password.trim();
-             UserAuth userAuth = new UserAuth();
-             var user = await userAuth.signIn(email, password);
-             userAuth.user = user;
+            UserAuth userAuth = new UserAuth();
+            var user = await userAuth.signIn(email, password);
+            userAuth.user = user;
             //r  print(UserAuth.user.uid);
             //r  print(UserAuth.user.uid);
 
@@ -109,16 +126,17 @@ class _LoginPageState extends State<LoginPage> {
               String val = await user.getIdToken();
               print(val.runtimeType);
               var user_detail = await DatabaseService().getUser(user.uid);
-                userAuth.user1 = new UserModel(
+              userAuth.user1 = new UserModel(
                   user.uid,
                   user_detail['name'],
                   user_detail['username'],
                   user_detail['password'],
                   user_detail['emergency_contacts'],
                   user_detail['phone_number']);
-                  print(userAuth.user1);
+              print(userAuth.user1);
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => HomeP(myUser: userAuth.user1, userAuth: userAuth,)));
+                  context, MaterialPageRoute(builder: (context) =>
+                  HomeP(myUser: userAuth.user1, userAuth: userAuth,)));
 
               print(user_detail['username']);
               print(user_detail);
@@ -146,6 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     child: Text(UserAuth.errors(x.code)))));
           }
+        }
         },
         child: Text("Login",
             textAlign: TextAlign.center,

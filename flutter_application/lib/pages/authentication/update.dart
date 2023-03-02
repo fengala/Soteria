@@ -274,6 +274,9 @@ class _UpdatePageState extends State<UpdatePage> {
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () async {
           bool prompt = true;
+          emergency_contact1.trim();
+          emergency_contact2.trim();
+          emergency_contact3.trim();
           List list = [
             emergency_contact1,
             emergency_contact2,
@@ -312,6 +315,12 @@ class _UpdatePageState extends State<UpdatePage> {
                       child: Text("There are a few fields missing\n"))));
             } else {
               name = name + " " + last_name;
+              name.trim();
+              username.trim();
+              password.trim();
+              name.trim();
+              phone_number.trim();
+
               myUser.name = name;
               myUser.emergency_contacts = list;
               myUser.password = password;

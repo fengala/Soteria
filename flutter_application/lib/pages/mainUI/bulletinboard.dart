@@ -102,7 +102,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                 context: context,
                 builder: (context) => AlertDialog(
                   title: Text("Create an Event"),
-                  content: Column(
+                  content: SingleChildScrollView( child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -155,6 +155,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                         maxLines: null,
                       ),
                     ],
+                  ),
                   ),
                   actions: [
                     TextButton(

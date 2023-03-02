@@ -24,8 +24,6 @@ class RegisterPage extends StatefulWidget {
 //Contacts (+ button)
 //User phone number
 
-
-
 //add .trim
 class _RegisterPageState extends State<RegisterPage> {
   TextEditingController text_widgets = TextEditingController();
@@ -242,6 +240,9 @@ class _RegisterPageState extends State<RegisterPage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () async {
+          emergency_contact1.trim();
+          emergency_contact2.trim();
+          emergency_contact3.trim();
           List list = [
             emergency_contact1,
             emergency_contact2,
@@ -294,27 +295,36 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Text("There are a few fields missing\n"))));
             } else {
               name = name + " " + last_name;
-               UserAuth userAuth = new UserAuth();
+              UserAuth userAuth = new UserAuth();
+              name.trim();
+              username.trim();
+              password.trim();
+              name.trim();
+              phone_number.trim();
+
               var res = await userAuth.createUser(
                   username, password, name, phone_number, list);
-              showDialog(context: context, builder: (context) => AlertDialog(
-                  title: Text("Success!"),
-                  content: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Icon(Icons.check),
-                        DefaultTextStyle(
-                            style: style,
-                            child: Text(
-                              "We have successfully sent a verification mail to your mail address",
-                              textAlign: TextAlign.center,
-                              style:
-                              style.copyWith(color: Colors.green,),
-                            )),
-                      ])));
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => LoginPage()));
+              showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                      title: Text("Success!"),
+                      content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Icon(Icons.check),
+                            DefaultTextStyle(
+                                style: style,
+                                child: Text(
+                                  "We have successfully sent a verification mail to your mail address",
+                                  textAlign: TextAlign.center,
+                                  style: style.copyWith(
+                                    color: Colors.green,
+                                  ),
+                                )),
+                          ])));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginPage()));
             }
           } catch (x) {
             print(x);
@@ -331,8 +341,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     child: Text(x.code))));
           }
-
-
         },
         child: Text("Create Account",
             textAlign: TextAlign.right,
@@ -363,7 +371,8 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Container(
           color: Colors.white,
           child: Padding(
-            padding: const EdgeInsets.only(left: 36, right: 36, top: 36, bottom: 120.0),
+            padding: const EdgeInsets.only(
+                left: 36, right: 36, top: 36, bottom: 120.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,

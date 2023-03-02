@@ -36,6 +36,7 @@ class PetitionPage extends StatefulWidget {
 }
 
 class _PetitionPageState extends State<PetitionPage> {
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   final myController = TextEditingController();
   final myController2 = TextEditingController();
   // Future _petitionsFuture;
@@ -119,7 +120,7 @@ class _PetitionPageState extends State<PetitionPage> {
                 context: context,
                 builder: (context) => AlertDialog(
                       title: Text("Create a Petition"),
-                      content: Column(
+                      content: SingleChildScrollView( child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
@@ -151,6 +152,7 @@ class _PetitionPageState extends State<PetitionPage> {
                           ),
                         ],
                       ),
+                      ),
                       actions: [
                         TextButton(
                             child: Text("CANCEL"),
@@ -160,30 +162,35 @@ class _PetitionPageState extends State<PetitionPage> {
                         TextButton(
                           child: Text("CREATE"),
                           onPressed: () async {
-                            var user = await DatabaseService()
-                                .getUser(UserAuth.auth.currentUser.uid);
-
-                            var pet = await DatabaseService().addPetition(
-                                user['name'],
-                                myController.text,
-                                myController2.text);
-                            if (myController == null || myController2 == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      behavior: SnackBarBehavior.floating,
-                                      backgroundColor: Colors.transparent,
-                                      elevation: 100,
-                                      content: Container(
-                                          height: 120,
-                                          padding: EdgeInsets.all(16),
-                                          decoration: BoxDecoration(
-                                            color: Colors.red,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
-                                          ),
-                                          child: Text(
-                                              "There are a few fields missing\n"))));
+                            print(myController.text);
+                            print(myController2.text);
+                            if (myController.text == "" ||
+                                myController2.text == "") {
+                              showDialog(context: context, builder: (context) => AlertDialog(
+                                  title: Text("Error"),
+                                  content: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Icon(Icons.close),
+                                        DefaultTextStyle(
+                                            style: style,
+                                            child: Text(
+                                              "A few fields are missing!",
+                                              textAlign: TextAlign.center,
+                                              style:
+                                              style.copyWith(color: Colors.red,),
+                                            )),
+                                      ])));
                             } else {
+                              var user = await DatabaseService()
+                                  .getUser(UserAuth.auth.currentUser.uid);
+
+                              var pet = await DatabaseService().addPetition(
+                                  user['name'],
+                                  myController.text,
+                                  myController2.text);
+
                               Navigator.pop(context);
                               setState(() {
                                 _petitionsFuture = getAllPetitions();
