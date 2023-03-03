@@ -32,7 +32,9 @@ class DatabaseService {
       'emergency_contacts': emergency_contacts,
       'phone_number': phone_number,
       'upvotedPetitions': [],
-      'remember': remember
+      'remember': remember,
+      'upvotedEvents': [],
+      'RSVPEvents': [],
     });
   }
 
@@ -56,9 +58,7 @@ class DatabaseService {
 
   Future getUser(String uid) async {
     final value = await userRef.doc(uid).get();
-
     final data = value.data() as Map<String, dynamic>;
-
     return data;
   }
 
@@ -127,6 +127,7 @@ class DatabaseService {
       'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
     };
     list.add(map);
+    await petRef.doc(pid).update({'num_comments': FieldValue.increment(1)});
     await petRef.doc(pid).update({'replies': list});
   }
   // changed addPetition and made reply to petition
@@ -168,9 +169,15 @@ class DatabaseService {
    * EVENTS
    */
 
-  Future addEvent(
-      String username, String title, String desc, String when) async {
+  Future addEvent(String username, String title, String desc, String when,
+      String form) async {
     List<String> replies;
+    int hform;
+    if (form.length > 0) {
+      hform = 1;
+    } else {
+      hform = 0;
+    }
     return await FirebaseFirestore.instance.collection("Event").doc().set({
       'username': username,
       'title': title,
@@ -178,7 +185,9 @@ class DatabaseService {
       'when': when,
       'num_upvotes': 0,
       'num_comments': 0,
-      'replies': replies,
+      'replies': [],
+      'rsvp_form': form,
+      'hasRSVP': hform,
       'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
     });
   }
@@ -222,10 +231,18 @@ class DatabaseService {
   Future<bool> userRSVPCheckEve(String eid, String uid) async {
     final data = await getUser(uid);
     final list = List<String>.from(data['RSVPEvents']);
+    if (list.contains(eid)) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> addRSVPConfirm(String eid, String uid) async {
+    final data = await getUser(uid);
+    final list = List<String>.from(data['RSVPEvents']);
     if (!list.contains(eid)) {
       list.add(eid);
       await userRef.doc(uid).update({'RSVPEvents': list});
-      await eveRef.doc(eid).update({'num_rsvp': FieldValue.increment(1)});
       return true;
     }
     return false;
@@ -240,6 +257,7 @@ class DatabaseService {
       'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
     };
     list.add(map);
+    await eveRef.doc(eid).update({'num_comments': FieldValue.increment(1)});
     await eveRef.doc(eid).update({'replies': list});
   }
   // changed addPetition and made reply to petition
@@ -254,5 +272,12 @@ class DatabaseService {
     final value = await eveRef.doc(eid).get();
     final data = value.data() as Map<String, dynamic>;
     return data;
+  }
+
+  Future getFormCheck(String eid, String uid) async {
+    DocumentSnapshot snapshot = await eveRef.doc(eid).get();
+    Map<String, dynamic> data = snapshot.data();
+    String form = data['rsvp_form'];
+    return form;
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/models/replies.dart';
 import 'package:flutter_login_ui/models/tweetdetails.dart';
-import 'package:flutter_login_ui/pages/mainUI/petitionpage.dart';
 import 'package:flutter_login_ui/services/auth.dart';
 import 'package:flutter_login_ui/services/database.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -180,7 +179,7 @@ class _TweetState extends State<Tweet> {
       children: [
         IconButton(
           onPressed: () async {
-            print("Pressed Upvote");
+            print("Pressed Undo Upvote");
             Future x = DatabaseService().userUpvoteCheckPet(
                 widget.id, UserAuth.auth.currentUser.uid, 1);
             if (x == true) {
@@ -211,7 +210,7 @@ class _TweetState extends State<Tweet> {
       children: [
         IconButton(
           onPressed: () {
-            print("Pressed Undo Upvote");
+            print("Pressed Upvote");
             Future x = DatabaseService().userUpvoteCheckPet(
                 widget.id, UserAuth.auth.currentUser.uid, 1);
             if (x == true) {

@@ -127,67 +127,89 @@ class _LoginPageState extends State<LoginPage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () async {
-          try {
-            email = email.trim();
-            password = password.trim();
-
-            print(FirebaseAuth.instance.currentUser);
-
-            user = await userAuth.signIn(email, password);
-            print("HII");
-            userAuth.user = user;
-
-            //r  print(UserAuth.user.uid);
-            //r  print(UserAuth.user.uid);
-
+          if (email == null || password == null) {
+            showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                    title: Text("Error"),
+                    content: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Icon(Icons.close),
+                          DefaultTextStyle(
+                              style: style,
+                              child: Text(
+                                "A few fields are missing!",
+                                textAlign: TextAlign.center,
+                                style: style.copyWith(
+                                  color: Colors.red,
+                                ),
+                              )),
+                        ])));
+          } else {
             try {
-              var user_detail =
-                  await DatabaseService().getUser(userAuth.user.uid);
-              print(user_detail['remember']);
-              userAuth.user1 = new UserModel(
-                  userAuth.user.uid,
-                  user_detail['name'],
-                  user_detail['username'],
-                  user_detail['password'],
-                  user_detail['emergency_contacts'],
-                  user_detail['phone_number'],
-                  user_detail['remember']);
-              print(userAuth.user1);
-              userAuth.user1.loggedIn = remember;
-              await DatabaseService().updatePref(remember, userAuth.user.uid);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => HomeP(
-                            myUser: userAuth.user1,
-                            userAuth: userAuth,
-                          )));
+              email = email.trim();
+              password = password.trim();
 
-              print(user_detail['username']);
-              print(user_detail);
-              print(user_detail.runtimeType);
-            } catch (e, stacktrace) {
-              print(e);
-              print(stacktrace);
-              print("error");
+              print(FirebaseAuth.instance.currentUser);
+
+              user = await userAuth.signIn(email, password);
+              print("HII");
+              userAuth.user = user;
+
+              //r  print(UserAuth.user.uid);
+              //r  print(UserAuth.user.uid);
+
+              try {
+                var user_detail =
+                    await DatabaseService().getUser(userAuth.user.uid);
+                print(user_detail['remember']);
+                userAuth.user1 = new UserModel(
+                    userAuth.user.uid,
+                    user_detail['name'],
+                    user_detail['username'],
+                    user_detail['password'],
+                    user_detail['emergency_contacts'],
+                    user_detail['phone_number'],
+                    user_detail['remember']);
+                print(userAuth.user1);
+                userAuth.user1.loggedIn = remember;
+                await DatabaseService().updatePref(remember, userAuth.user.uid);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomeP(
+                              myUser: userAuth.user1,
+                              userAuth: userAuth,
+                            )));
+
+                print(user_detail['username']);
+                print(user_detail);
+                print(user_detail.runtimeType);
+              } catch (e, stacktrace) {
+                print(e);
+                print(stacktrace);
+                print("error");
+              }
+              print("hello");
+            } catch (x) {
+              print("There has been an exception");
+              print(x);
+
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  content: Container(
+                      height: 90,
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Text(UserAuth.errors(x.code)))));
             }
-            print("hello");
-          } catch (x) {
-            print("There has been an exception");
-            print(x);
-
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                behavior: SnackBarBehavior.floating,
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                content: Container(
-                    height: 90,
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    child: Text(UserAuth.errors(x.code)))));
           }
         },
         child: Text("Login",

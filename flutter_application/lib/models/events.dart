@@ -23,6 +23,7 @@ Future<List<Event>> getAllEvents() async {
     String time = jsonMap['time'];
     String id = jsonMap['id'];
     String when = jsonMap['when'];
+    int hasForm = jsonMap['hasRSVP'];
     int shape = 0;
     int shape2 = 0;
     if (await DatabaseService()
@@ -44,8 +45,9 @@ Future<List<Event>> getAllEvents() async {
         id: id,
         when: when,
         description: desc,
-        hasupvote: shape,
-        hasRSVP: shape2,
+        hasRSVP: hasForm,
+        hasUpvote: shape,
+        alreadyRSVP: shape2,
     ));
   }
   return eves;

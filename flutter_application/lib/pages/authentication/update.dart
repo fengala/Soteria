@@ -274,6 +274,9 @@ class _UpdatePageState extends State<UpdatePage> {
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () async {
           bool prompt = true;
+          emergency_contact1.trim();
+          emergency_contact2.trim();
+          emergency_contact3.trim();
           List list = [
             emergency_contact1,
             emergency_contact2,
@@ -312,6 +315,12 @@ class _UpdatePageState extends State<UpdatePage> {
                       child: Text("There are a few fields missing\n"))));
             } else {
               name = name + " " + last_name;
+              name.trim();
+              username.trim();
+              password.trim();
+              name.trim();
+              phone_number.trim();
+
               myUser.name = name;
               myUser.emergency_contacts = list;
               myUser.password = password;
@@ -353,7 +362,7 @@ class _UpdatePageState extends State<UpdatePage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => TPage(
+                    builder: (context) => HomeP(
                           myUser: this.myUser,
                           userAuth: this.userAuth,
                         )));
@@ -397,8 +406,8 @@ class _UpdatePageState extends State<UpdatePage> {
               context,
               MaterialPageRoute(
                   builder: (context) => HomeP(
-                        myUser: userAuth.user1,
-                        userAuth: userAuth,
+                        myUser: this.myUser,
+                        userAuth: this.userAuth,
                       )));
         },
         child: Text("Back to Homepage",
@@ -419,8 +428,8 @@ class _UpdatePageState extends State<UpdatePage> {
               context,
               MaterialPageRoute(
                   builder: (context) => resetPage(
-                        myUser: userAuth.user1,
-                        userAuth: userAuth,
+                        myUser: this.myUser,
+                        userAuth: this.userAuth,
                       )));
         },
         child: Text("Reset Password",
@@ -430,57 +439,59 @@ class _UpdatePageState extends State<UpdatePage> {
       ),
     );
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.only(
-                left: 36, right: 36, top: 36, bottom: 120.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: 155.0,
-                  child: Image.asset(
-                    "assets/logo.png",
-                    fit: BoxFit.contain,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 36, right: 36, top: 36, bottom: 120.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 155.0,
+                    child: Image.asset(
+                      "assets/logo.png",
+                      fit: BoxFit.contain,
+                    ),
                   ),
-                ),
-                SizedBox(height: 25.0),
-                firstName,
-                SizedBox(height: 25.0),
-                lastName,
-                SizedBox(height: 25.0),
-                usernameField,
-                SizedBox(height: 25.0),
-                phoneNumber,
-                SizedBox(
-                  height: 15.0,
-                ),
-                emergencyContactText,
-                SizedBox(height: 25.0),
-                emergencyContact1,
-                SizedBox(height: 25.0),
-                emergencyContact2,
-                SizedBox(height: 25.0),
-                emergencyContact3,
-                SizedBox(
-                  height: 5.0,
-                ),
-                createAccount,
-                SizedBox(
-                  height: 5.0,
-                ),
-                backButton,
-                SizedBox(
-                  height: 5.0,
-                ),
-                reset,
-                SizedBox(
-                  height: 5.0,
-                ),
-              ],
+                  SizedBox(height: 25.0),
+                  firstName,
+                  SizedBox(height: 25.0),
+                  lastName,
+                  SizedBox(height: 25.0),
+                  usernameField,
+                  SizedBox(height: 25.0),
+                  phoneNumber,
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  emergencyContactText,
+                  SizedBox(height: 25.0),
+                  emergencyContact1,
+                  SizedBox(height: 25.0),
+                  emergencyContact2,
+                  SizedBox(height: 25.0),
+                  emergencyContact3,
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  createAccount,
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  backButton,
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  reset,
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
