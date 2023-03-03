@@ -598,11 +598,52 @@ class _EventState extends State<Event> {
               await launchUrl(uri);
 
               bool rsvp = await showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return RSVPDialog();
-                },
-              );
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                        title: Text("RSVP"),
+                        content: Text("Have you RSVP'd for this event?"),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text("No"),
+                            onPressed: () {
+                              Navigator.pop(context,
+                                  false); // Return false when 'No' button clicked
+                            },
+                          ),
+                          TextButton(
+                            child: Text("Yes"),
+                            onPressed: () async {
+                              bool x = await DatabaseService()
+                                  .userUpvoteCheckEve(widget.id,
+                                      UserAuth.auth.currentUser.uid, 1);
+                              x = !x;
+                              x = await DatabaseService().userUpvoteCheckEve(
+                                  widget.id, UserAuth.auth.currentUser.uid, 1);
+                              // Future y = DatabaseService().userUpvoteCheckEve(
+                              //     widget.id, UserAuth.auth.currentUser.uid, 1);
+                              // Future x = DatabaseService().getEvents();
+                              // if (y == false) {
+                              //   print(this.widget.upvotes);
+                              //   icon = FontAwesomeIcons.solidHeart;
+                              // }
+                              // if (x == true) {
+                              //   icon = FontAwesomeIcons.solidHeart;
+                              // }
+                              setState(() {
+                                _eventsFuture = getAllEvents();
+                              });
+
+                              // setState(() {
+                              //   // _rsvp = true;
+                              //   _eventsFuture = getAllEvents();
+                              //   print("here");
+                              // });
+                              Navigator.pop(context,
+                                  true); // Return true when 'Yes' button clicked
+                            },
+                          ),
+                        ],
+                      ));
 
               print("RSVP: $rsvp");
               if (rsvp) {
@@ -700,7 +741,7 @@ class RSVPDialog extends StatefulWidget {
 }
 
 class _RSVPDialogState extends State<RSVPDialog> {
-  bool _rsvp = false;
+  // bool _rsvp = false;
 
   @override
   Widget build(BuildContext context) {
@@ -719,7 +760,9 @@ class _RSVPDialogState extends State<RSVPDialog> {
           child: Text("Yes"),
           onPressed: () {
             setState(() {
-              _rsvp = true;
+              // _rsvp = true;
+              _eventsFuture = getAllEvents();
+              print("here");
             });
             Navigator.pop(
                 context, true); // Return true when 'Yes' button clicked
