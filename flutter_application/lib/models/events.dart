@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flutter_login_ui/services/database.dart';
 
 import '../services/auth.dart';
-import 'event.dart';
+
+import '../pages/mainUI/bulletinboard.dart';
 
 var events = getAllEvents();
 

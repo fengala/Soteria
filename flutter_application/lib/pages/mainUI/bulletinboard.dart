@@ -397,8 +397,8 @@ class _EventState extends State<Event> {
               FontAwesomeIcons.solidHeart, this.widget.upvotes),
           this.widget.hasRSVP == 1
               ? this.widget.alreadyRSVP == 1
-              ? eventIconButton3_1(FontAwesomeIcons.solidCalendarCheck, 'RSVP')
-              : eventIconButton3(FontAwesomeIcons.calendarCheck, 'RSVP')
+                  ? eventIconButton3_1(FontAwesomeIcons.solidCalendarCheck, 'RSVP')
+                  : eventIconButton3(FontAwesomeIcons.calendarCheck, 'RSVP')
               : eventIconButton3_X(FontAwesomeIcons.calendarXmark, ''),
         ],
       ),
@@ -542,31 +542,44 @@ class _EventState extends State<Event> {
 
               print("RSVP: $rsvp");
               if (rsvp) {
-                icon = FontAwesomeIcons.solidCalendarCheck;
 
-                Future x = DatabaseService().addRSVPConfirm(
-                    widget.id, UserAuth.auth.currentUser.uid);
+                icon = FontAwesomeIcons.solidCalendarCheck;
+                Future x = DatabaseService()
+                    .addRSVPConfirm(widget.id, UserAuth.auth.currentUser.uid);
                 if (x == true) {
                   icon = FontAwesomeIcons.solidCalendarCheck;
                 }
 
+                print('DB');
                 setState(() {
+                  print('setting...');
                   _eventsFuture = getAllEvents();
                 });
+                print('DB done');
+
               } else {
                 icon = FontAwesomeIcons.calendarCheck;
               }
 
+              print('RSVP YES/NO');
+
               setState(() {
+                print('setting...');
                 _eventsFuture = getAllEvents();
               });
+
+              print('DONE');
+
             } else {
               throw 'Could not launch rsvp_form';
             }
 
             setState(() {
+              print('setting...');
               _eventsFuture = getAllEvents();
             });
+
+            print('EXIT');
           },
           icon: Icon(icon),
           iconSize: 16.0,
