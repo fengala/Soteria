@@ -25,30 +25,38 @@ Future<List<Event>> getAllEvents() async {
     String id = jsonMap['id'];
     String when = jsonMap['when'];
     int hasForm = jsonMap['hasRSVP'];
+    String userId = jsonMap['userId'];
     int shape = 0;
     int shape2 = 0;
+    int ver = 0;
+
     if (await DatabaseService()
-        .userUpvoteCheckEve(id, UserAuth.auth.currentUser.uid, 0) ==
+            .userUpvoteCheckEve(id, UserAuth.auth.currentUser.uid, 0) ==
         true) {
       shape = 1;
     }
     if (await DatabaseService()
-        .userRSVPCheckEve(id, UserAuth.auth.currentUser.uid) ==
+            .userRSVPCheckEve(id, UserAuth.auth.currentUser.uid) ==
         true) {
       shape2 = 1;
     }
+    if (await DatabaseService().userVerCheck(userId) == true) {
+      print(ver);
+      ver = 1;
+    }
     eves.add(Event(
-        name: name,
-        title: title,
-        comments: comments.toString(),
-        upvotes: upvotes.toString(),
-        time: time,
-        id: id,
-        when: when,
-        description: desc,
-        hasRSVP: hasForm,
-        hasUpvote: shape,
-        alreadyRSVP: shape2,
+      name: name,
+      title: title,
+      comments: comments.toString(),
+      upvotes: upvotes.toString(),
+      time: time,
+      id: id,
+      when: when,
+      description: desc,
+      hasRSVP: hasForm,
+      hasUpvote: shape,
+      alreadyRSVP: shape2,
+      ver: ver,
     ));
   }
   return eves;

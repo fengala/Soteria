@@ -185,7 +185,7 @@ class DatabaseService {
    */
 
   Future addEvent(String username, String title, String desc, String when,
-      String form) async {
+      String form, String uid) async {
     List<String> replies;
     int hform;
     if (form.length > 0) {
@@ -203,7 +203,8 @@ class DatabaseService {
       'replies': [],
       'rsvp_form': form,
       'hasRSVP': hform,
-      'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
+      'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now()),
+      'userId': uid,
     });
   }
 
