@@ -1,8 +1,8 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter_login_ui/services/auth.dart';
 import 'package:flutter_login_ui/services/database.dart';
-
 import 'tweet.dart';
 
 // var petitions = DatabaseService().getPetitions();
@@ -34,32 +34,42 @@ Future<List<Tweet>> getAllPetitions() async {
     int comments = jsonMap['num_comments'];
     String time = jsonMap['time'];
     String id = jsonMap['id'];
+    String userId = jsonMap['userId'];
     int shape = 0;
+    int ver = 0;
 
     if (await DatabaseService()
             .userUpvoteCheckPet(id, UserAuth.auth.currentUser.uid, 0) ==
         true) {
       shape = 1;
     }
+
+    if (await DatabaseService().userVerCheck(userId) == true) {
+      ver = 1;
+    }
+
     // print("##########");
     // print(petitions[i]);
     // print(title);
-    // print(desc);
+    print(ver);
     // print('Length: $length');
     // print("##########");
     tweeds.add(Tweet(
-        avatar:
-            'https://pbs.twimg.com/profile_images/1187814172307800064/MhnwJbxw_400x400.jpg',
-        username: name,
-        name: name,
-        text: title,
-        comments: comments.toString(),
-        retweets: '23K',
-        favorites: upvotes.toString(),
-        time: time,
-        id: id,
-        description: desc,
-        i: shape));
+      avatar:
+          'https://pbs.twimg.com/profile_images/1187814172307800064/MhnwJbxw_400x400.jpg',
+      username: name,
+      name: name,
+      text: title,
+      comments: comments.toString(),
+      retweets: '23K',
+      favorites: upvotes.toString(),
+      time: time,
+      id: id,
+      description: desc,
+      i: shape,
+      userId: userId,
+      ver: ver,
+    ));
     // print("Here!");
   }
   return tweeds;

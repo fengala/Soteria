@@ -96,9 +96,9 @@ class _PetitionPageState extends State<PetitionPage> {
             icon: Icon(Icons.refresh),
             onPressed: () async {
               var user = FirebaseAuth.instance.currentUser;
-              if (user.email.contains("purdue.edu")) {
-                await DatabaseService().updateVerification(user.uid);
-              }
+
+              await DatabaseService().updateVerification(user.uid);
+
               setState(() {
                 _petitionsFuture = getAllPetitions();
               });
@@ -200,7 +200,8 @@ class _PetitionPageState extends State<PetitionPage> {
                               var pet = await DatabaseService().addPetition(
                                   user['name'],
                                   myController.text,
-                                  myController2.text);
+                                  myController2.text,
+                                  UserAuth.auth.currentUser.uid);
 
                               Navigator.pop(context);
                               setState(() {
@@ -291,6 +292,8 @@ class Tweet extends StatefulWidget {
   final String id;
   final String description;
   final int i;
+  final String userId;
+  final int ver;
 
   Tweet({
     Key key,
@@ -305,6 +308,8 @@ class Tweet extends StatefulWidget {
     @required this.id,
     @required this.description,
     @required this.i,
+    @required this.userId,
+    @required this.ver,
   }) : super(key: key);
 
   @override

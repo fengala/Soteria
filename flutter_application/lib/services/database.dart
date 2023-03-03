@@ -80,7 +80,8 @@ class DatabaseService {
    * PETITIONS
    */
 
-  Future addPetition(String username, String title, String descprition) async {
+  Future addPetition(
+      String username, String title, String descprition, String uid) async {
     List<String> replies;
     return await FirebaseFirestore.instance.collection("Petitions").doc().set({
       'username': username,
@@ -89,7 +90,8 @@ class DatabaseService {
       'num_upvotes': 0,
       'num_comments': 0,
       'replies': [],
-      'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
+      'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now()),
+      'userId': uid
     });
   }
 
@@ -160,6 +162,15 @@ class DatabaseService {
       await petRef.doc(pid).update({'num_upvotes': FieldValue.increment(-1)});
     }
     return false;
+  }
+
+  Future<bool> userVerCheck(String uid) async {
+    print(uid);
+    final data = await getUser(uid);
+    print(uid);
+    final flag = data['verified'] as bool;
+    print(flag);
+    return flag;
   }
 
   Future<int> upvoteCountCheckPet(String pid) async {
