@@ -36,6 +36,7 @@ class BulletinBoardPage extends StatefulWidget {
 }
 
 class _BulletinBoardState extends State<BulletinBoardPage> {
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   final myController = TextEditingController();
   final myController2 = TextEditingController();
   final myController3 = TextEditingController();
@@ -111,7 +112,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
         child: eventList(),
       ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 40.0),
+        padding: const EdgeInsets.only(bottom: 70.0),
         child: FloatingActionButton(
           child: Icon(
             FontAwesomeIcons.pen,
@@ -188,14 +189,38 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                           onPressed: () async {
                             var user = await DatabaseService()
                                 .getUser(UserAuth.auth.currentUser.uid);
-
-                            var eve = await DatabaseService().addEvent(
-                                user['name'],
-                                myController.text,
-                                myController2.text,
-                                myController3.text,
-                                myController4.text);
-                            Navigator.pop(context);
+                            if (myController.text == "" ||
+                                myController2.text == "" ||
+                                myController3.text == "") {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                      title: Text("Error"),
+                                      content: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Icon(Icons.close),
+                                            DefaultTextStyle(
+                                                style: style,
+                                                child: Text(
+                                                  "A few fields are missing!",
+                                                  textAlign: TextAlign.center,
+                                                  style: style.copyWith(
+                                                    color: Colors.red,
+                                                  ),
+                                                )),
+                                          ])));
+                            } else {
+                              var eve = await DatabaseService().addEvent(
+                                  user['name'],
+                                  myController.text,
+                                  myController2.text,
+                                  myController3.text,
+                                  myController4.text);
+                              Navigator.pop(context);
+                            }
                           },
                         )
                       ],

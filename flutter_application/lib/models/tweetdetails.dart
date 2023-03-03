@@ -29,6 +29,7 @@ class tweetdetails extends StatefulWidget {
 Future _petitionsFuture;
 
 class _TweetDetailsPageState extends State<tweetdetails> {
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   final myController2 = TextEditingController();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   bool _mounted = false;
@@ -86,24 +87,26 @@ class _TweetDetailsPageState extends State<tweetdetails> {
       body: Column(
         children: [
           Expanded(
-            child: Container(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.title,
-                    style: TextStyle(
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold,
+            child: SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.title,
+                      style: TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 16.0),
-                  Text(
-                    widget.description,
-                    style: TextStyle(fontSize: 18.0),
-                  ),
-                ],
+                    SizedBox(height: 16.0),
+                    Text(
+                      widget.description,
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -126,22 +129,23 @@ class _TweetDetailsPageState extends State<tweetdetails> {
                 context: context,
                 builder: (context) => AlertDialog(
                       title: Text("Enter Your Reply"),
-                      content: SingleChildScrollView( child:Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          TextField(
-                            controller: myController2,
-                            autofocus: true,
-                            decoration: const InputDecoration(
-                                hintStyle: TextStyle(fontSize: 15),
-                                hintText: "Type here"),
-                            keyboardType: TextInputType.multiline,
-                            minLines: null,
-                            maxLines: null,
-                          ),
-                        ],
-                      ),
+                      content: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            TextField(
+                              controller: myController2,
+                              autofocus: true,
+                              decoration: const InputDecoration(
+                                  hintStyle: TextStyle(fontSize: 15),
+                                  hintText: "Type here"),
+                              keyboardType: TextInputType.multiline,
+                              minLines: null,
+                              maxLines: null,
+                            ),
+                          ],
+                        ),
                       ),
                       actions: [
                         TextButton(
@@ -155,14 +159,37 @@ class _TweetDetailsPageState extends State<tweetdetails> {
                               var user = await DatabaseService()
                                   .getUser(UserAuth.auth.currentUser.uid);
 
-                              var pet = await DatabaseService()
-                                  .addReplyToAPetition(widget.pid,
-                                      user['name'], myController2.text);
-                              Navigator.pop(context);
-                              if (_mounted) {
-                                setState(() {
-                                  initPetitionsFuture();
-                                });
+                              if (myController2.text == "") {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                        title: Text("Error"),
+                                        content: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Icon(Icons.close),
+                                              DefaultTextStyle(
+                                                  style: style,
+                                                  child: Text(
+                                                    "A few fields are missing!",
+                                                    textAlign: TextAlign.center,
+                                                    style: style.copyWith(
+                                                      color: Colors.red,
+                                                    ),
+                                                  )),
+                                            ])));
+                              } else {
+                                var pet = await DatabaseService()
+                                    .addReplyToAPetition(widget.pid,
+                                        user['name'], myController2.text);
+                                Navigator.pop(context);
+                                if (_mounted) {
+                                  setState(() {
+                                    initPetitionsFuture();
+                                  });
+                                }
                               }
                             })
                       ],
