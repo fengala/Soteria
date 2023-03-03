@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/pages/mainUI/bulletinboard.dart';
 import 'package:pandabar/pandabar.dart';
 
 import '../authentication/login.dart';
-import '../mainUI/events.dart';
 import '../mainUI/homepage.dart';
 import '../mainUI/petitionpage.dart';
 import '../mainUI/resourcepage.dart';
 
 class HomeP extends StatelessWidget {
+  var myUser;
+  var userAuth;
+  HomeP({Key key, this.myUser, this.userAuth}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,32 +20,44 @@ class HomeP extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(),
+      home: HomePage(
+        myUser: this.myUser,
+        userAuth: this.userAuth,
+      ),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+  var myUser;
+  var userAuth;
+  HomePage({Key key, this.myUser, this.userAuth}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageState createState() =>
+      _HomePageState(myUser: this.myUser, userAuth: this.userAuth);
 }
 
 class _HomePageState extends State<HomePage> {
   @override
   int page = 0;
   int _currentIndex = 0;
+  var myUser;
+  var userAuth;
+  _HomePageState({this.myUser, this.userAuth});
   final List<Widget> _children = [
     TP(),
     PetitionP(),
-    EventsP(),
+    BulletinBoardP(),
     ResourceP(),
     //TP()
   ];
 
   @override
   Widget build(BuildContext context) {
+    TP Obj = _children[0];
+    Obj.setUser(this.myUser);
+    Obj.setAuth(this.userAuth);
     return Scaffold(
       extendBody: true,
       body: _children[page],

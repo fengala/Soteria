@@ -290,7 +290,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Text("There are a few fields missing\n"))));
             } else {
               name = name + " " + last_name;
-               UserAuth userAuth = new UserAuth();
+              UserAuth userAuth = new UserAuth();
               var res = await userAuth.createUser(
                   username, password, name, phone_number, list);
             }
@@ -309,6 +309,25 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     child: Text(x.code))));
           }
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                  title: Text("Success!"),
+                  content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Icon(Icons.check),
+                        DefaultTextStyle(
+                            style: style,
+                            child: Text(
+                              "We have successfully sent a verification mail to your mail address",
+                              textAlign: TextAlign.center,
+                              style: style.copyWith(
+                                color: Colors.green,
+                              ),
+                            )),
+                      ])));
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => LoginPage()));
         },
@@ -341,7 +360,8 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Container(
           color: Colors.white,
           child: Padding(
-            padding: const EdgeInsets.all(36.0),
+            padding: const EdgeInsets.only(
+                left: 36, right: 36, top: 36, bottom: 120.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,

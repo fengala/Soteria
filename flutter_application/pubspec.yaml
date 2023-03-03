@@ -22,6 +22,12 @@ dependencies:
   font_awesome_flutter: ^10.4.0
   pandabar: ^0.1.2
   timeago: ^3.3.0
+  shared_preferences: ^2.0.18
+  splashscreen: ^1.3.5
+  animated_splash_screen: ^1.3.0
+  page_transition: ^2.0.9
+  flutter_email_sender: ^5.2.0
+  mailer: ^6.0.0
 dev_dependencies:
   flutter_lints: ^2.0.1
   flutter_test:

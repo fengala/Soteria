@@ -5,11 +5,18 @@ import 'package:flutter_login_ui/services/database.dart';
 //import 'package:flutter/services.dart';
 import '../../services/auth.dart';
 import 'login.dart';
+import '../mainUI/homepage.dart';
 import '../../models/user.dart';
+import '../../services/auth.dart';
+import '../mainUI/homepage.dart';
+import '../navigation/startpoint.dart';
+import '../authentication/resetPassword.dart';
 
 class UpdatePage extends StatefulWidget {
   var myUser;
-  UpdatePage({Key key, this.title, this.myUser}) : super(key: key);
+  var userAuth;
+  UpdatePage({Key key, this.title, this.myUser, this.userAuth})
+      : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -20,7 +27,7 @@ class UpdatePage extends StatefulWidget {
   // always marked "final".
   final String title;
   @override
-  _UpdatePageState createState() => _UpdatePageState(myUser);
+  _UpdatePageState createState() => _UpdatePageState(myUser, userAuth);
 }
 
 //TO-DO:
@@ -29,6 +36,7 @@ class UpdatePage extends StatefulWidget {
 //User phone number
 class _UpdatePageState extends State<UpdatePage> {
   UserModel myUser;
+  UserAuth userAuth;
   String name = "";
   String last_name = "";
   String username = "";
@@ -38,7 +46,7 @@ class _UpdatePageState extends State<UpdatePage> {
   String emergency_contact1 = "";
   String emergency_contact2 = "";
   String emergency_contact3 = "";
-  _UpdatePageState(this.myUser) {
+  _UpdatePageState(this.myUser, this.userAuth) {
     name = myUser.name.split(" ")[0];
     last_name = myUser.name.split(" ")[1];
     username = myUser.username;
@@ -106,12 +114,12 @@ class _UpdatePageState extends State<UpdatePage> {
     return null;
   }
 
-  String validate_password(String val) {
-    if (val == null || val.isEmpty) {
-      return "This field is mandatory";
-    }
-    return null;
-  }
+  // String validate_password(String val) {
+  //   if (val == null || val.isEmpty) {
+  //     return "This field is mandatory";
+  //   }
+  //   return null;
+  // }
 
   String validate_phone(String val) {
     if (val == null || val.isEmpty) {
@@ -192,31 +200,7 @@ class _UpdatePageState extends State<UpdatePage> {
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
-    final passwordField = TextField(
-      controller: TextEditingController(text: password),
-      onChanged: (text) {
-        password = text;
-      },
-      obscureText: true,
-      style: style,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Password",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-    );
-    final reEnterPassword = TextField(
-      onChanged: (text) {
-        password2 = text;
-      },
-      obscureText: true,
-      style: style,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Re-enter the password",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-    );
+
     final phoneNumber = TextField(
       controller: TextEditingController(text: phone_number),
       onChanged: (text) {
@@ -289,26 +273,12 @@ class _UpdatePageState extends State<UpdatePage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () async {
+          bool prompt = true;
           List list = [
             emergency_contact1,
             emergency_contact2,
             emergency_contact3
           ];
-
-          if (password != password2) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                behavior: SnackBarBehavior.floating,
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                content: Container(
-                    height: 90,
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    child: Text("Passwords don't match"))));
-          }
 
           try {
             if (name == null ||
@@ -327,6 +297,7 @@ class _UpdatePageState extends State<UpdatePage> {
                 emergency_contact3 == null ||
                 last_name == null ||
                 last_name.isEmpty) {
+              prompt = false;
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   behavior: SnackBarBehavior.floating,
                   backgroundColor: Colors.transparent,
@@ -355,8 +326,13 @@ class _UpdatePageState extends State<UpdatePage> {
               print(myUser.emergency_contacts);
               print(myUser.phone_number);
 
-              var res = await DatabaseService(uid: myUser.uid)
-                  .updateUser(username, password, name, list, phone_number);
+              var res = await DatabaseService(uid: myUser.uid).updateUser(
+                  username,
+                  password,
+                  name,
+                  list,
+                  phone_number,
+                  myUser.loggedIn);
             }
           } catch (x) {
             print(x);
@@ -373,13 +349,42 @@ class _UpdatePageState extends State<UpdatePage> {
                     ),
                     child: Text(x.code))));
           }
+          if (prompt) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TPage(
+                          myUser: this.myUser,
+                          userAuth: this.userAuth,
+                        )));
+            showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                    title: Text("Success!"),
+                    content: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Icon(Icons.check),
+                          DefaultTextStyle(
+                              style: style,
+                              child: Text(
+                                "Successfully updated account details!",
+                                textAlign: TextAlign.center,
+                                style: style.copyWith(
+                                  color: Colors.green,
+                                ),
+                              )),
+                        ])));
+          }
         },
-        child: Text("Update  Account",
+        child: Text("Update Account",
             textAlign: TextAlign.right,
             style: style.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
+
     final backButton = Material(
       elevation: 0.0,
       borderRadius: BorderRadius.circular(10.0),
@@ -387,20 +392,50 @@ class _UpdatePageState extends State<UpdatePage> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
-        onPressed: () {},
-        child: Text("Back to Login",
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => HomeP(
+                        myUser: userAuth.user1,
+                        userAuth: userAuth,
+                      )));
+        },
+        child: Text("Back to Homepage",
             textAlign: TextAlign.right,
             style: style.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
-
+    final reset = Material(
+      elevation: 0.0,
+      borderRadius: BorderRadius.circular(10.0),
+      color: Colors.amber,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => resetPage(
+                        myUser: userAuth.user1,
+                        userAuth: userAuth,
+                      )));
+        },
+        child: Text("Reset Password",
+            textAlign: TextAlign.right,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
           color: Colors.white,
           child: Padding(
-            padding: const EdgeInsets.all(36.0),
+            padding: const EdgeInsets.only(
+                left: 36, right: 36, top: 36, bottom: 120.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -418,10 +453,6 @@ class _UpdatePageState extends State<UpdatePage> {
                 lastName,
                 SizedBox(height: 25.0),
                 usernameField,
-                SizedBox(height: 25.0),
-                passwordField,
-                SizedBox(height: 25.0),
-                reEnterPassword,
                 SizedBox(height: 25.0),
                 phoneNumber,
                 SizedBox(
@@ -442,6 +473,10 @@ class _UpdatePageState extends State<UpdatePage> {
                   height: 5.0,
                 ),
                 backButton,
+                SizedBox(
+                  height: 5.0,
+                ),
+                reset,
                 SizedBox(
                   height: 5.0,
                 ),

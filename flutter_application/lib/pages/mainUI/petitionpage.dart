@@ -39,6 +39,12 @@ class _PetitionPageState extends State<PetitionPage> {
     _petitionsFuture = getAllPetitions();
   }
 
+  void initPetitionsFuture() {
+    setState(() {
+      _petitionsFuture = getAllPetitions();
+    });
+  }
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -146,6 +152,9 @@ class _PetitionPageState extends State<PetitionPage> {
                                 myController.text,
                                 myController2.text);
                             Navigator.pop(context);
+                            setState(() {
+                              _petitionsFuture = getAllPetitions();
+                            });
                           },
                         )
                       ],
@@ -170,6 +179,7 @@ class _PetitionPageState extends State<PetitionPage> {
           return Container(
             color: Colors.white,
             child: ListView.separated(
+              padding: const EdgeInsets.only(bottom: 150.0),
               itemBuilder: (BuildContext context, int index) {
                 return petitions[index];
               },
