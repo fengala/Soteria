@@ -19,6 +19,8 @@ class Tweet extends StatefulWidget {
   final String id;
   final String description;
   final int i;
+  final String userId;
+  final int ver;
 
   Tweet({
     Key key,
@@ -33,6 +35,8 @@ class Tweet extends StatefulWidget {
     @required this.id,
     @required this.description,
     @required this.i,
+    @required this.userId,
+    @required this.ver,
   }) : super(key: key);
 
   @override
@@ -138,6 +142,11 @@ class _TweetState extends State<Tweet> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          this.widget.ver == 1
+
+              /// change this
+              ? tweetIconButton0(FontAwesomeIcons.checkToSlot)
+              : tweetIconButton0_1(FontAwesomeIcons.checkDouble),
           tweetIconButton1(FontAwesomeIcons.comment, this.widget.comments),
           this.widget.i == 1
               ? tweetIconButton2_1(
@@ -146,6 +155,42 @@ class _TweetState extends State<Tweet> {
                   FontAwesomeIcons.solidHeart, this.widget.favorites),
         ],
       ),
+    );
+  }
+
+  Widget tweetIconButton0_1(IconData icon) {
+    return Row(
+      children: [
+        IconButton(
+          icon: const Icon(FontAwesomeIcons.x),
+          onPressed: () {
+            print("Pressed Tick");
+          },
+          iconSize: 16.0,
+          color: Colors.red,
+        ),
+        Container(
+          margin: const EdgeInsets.all(6.0),
+        ),
+      ],
+    );
+  }
+
+  Widget tweetIconButton0(IconData icon) {
+    return Row(
+      children: [
+        IconButton(
+          icon: const Icon(FontAwesomeIcons.check),
+          onPressed: () {
+            print("Pressed Tick");
+          },
+          iconSize: 16.0,
+          color: Colors.green,
+        ),
+        Container(
+          margin: const EdgeInsets.all(6.0),
+        ),
+      ],
     );
   }
 

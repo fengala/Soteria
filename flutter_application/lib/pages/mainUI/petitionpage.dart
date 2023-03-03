@@ -120,38 +120,39 @@ class _PetitionPageState extends State<PetitionPage> {
                 context: context,
                 builder: (context) => AlertDialog(
                       title: Text("Create a Petition"),
-                      content: SingleChildScrollView( child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          TextField(
-                            controller: myController,
-                            autofocus: true,
-                            decoration: const InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.grey, width: 2.0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.grey, width: 2.0),
-                                ),
-                                hintStyle: TextStyle(fontSize: 15),
-                                hintText: "Enter your petition title here"),
-                          ),
-                          TextField(
-                            controller: myController2,
-                            autofocus: true,
-                            decoration: const InputDecoration(
-                                hintStyle: TextStyle(fontSize: 15),
-                                hintText:
-                                    "Enter your petition description here"),
-                            keyboardType: TextInputType.multiline,
-                            minLines: null,
-                            maxLines: null,
-                          ),
-                        ],
-                      ),
+                      content: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            TextField(
+                              controller: myController,
+                              autofocus: true,
+                              decoration: const InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 2.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 2.0),
+                                  ),
+                                  hintStyle: TextStyle(fontSize: 15),
+                                  hintText: "Enter your petition title here"),
+                            ),
+                            TextField(
+                              controller: myController2,
+                              autofocus: true,
+                              decoration: const InputDecoration(
+                                  hintStyle: TextStyle(fontSize: 15),
+                                  hintText:
+                                      "Enter your petition description here"),
+                              keyboardType: TextInputType.multiline,
+                              minLines: null,
+                              maxLines: null,
+                            ),
+                          ],
+                        ),
                       ),
                       actions: [
                         TextButton(
@@ -166,22 +167,26 @@ class _PetitionPageState extends State<PetitionPage> {
                             print(myController2.text);
                             if (myController.text == "" ||
                                 myController2.text == "") {
-                              showDialog(context: context, builder: (context) => AlertDialog(
-                                  title: Text("Error"),
-                                  content: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Icon(Icons.close),
-                                        DefaultTextStyle(
-                                            style: style,
-                                            child: Text(
-                                              "A few fields are missing!",
-                                              textAlign: TextAlign.center,
-                                              style:
-                                              style.copyWith(color: Colors.red,),
-                                            )),
-                                      ])));
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                      title: Text("Error"),
+                                      content: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Icon(Icons.close),
+                                            DefaultTextStyle(
+                                                style: style,
+                                                child: Text(
+                                                  "A few fields are missing!",
+                                                  textAlign: TextAlign.center,
+                                                  style: style.copyWith(
+                                                    color: Colors.red,
+                                                  ),
+                                                )),
+                                          ])));
                             } else {
                               var user = await DatabaseService()
                                   .getUser(UserAuth.auth.currentUser.uid);
@@ -189,7 +194,8 @@ class _PetitionPageState extends State<PetitionPage> {
                               var pet = await DatabaseService().addPetition(
                                   user['name'],
                                   myController.text,
-                                  myController2.text);
+                                  myController2.text,
+                                  UserAuth.auth.currentUser.uid);
 
                               Navigator.pop(context);
                               setState(() {
@@ -280,6 +286,7 @@ class Tweet extends StatefulWidget {
   final String id;
   final String description;
   final int i;
+  final bool verified;
 
   Tweet({
     Key key,
@@ -294,6 +301,7 @@ class Tweet extends StatefulWidget {
     @required this.id,
     @required this.description,
     @required this.i,
+    @required this.verified,
   }) : super(key: key);
 
   @override
