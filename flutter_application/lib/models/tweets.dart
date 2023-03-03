@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flutter_login_ui/services/auth.dart';
 import 'package:flutter_login_ui/services/database.dart';
 
-import 'tweet.dart';
+import '../pages/mainUI/petitionpage.dart';
+
 
 // var petitions = DatabaseService().getPetitions();
 // var p = json.decode(petitions as String);
