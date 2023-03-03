@@ -302,14 +302,15 @@ class _EventState extends State<Event> {
               print("RSVP: $rsvp");
               if (rsvp) {
                 icon = FontAwesomeIcons.solidCalendarCheck;
+
+                Future x = DatabaseService().addRSVPConfirm(
+                    widget.id, UserAuth.auth.currentUser.uid);
+                if (x == true) {
+                  icon = FontAwesomeIcons.solidCalendarCheck;
+                }
+
               } else {
                 icon = FontAwesomeIcons.calendarCheck;
-              }
-
-              Future x = DatabaseService().addRSVPConfirm(
-                  widget.id, UserAuth.auth.currentUser.uid);
-              if (x == true) {
-                icon = FontAwesomeIcons.solidCalendarCheck;
               }
 
             } else {
