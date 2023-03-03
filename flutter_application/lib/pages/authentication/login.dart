@@ -274,8 +274,8 @@ class _LoginPageState extends State<LoginPage> {
               style.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
         ));
     final createAccount = Material(
-      elevation: 0.0,
-      borderRadius: BorderRadius.circular(10.0),
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
       color: Colors.amber,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
