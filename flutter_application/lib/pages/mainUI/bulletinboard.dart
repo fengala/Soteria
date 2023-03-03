@@ -186,8 +186,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                                 .getUser(UserAuth.auth.currentUser.uid);
                             if (myController.text == "" ||
                                 myController2.text == "" ||
-                                myController3.text == "" ||
-                                myController4.text == "") {
+                                myController3.text == "") {
                               showDialog(
                                   context: context,
                                   builder: (context) => AlertDialog(
