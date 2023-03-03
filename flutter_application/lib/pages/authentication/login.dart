@@ -172,7 +172,8 @@ class _LoginPageState extends State<LoginPage> {
                     user_detail['password'],
                     user_detail['emergency_contacts'],
                     user_detail['phone_number'],
-                    user_detail['remember']);
+                    user_detail['remember'],
+                    userAuth.user.emailVerified);
                 print(userAuth.user1);
                 userAuth.user1.loggedIn = remember;
                 await DatabaseService().updatePref(remember, userAuth.user.uid);

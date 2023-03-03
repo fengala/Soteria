@@ -92,7 +92,8 @@ class splashScreen extends State<flashScreen> {
                   user_details['password'],
                   user_details['emergency_contacts'],
                   user_details['phone_number'],
-                  user_details['remember']);
+                  user_details['remember'],
+                  user_fir.emailVerified);
               obj = HomeP(
                 myUser: userAuth.user1,
                 userAuth: userAuth,

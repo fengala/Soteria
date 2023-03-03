@@ -15,9 +15,10 @@ class UserModel {
   List upvotedEvents;
   List RSVPEvents;
   bool loggedIn;
+  bool verified;
 
   UserModel(uid, name, username, password, emergency_contacts, phone_number,
-      loggedIn) {
+      loggedIn, verified) {
     this.uid = uid;
     this.name = name;
     this.username = username;
