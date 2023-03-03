@@ -93,7 +93,7 @@ class _EventState extends State<Event> {
                 margin: const EdgeInsets.only(right: 5.0),
               ),
               Text(
-                '@${widget.name} · ${widget.time}',
+                '@${widget.name} · ${widget.time} hell',
                 style: TextStyle(
                   color: Colors.grey,
                 ),

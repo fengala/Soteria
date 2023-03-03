@@ -218,7 +218,8 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                                   myController.text,
                                   myController2.text,
                                   myController3.text,
-                                  myController4.text);
+                                  myController4.text,
+                                  UserAuth.auth.currentUser.uid);
                               Navigator.pop(context);
                             }
                           },
@@ -278,6 +279,8 @@ class Event extends StatefulWidget {
   final int hasRSVP;
   final String rsvp_form;
   final int alreadyRSVP;
+  final String userId;
+  final int ver;
 
   Event({
     Key key,
@@ -293,6 +296,8 @@ class Event extends StatefulWidget {
     @required this.hasRSVP,
     @required this.rsvp_form,
     @required this.alreadyRSVP,
+    @required this.userId,
+    @required this.ver,
   }) : super(key: key);
 
   @override
@@ -409,6 +414,11 @@ class _EventState extends State<Event> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          this.widget.ver == 1
+
+              /// change this
+              ? tweetIconButton0(FontAwesomeIcons.checkToSlot)
+              : tweetIconButton0_1(FontAwesomeIcons.checkDouble),
           eventIconButton1(FontAwesomeIcons.comments, this.widget.comments),
           this.widget.hasUpvote == 1
               ? eventIconButton2_1(FontAwesomeIcons.heart, this.widget.upvotes)
@@ -422,6 +432,42 @@ class _EventState extends State<Event> {
               : eventIconButton3_X(FontAwesomeIcons.calendarXmark, ''),
         ],
       ),
+    );
+  }
+
+  Widget tweetIconButton0_1(IconData icon) {
+    return Row(
+      children: [
+        IconButton(
+          icon: const Icon(FontAwesomeIcons.x),
+          onPressed: () {
+            print("Pressed Tick");
+          },
+          iconSize: 16.0,
+          color: Colors.red,
+        ),
+        Container(
+          margin: const EdgeInsets.all(6.0),
+        ),
+      ],
+    );
+  }
+
+  Widget tweetIconButton0(IconData icon) {
+    return Row(
+      children: [
+        IconButton(
+          icon: const Icon(FontAwesomeIcons.check),
+          onPressed: () {
+            print("Pressed Tick");
+          },
+          iconSize: 16.0,
+          color: Colors.green,
+        ),
+        Container(
+          margin: const EdgeInsets.all(6.0),
+        ),
+      ],
     );
   }
 
