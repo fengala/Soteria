@@ -157,7 +157,7 @@ class _TweetDetailsPageState extends State<tweetdetails> {
 
                               var pet = await DatabaseService()
                                   .addReplyToAPetition(widget.pid,
-                                      user['username'], myController2.text);
+                                      user['name'], myController2.text);
                               Navigator.pop(context);
                               if (_mounted) {
                                 setState(() {

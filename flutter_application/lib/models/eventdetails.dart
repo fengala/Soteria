@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/models/replies.dart';
 import 'package:flutter_login_ui/models/reply.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_login_ui/services/auth.dart';
@@ -21,15 +25,48 @@ class eventdetails extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _EventDetailsPageState createState() => _EventDetailsPageState();
+  _eventDetailsPageState createState() => _eventDetailsPageState();
 }
 
-class _EventDetailsPageState extends State<eventdetails> {
+Future _eventsFuture;
+
+class _eventDetailsPageState extends State<eventdetails> {
   final myController2 = TextEditingController();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  bool _mounted = false;
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> eventsStream() {
+    return firestore.collection('Events').snapshots();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _mounted = true;
+
+    _eventsFuture = getAllRepliesEve(widget.eid);
+    eventsStream().listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
+      // Trigger an automatic update
+      if (_mounted) {
+        setState(() {
+          initEventsFuture();
+        });
+      }
+    });
+  }
+
+  void initEventsFuture() {
+    setState(() {
+      _eventsFuture = getAllRepliesEve(widget.eid);
+    });
+  }
 
   @override
   void dispose() {
+    // Clean up the controller when the widget is disposed.
     myController2.dispose();
+    _mounted = false;
+
     super.dispose();
   }
 
@@ -48,7 +85,7 @@ class _EventDetailsPageState extends State<eventdetails> {
         foregroundColor: Colors.black,
         elevation: 1,
       ),
-      body: SingleChildScrollView( child: Column(
+      body: Column(
         children: [
           Expanded(
             child: Container(
@@ -66,7 +103,7 @@ class _EventDetailsPageState extends State<eventdetails> {
                   Text(
                     widget.when,
                     style: TextStyle(
-                      fontSize: 24.0,
+                      fontSize: 21.0,
                       fontWeight: FontWeight.w200,
                     ),
                   ),
@@ -79,21 +116,12 @@ class _EventDetailsPageState extends State<eventdetails> {
               ),
             ),
           ),
-          Divider(height: 0.0),
           Expanded(
-            child: ListView.builder(
-              itemCount: widget.replies.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(widget.replies[index].replyText),
-                  subtitle: Text('@${widget.replies[index].username} '
-                      '· ${widget.replies[index].time}'),
-                );
-              },
+            child: Container(
+              child: replyList(),
             ),
           ),
         ],
-      ),
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 40.0),
@@ -107,7 +135,7 @@ class _EventDetailsPageState extends State<eventdetails> {
                 context: context,
                 builder: (context) => AlertDialog(
                   title: Text("Enter Your Reply"),
-                  content: SingleChildScrollView( child: Column(
+                  content: SingleChildScrollView( child:Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -131,22 +159,54 @@ class _EventDetailsPageState extends State<eventdetails> {
                           Navigator.pop(context);
                         }),
                     TextButton(
-                      child: Text("REPLY"),
-                      onPressed: () async {
-                        var user = await DatabaseService()
-                            .getUser(UserAuth.auth.currentUser.uid);
+                        child: Text("REPLY"),
+                        onPressed: () async {
+                          var user = await DatabaseService()
+                              .getUser(UserAuth.auth.currentUser.uid);
 
-                        var eve = await DatabaseService()
-                            .addReplyToAEvent(widget.eid,
-                            user['username'], myController2.text);
-                        Navigator.pop(context);
-                      },
-                    )
+                          var eve = await DatabaseService()
+                              .addReplyToAEvent(widget.eid,
+                              user['name'], myController2.text);
+                          Navigator.pop(context);
+                          if (_mounted) {
+                            setState(() {
+                              initEventsFuture();
+                            });
+                          }
+                        })
                   ],
                 ));
           },
         ),
       ),
+    );
+  }
+
+  Widget replyList() {
+    return FutureBuilder(
+      future: getAllRepliesEve(widget.eid),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<dynamic> replies = snapshot.data;
+          return Container(
+            color: Colors.white,
+            child: ListView.separated(
+              padding: const EdgeInsets.only(bottom: 150.0),
+              itemBuilder: (BuildContext context, int index) {
+                return replies[index];
+              },
+              separatorBuilder: (BuildContext context, int index) => Divider(
+                height: 0,
+              ),
+              itemCount: replies.length,
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error fetching replies'));
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 }
