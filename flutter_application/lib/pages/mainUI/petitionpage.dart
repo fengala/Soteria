@@ -286,7 +286,8 @@ class Tweet extends StatefulWidget {
   final String id;
   final String description;
   final int i;
-  final bool verified;
+  final String userId;
+  final int ver;
 
   Tweet({
     Key key,
@@ -301,7 +302,8 @@ class Tweet extends StatefulWidget {
     @required this.id,
     @required this.description,
     @required this.i,
-    @required this.verified,
+    @required this.userId,
+    @required this.ver,
   }) : super(key: key);
 
   @override
