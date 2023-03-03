@@ -107,7 +107,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
         child: eventList(),
       ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 40.0),
+        padding: const EdgeInsets.only(bottom: 70.0),
         child: FloatingActionButton(
           child: Icon(
             FontAwesomeIcons.pen,

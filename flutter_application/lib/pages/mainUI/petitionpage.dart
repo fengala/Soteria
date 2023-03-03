@@ -109,7 +109,7 @@ class _PetitionPageState extends State<PetitionPage> {
         child: petitionList(),
       ), //petitionList(),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 40.0),
+        padding: const EdgeInsets.only(bottom: 70.0),
         child: FloatingActionButton(
           child: Icon(
             FontAwesomeIcons.pen,
