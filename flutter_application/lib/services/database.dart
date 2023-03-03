@@ -35,19 +35,23 @@ class DatabaseService {
       'remember': remember,
       'upvotedEvents': [],
       'RSVPEvents': [],
+      'verified': false,
     });
   }
 
   Future updateUser(String username, String password, String name,
-      emergency_contacts, String phone_number, bool remember) async {
+      emergency_contacts, String phone_number) async {
     return await userRef.doc(uid).update({
       'username': username,
       'password': password,
       'name': name,
       'emergency_contacts': emergency_contacts,
       'phone_number': phone_number,
-      'remember': remember
     });
+  }
+
+  Future updateVerification(String uid) async {
+    return await userRef.doc(uid).update({'verified': true});
   }
 
   Future updatePref(bool value, String uid) async {

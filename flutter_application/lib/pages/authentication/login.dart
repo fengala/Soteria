@@ -50,25 +50,21 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool isChecked = true;
+  bool isChecked = false;
   String email;
   String password;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   UserAuth userAuth = new UserAuth();
   var user;
 
-
   @override
   void dispose() {
-    user.cancel();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
     bool remember = false;
-    //Widget rememberMe;
     /*  userAuth.user = FirebaseAuth.instance.currentUser;
     var user_detail;
 
@@ -98,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Email",
           border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final passwordField = TextField(
       onChanged: (text) {
@@ -110,68 +106,46 @@ class _LoginPageState extends State<LoginPage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Password",
           border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
-
-    // final textRemember = Text("Remember Me",
-    //     textAlign: TextAlign.right,
-    //     style:
-    //         TextStyle(color: Colors.amber, fontSize: 12, fontFamily: 'Rubic'));
-    // child: Theme(
-    // data: ThemeData(
-    // unselectedWidgetColor:
-    // Colors.amber // Your color
-    // ),
-    // child: rememberMe));
-
-
-    // StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
-    //   Widget rememberMe = CheckboxListTile(
-    //     title: Text("Remember me"),
-    //     activeColor: Colors.amber,
-    //     value: isChecked,
-    //     onChanged: (bool value) async {
-    //       setState(() {
-    //         remember = value;
-    //       });
-    //     },
-    //   );
-    //   return rememberMe;
-    // }
-    // );
+    final rememberMe = Checkbox(
+      activeColor: Colors.amber,
+      value: isChecked,
+      onChanged: (bool value) {
+        setState(() {
+          remember = value;
+        });
+      },
+    );
 
     final loginButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
       color: Colors.amber,
       child: MaterialButton(
-        minWidth: MediaQuery
-            .of(context)
-            .size
-            .width,
+        minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () async {
           if (email == null || password == null) {
             showDialog(
                 context: context,
-                builder: (context) =>
-                    AlertDialog(
-                        title: Text("Error"),
-                        content: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Icon(Icons.close),
-                              DefaultTextStyle(
-                                  style: style,
-                                  child: Text(
-                                    "A few fields are missing!",
-                                    textAlign: TextAlign.center,
-                                    style: style.copyWith(
-                                      color: Colors.red,
-                                    ),
-                                  )),
-                            ])));
+                builder: (context) => AlertDialog(
+                    title: Text("Error"),
+                    content: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Icon(Icons.close),
+                          DefaultTextStyle(
+                              style: style,
+                              child: Text(
+                                "A few fields are missing!",
+                                textAlign: TextAlign.center,
+                                style: style.copyWith(
+                                  color: Colors.red,
+                                ),
+                              )),
+                        ])));
           } else {
             try {
               email = email.trim();
@@ -188,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
 
               try {
                 var user_detail =
-                await DatabaseService().getUser(userAuth.user.uid);
+                    await DatabaseService().getUser(userAuth.user.uid);
                 print(user_detail['remember']);
                 userAuth.user1 = new UserModel(
                     userAuth.user.uid,
@@ -198,22 +172,40 @@ class _LoginPageState extends State<LoginPage> {
                     user_detail['emergency_contacts'],
                     user_detail['phone_number'],
                     user_detail['remember'],
-                    userAuth.user.emailVerified);
+                    user_detail['verified']);
                 print(userAuth.user1);
                 userAuth.user1.loggedIn = remember;
-                await DatabaseService().updatePref(remember, userAuth.user.uid);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            HomeP(
-                              myUser: userAuth.user1,
-                              userAuth: userAuth,
-                            )));
 
-                print(user_detail['username']);
-                print(user_detail);
-                print(user_detail.runtimeType);
+                userAuth.user.reload;
+
+                if (userAuth.user.emailVerified) {
+                  await DatabaseService()
+                      .updatePref(remember, userAuth.user.uid);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomeP(
+                                myUser: userAuth.user1,
+                                userAuth: userAuth,
+                              )));
+
+                  print(user_detail['username']);
+                  print(user_detail);
+                  print(user_detail.runtimeType);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      elevation: 0,
+                      content: Container(
+                          height: 90,
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: Text("Don't forget to verify the account"))));
+                }
               } catch (e, stacktrace) {
                 print(e);
                 print(stacktrace);
@@ -251,17 +243,14 @@ class _LoginPageState extends State<LoginPage> {
           "Not Registered yet?",
           textAlign: TextAlign.center,
           style:
-          style.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
+              style.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
         ));
     final createAccount = Material(
       elevation: 0.0,
       borderRadius: BorderRadius.circular(10.0),
       color: Colors.amber,
       child: MaterialButton(
-        minWidth: MediaQuery
-            .of(context)
-            .size
-            .width,
+        minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () {
           Navigator.push(
@@ -273,7 +262,6 @@ class _LoginPageState extends State<LoginPage> {
                 color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
-
 
     return Scaffold(
       body: Center(
@@ -314,19 +302,19 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   // textRemember,
                   // SizedBox(height: 5.0),
-              StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
-                return CheckboxListTile(
-                  title: Text("Remember me"),
-                  activeColor: Colors.amber,
-                  value: remember,
-                  onChanged: (bool value) async {
-                    setState(() {
-                      remember = value;
-                    });
-                  },
-                );
-              }
-              ),
+                  StatefulBuilder(
+                      builder: (BuildContext context, StateSetter setState) {
+                    return CheckboxListTile(
+                      title: Text("Remember me"),
+                      activeColor: Colors.amber,
+                      value: remember,
+                      onChanged: (bool value) async {
+                        setState(() {
+                          remember = value;
+                        });
+                      },
+                    );
+                  }),
                   SizedBox(
                     height: 5.0,
                   )

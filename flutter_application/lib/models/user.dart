@@ -29,5 +29,9 @@ class UserModel {
     this.upvotedEvents = [];
     this.RSVPEvents = [];
     this.loggedIn = false;
+    this.verified = false;
+  }
+  void setVerified(bool value) {
+    this.verified = value;
   }
 }

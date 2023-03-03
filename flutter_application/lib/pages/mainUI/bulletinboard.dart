@@ -9,6 +9,7 @@ import '../../models/replies.dart';
 import '../../models/reply.dart';
 import '../../services/auth.dart';
 import '../../services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future _eventsFuture;
 
@@ -70,7 +71,6 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,7 +90,11 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
         actions: [
           IconButton(
             icon: Icon(Icons.refresh),
-            onPressed: () {
+            onPressed: () async {
+              var user = FirebaseAuth.instance.currentUser;
+              if (user.email.contains("purdue.edu")) {
+                await DatabaseService().updateVerification(user.uid);
+              }
               setState(() {
                 _eventsFuture = getAllEvents();
               });
@@ -117,82 +121,85 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
             showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text("Create an Event"),
-                  content: SingleChildScrollView( child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      TextField(
-                        controller: myController,
-                        autofocus: true,
-                        decoration: const InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.black45, width: 3.0),
+                      title: Text("Create an Event"),
+                      content: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            TextField(
+                              controller: myController,
+                              autofocus: true,
+                              decoration: const InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.black45, width: 3.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.black45, width: 2.0),
+                                  ),
+                                  hintStyle: TextStyle(fontSize: 20),
+                                  hintText: "Enter your event title here"),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.black45, width: 2.0),
+                            TextField(
+                              controller: myController3,
+                              autofocus: true,
+                              decoration: const InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                  ),
+                                  hintStyle: TextStyle(fontSize: 15),
+                                  hintText: "When is the event"),
                             ),
-                            hintStyle: TextStyle(fontSize: 20),
-                            hintText: "Enter your event title here"),
-                      ),
-                      TextField(
-                        controller: myController3,
-                        autofocus: true,
-                        decoration: const InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.grey, width: 1.0),
+                            TextField(
+                              controller: myController2,
+                              autofocus: true,
+                              decoration: const InputDecoration(
+                                  hintStyle: TextStyle(fontSize: 15),
+                                  hintText:
+                                      "Enter your event description here"),
+                              keyboardType: TextInputType.multiline,
+                              minLines: null,
+                              maxLines: null,
                             ),
-                            hintStyle: TextStyle(fontSize: 15),
-                            hintText: "When is the event"),
+                            TextField(
+                              controller: myController4,
+                              autofocus: true,
+                              decoration: const InputDecoration(
+                                  hintStyle: TextStyle(fontSize: 15),
+                                  hintText: "Enter RSVP form (optional)"),
+                              keyboardType: TextInputType.multiline,
+                              minLines: null,
+                              maxLines: null,
+                            ),
+                          ],
+                        ),
                       ),
-                      TextField(
-                        controller: myController2,
-                        autofocus: true,
-                        decoration: const InputDecoration(
-                            hintStyle: TextStyle(fontSize: 15),
-                            hintText:
-                            "Enter your event description here"),
-                        keyboardType: TextInputType.multiline,
-                        minLines: null,
-                        maxLines: null,
-                      ),
-                      TextField(
-                        controller: myController4,
-                        autofocus: true,
-                        decoration: const InputDecoration(
-                            hintStyle: TextStyle(fontSize: 15),
-                            hintText:
-                            "Enter RSVP form (optional)"),
-                        keyboardType: TextInputType.multiline,
-                        minLines: null,
-                        maxLines: null,
-                      ),
-                    ],
-                  ),
-                  ),
-                  actions: [
-                    TextButton(
-                        child: Text("CANCEL"),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        }),
-                    TextButton(
-                      child: Text("CREATE"),
-                      onPressed: () async {
-                        var user = await DatabaseService()
-                            .getUser(UserAuth.auth.currentUser.uid);
+                      actions: [
+                        TextButton(
+                            child: Text("CANCEL"),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            }),
+                        TextButton(
+                          child: Text("CREATE"),
+                          onPressed: () async {
+                            var user = await DatabaseService()
+                                .getUser(UserAuth.auth.currentUser.uid);
 
-                        var eve = await DatabaseService().addEvent(
-                            user['name'],
-                            myController.text, myController2.text, myController3.text, myController4.text);
-                        Navigator.pop(context);
-                      },
-                    )
-                  ],
-                ));
+                            var eve = await DatabaseService().addEvent(
+                                user['name'],
+                                myController.text,
+                                myController2.text,
+                                myController3.text,
+                                myController4.text);
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    ));
           },
         ),
       ),
@@ -233,17 +240,6 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
 class Event extends StatefulWidget {
   final String title;
   final String name;
@@ -279,7 +275,6 @@ class Event extends StatefulWidget {
 }
 
 class _EventState extends State<Event> {
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -342,14 +337,13 @@ class _EventState extends State<Event> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          eventdetails(
-                            title: widget.title,
-                            description: widget.description,
-                            eid: widget.id,
-                            replies: replies,
-                            when: widget.when,
-                          ),
+                      builder: (context) => eventdetails(
+                        title: widget.title,
+                        description: widget.description,
+                        eid: widget.id,
+                        replies: replies,
+                        when: widget.when,
+                      ),
                     ),
                   );
                 },
@@ -394,11 +388,12 @@ class _EventState extends State<Event> {
           this.widget.hasUpvote == 1
               ? eventIconButton2_1(FontAwesomeIcons.heart, this.widget.upvotes)
               : eventIconButton2(
-              FontAwesomeIcons.solidHeart, this.widget.upvotes),
+                  FontAwesomeIcons.solidHeart, this.widget.upvotes),
           this.widget.hasRSVP == 1
               ? this.widget.alreadyRSVP == 1
-              ? eventIconButton3_1(FontAwesomeIcons.solidCalendarCheck, 'RSVP')
-              : eventIconButton3(FontAwesomeIcons.calendarCheck, 'RSVP')
+                  ? eventIconButton3_1(
+                      FontAwesomeIcons.solidCalendarCheck, 'RSVP')
+                  : eventIconButton3(FontAwesomeIcons.calendarCheck, 'RSVP')
               : eventIconButton3_X(FontAwesomeIcons.calendarXmark, ''),
         ],
       ),
@@ -418,13 +413,11 @@ class _EventState extends State<Event> {
         ),
         Container(
           margin: const EdgeInsets.all(6.0),
-          child: Text(
-              text,
+          child: Text(text,
               style: TextStyle(
                 color: Colors.black45,
                 fontSize: 14.0,
-              )
-          ),
+              )),
         ),
       ],
     );
@@ -544,8 +537,8 @@ class _EventState extends State<Event> {
               if (rsvp) {
                 icon = FontAwesomeIcons.solidCalendarCheck;
 
-                Future x = DatabaseService().addRSVPConfirm(
-                    widget.id, UserAuth.auth.currentUser.uid);
+                Future x = DatabaseService()
+                    .addRSVPConfirm(widget.id, UserAuth.auth.currentUser.uid);
                 if (x == true) {
                   icon = FontAwesomeIcons.solidCalendarCheck;
                 }
@@ -585,7 +578,6 @@ class _EventState extends State<Event> {
     );
   }
 
-
   Widget eventIconButton3_1(IconData icon, String text) {
     return Row(
       children: [
@@ -621,8 +613,6 @@ class _EventState extends State<Event> {
   }
 }
 
-
-
 class RSVPDialog extends StatefulWidget {
   @override
   _RSVPDialogState createState() => _RSVPDialogState();
@@ -640,7 +630,8 @@ class _RSVPDialogState extends State<RSVPDialog> {
         TextButton(
           child: Text("No"),
           onPressed: () {
-            Navigator.pop(context, false); // Return false when 'No' button clicked
+            Navigator.pop(
+                context, false); // Return false when 'No' button clicked
           },
         ),
         TextButton(
@@ -649,7 +640,8 @@ class _RSVPDialogState extends State<RSVPDialog> {
             setState(() {
               _rsvp = true;
             });
-            Navigator.pop(context, true); // Return true when 'Yes' button clicked
+            Navigator.pop(
+                context, true); // Return true when 'Yes' button clicked
           },
         ),
       ],

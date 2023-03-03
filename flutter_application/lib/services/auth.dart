@@ -19,11 +19,14 @@ class UserAuth {
 
     this.user = res.user;
 
+    final email_sent = "appsoteria307@gmail.com";
+    final token = "";
+
+    await this.user.sendEmailVerification();
     print(user.uid);
 
     await DatabaseService(uid: user.uid).register(
         email, password, name, emergency_contacts, phone_number, false);
-    this.user.sendEmailVerification();
 
     return user;
   }
@@ -78,6 +81,22 @@ class UserAuth {
     var res = await auth.setPersistence(Persistence.LOCAL);
 
     return res;
+  }
+
+  Future verifyUser() async {
+    final email = "appsoteria307@gmail.com";
+    final token = "";
+
+    final smtp = gmail(email, "okhvqhdvaltmynjw");
+
+    final message = Message()
+      ..from = Address(email, "Soteria")
+      ..subject = "Verification"
+      ..recipients = [this.user.email]
+      ..text =
+          "Great! Your account has been Green-Ticked!, refresh the petitions page to see the changes in petitions and events page";
+
+    await send(message, smtp);
   }
 
   Future SignOut() async {

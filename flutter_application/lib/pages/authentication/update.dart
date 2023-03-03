@@ -266,6 +266,72 @@ class _UpdatePageState extends State<UpdatePage> {
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
 
+    final verifyUser = Material(
+      elevation: 0.0,
+      borderRadius: BorderRadius.circular(10.0),
+      color: Colors.amber,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
+        onPressed: () async {
+          if (!this.myUser.username.contains("purdue.edu")) {
+            showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                    title: Text("Failed"),
+                    content: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Icon(Icons.check),
+                          DefaultTextStyle(
+                              style: style,
+                              child: Text(
+                                "The email has to be a purdue member to green tick your account",
+                                textAlign: TextAlign.center,
+                                style: style.copyWith(
+                                  color: Colors.red,
+                                ),
+                              )),
+                        ])));
+          } else {
+            this.userAuth.verifyUser();
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => HomeP(
+                          myUser: this.myUser,
+                          userAuth: this.userAuth,
+                        )));
+
+            showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                    title: Text("Success!"),
+                    content: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Icon(Icons.check),
+                          DefaultTextStyle(
+                              style: style,
+                              child: Text(
+                                "Verification Email Sent!",
+                                textAlign: TextAlign.center,
+                                style: style.copyWith(
+                                  color: Colors.green,
+                                ),
+                              )),
+                        ])));
+          }
+        },
+        child: Text("Verify Account",
+            textAlign: TextAlign.right,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+
     final createAccount = Material(
       elevation: 0.0,
       borderRadius: BorderRadius.circular(10.0),
@@ -337,12 +403,12 @@ class _UpdatePageState extends State<UpdatePage> {
               print(myUser.phone_number);
 
               var res = await DatabaseService(uid: myUser.uid).updateUser(
-                  username,
-                  password,
-                  name,
-                  list,
-                  phone_number,
-                  myUser.loggedIn);
+                username,
+                password,
+                name,
+                list,
+                phone_number,
+              );
             }
           } catch (x) {
             print(x);
@@ -488,6 +554,10 @@ class _UpdatePageState extends State<UpdatePage> {
                     height: 5.0,
                   ),
                   reset,
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  verifyUser,
                   SizedBox(
                     height: 5.0,
                   ),

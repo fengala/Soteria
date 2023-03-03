@@ -36,6 +36,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String emergency_contact1;
   String emergency_contact2;
   String emergency_contact3;
+  String first_name;
 
   String error_message;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
@@ -87,7 +88,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     final firstName = TextField(
       onChanged: (text) {
-        name = text;
+        first_name = text;
 
         /*  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 behavior: SnackBarBehavior.floating,
@@ -265,8 +266,8 @@ class _RegisterPageState extends State<RegisterPage> {
           }
 
           try {
-            if (name == null ||
-                name.isEmpty ||
+            if (first_name == null ||
+                first_name.isEmpty ||
                 password == null ||
                 password.isEmpty ||
                 username == null ||
@@ -294,11 +295,12 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       child: Text("There are a few fields missing\n"))));
             } else {
-              name = name + " " + last_name;
+              name = first_name + " " + last_name;
+              print(name);
               UserAuth userAuth = new UserAuth();
               name.trim();
-              username.trim();
-              password.trim();
+              username = username.trim();
+              password = password.trim();
               name.trim();
               phone_number.trim();
 

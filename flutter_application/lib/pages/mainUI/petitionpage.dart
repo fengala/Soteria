@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/models/tweet.dart';
+import 'package:flutter_login_ui/models/user.dart';
 import 'package:flutter_login_ui/services/auth.dart';
 import 'package:flutter_login_ui/services/database.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,6 +11,7 @@ import '../../models/reply.dart';
 import '../../models/tweetdetails.dart';
 import '../../models/tweets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future _petitionsFuture;
 
@@ -92,7 +94,11 @@ class _PetitionPageState extends State<PetitionPage> {
         actions: [
           IconButton(
             icon: Icon(Icons.refresh),
-            onPressed: () {
+            onPressed: () async {
+              var user = FirebaseAuth.instance.currentUser;
+              if (user.email.contains("purdue.edu")) {
+                await DatabaseService().updateVerification(user.uid);
+              }
               setState(() {
                 _petitionsFuture = getAllPetitions();
               });
@@ -120,38 +126,39 @@ class _PetitionPageState extends State<PetitionPage> {
                 context: context,
                 builder: (context) => AlertDialog(
                       title: Text("Create a Petition"),
-                      content: SingleChildScrollView( child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          TextField(
-                            controller: myController,
-                            autofocus: true,
-                            decoration: const InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.grey, width: 2.0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.grey, width: 2.0),
-                                ),
-                                hintStyle: TextStyle(fontSize: 15),
-                                hintText: "Enter your petition title here"),
-                          ),
-                          TextField(
-                            controller: myController2,
-                            autofocus: true,
-                            decoration: const InputDecoration(
-                                hintStyle: TextStyle(fontSize: 15),
-                                hintText:
-                                    "Enter your petition description here"),
-                            keyboardType: TextInputType.multiline,
-                            minLines: null,
-                            maxLines: null,
-                          ),
-                        ],
-                      ),
+                      content: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            TextField(
+                              controller: myController,
+                              autofocus: true,
+                              decoration: const InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 2.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 2.0),
+                                  ),
+                                  hintStyle: TextStyle(fontSize: 15),
+                                  hintText: "Enter your petition title here"),
+                            ),
+                            TextField(
+                              controller: myController2,
+                              autofocus: true,
+                              decoration: const InputDecoration(
+                                  hintStyle: TextStyle(fontSize: 15),
+                                  hintText:
+                                      "Enter your petition description here"),
+                              keyboardType: TextInputType.multiline,
+                              minLines: null,
+                              maxLines: null,
+                            ),
+                          ],
+                        ),
                       ),
                       actions: [
                         TextButton(
@@ -166,22 +173,26 @@ class _PetitionPageState extends State<PetitionPage> {
                             print(myController2.text);
                             if (myController.text == "" ||
                                 myController2.text == "") {
-                              showDialog(context: context, builder: (context) => AlertDialog(
-                                  title: Text("Error"),
-                                  content: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Icon(Icons.close),
-                                        DefaultTextStyle(
-                                            style: style,
-                                            child: Text(
-                                              "A few fields are missing!",
-                                              textAlign: TextAlign.center,
-                                              style:
-                                              style.copyWith(color: Colors.red,),
-                                            )),
-                                      ])));
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                      title: Text("Error"),
+                                      content: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Icon(Icons.close),
+                                            DefaultTextStyle(
+                                                style: style,
+                                                child: Text(
+                                                  "A few fields are missing!",
+                                                  textAlign: TextAlign.center,
+                                                  style: style.copyWith(
+                                                    color: Colors.red,
+                                                  ),
+                                                )),
+                                          ])));
                             } else {
                               var user = await DatabaseService()
                                   .getUser(UserAuth.auth.currentUser.uid);

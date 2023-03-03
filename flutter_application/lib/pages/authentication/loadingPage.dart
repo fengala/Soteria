@@ -72,6 +72,7 @@ class splashScreen extends State<flashScreen> {
         home: AnimatedSplashScreen.withScreenFunction(
           duration: 1500,
           splash: Image.asset("assets/logo.png"),
+          splashIconSize: double.infinity,
           screenFunction: () async {
             if (!value) {
               obj = LoginPage();
@@ -86,14 +87,15 @@ class splashScreen extends State<flashScreen> {
               }
               userAuth.user = user_fir;
               userAuth.user1 = new UserModel(
-                  user_fir.uid,
-                  user_details['name'],
-                  user_details['username'],
-                  user_details['password'],
-                  user_details['emergency_contacts'],
-                  user_details['phone_number'],
-                  user_details['remember'],
-                  user_fir.emailVerified);
+                user_fir.uid,
+                user_details['name'],
+                user_details['username'],
+                user_details['password'],
+                user_details['emergency_contacts'],
+                user_details['phone_number'],
+                user_details['remember'],
+                user_details['verified'],
+              );
               obj = HomeP(
                 myUser: userAuth.user1,
                 userAuth: userAuth,
@@ -104,7 +106,7 @@ class splashScreen extends State<flashScreen> {
           },
           backgroundColor: Colors.amber,
           splashTransition: SplashTransition.fadeTransition,
-          pageTransitionType: PageTransitionType.fade,
+          pageTransitionType: PageTransitionType.leftToRight,
         ));
   }
 }

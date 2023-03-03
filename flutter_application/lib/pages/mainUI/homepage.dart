@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/pages/authentication/loadingPage.dart';
 import 'package:flutter_login_ui/pages/authentication/login.dart';
 import '../authentication/update.dart';
 import '../authentication/register.dart';
