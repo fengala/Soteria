@@ -241,15 +241,6 @@ class _RegisterPageState extends State<RegisterPage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () async {
-          emergency_contact1.trim();
-          emergency_contact2.trim();
-          emergency_contact3.trim();
-          List list = [
-            emergency_contact1,
-            emergency_contact2,
-            emergency_contact3
-          ];
-
           if (password != password2) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 behavior: SnackBarBehavior.floating,
@@ -263,85 +254,93 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     child: Text("Passwords don't match"))));
-          }
+          } else {
+            try {
+              if (first_name == null ||
+                  first_name.isEmpty ||
+                  password == null ||
+                  password.isEmpty ||
+                  username == null ||
+                  username.isEmpty ||
+                  phone_number == null ||
+                  phone_number.isEmpty ||
+                  emergency_contact1 == null ||
+                  emergency_contact1.isEmpty ||
+                  emergency_contact2.isEmpty ||
+                  emergency_contact2 == null ||
+                  emergency_contact3.isEmpty ||
+                  emergency_contact3 == null ||
+                  last_name == null ||
+                  last_name.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    elevation: 100,
+                    content: Container(
+                        height: 120,
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: Text("There are a few fields missing\n"))));
+              } else {
+                emergency_contact1.trim();
+                emergency_contact2.trim();
+                emergency_contact3.trim();
+                List list = [
+                  emergency_contact1,
+                  emergency_contact2,
+                  emergency_contact3
+                ];
+                name = first_name + " " + last_name;
+                print(name);
+                UserAuth userAuth = new UserAuth();
+                name.trim();
+                username = username.trim();
+                password = password.trim();
+                name.trim();
+                phone_number.trim();
 
-          try {
-            if (first_name == null ||
-                first_name.isEmpty ||
-                password == null ||
-                password.isEmpty ||
-                username == null ||
-                username.isEmpty ||
-                phone_number == null ||
-                phone_number.isEmpty ||
-                emergency_contact1 == null ||
-                emergency_contact1.isEmpty ||
-                emergency_contact2.isEmpty ||
-                emergency_contact2 == null ||
-                emergency_contact3.isEmpty ||
-                emergency_contact3 == null ||
-                last_name == null ||
-                last_name.isEmpty) {
+                var res = await userAuth.createUser(
+                    username, password, name, phone_number, list);
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                        title: Text("Success!"),
+                        content: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Icon(Icons.check),
+                              DefaultTextStyle(
+                                  style: style,
+                                  child: Text(
+                                    "We have successfully sent a verification mail to your mail address",
+                                    textAlign: TextAlign.center,
+                                    style: style.copyWith(
+                                      color: Colors.green,
+                                    ),
+                                  )),
+                            ])));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LoginPage()));
+              }
+            } catch (x) {
+              print(x);
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   behavior: SnackBarBehavior.floating,
                   backgroundColor: Colors.transparent,
-                  elevation: 100,
+                  elevation: 0,
                   content: Container(
-                      height: 120,
+                      height: 90,
                       padding: EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: Colors.red,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
-                      child: Text("There are a few fields missing\n"))));
-            } else {
-              name = first_name + " " + last_name;
-              print(name);
-              UserAuth userAuth = new UserAuth();
-              name.trim();
-              username = username.trim();
-              password = password.trim();
-              name.trim();
-              phone_number.trim();
-
-              var res = await userAuth.createUser(
-                  username, password, name, phone_number, list);
-              showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                      title: Text("Success!"),
-                      content: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Icon(Icons.check),
-                            DefaultTextStyle(
-                                style: style,
-                                child: Text(
-                                  "We have successfully sent a verification mail to your mail address",
-                                  textAlign: TextAlign.center,
-                                  style: style.copyWith(
-                                    color: Colors.green,
-                                  ),
-                                )),
-                          ])));
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginPage()));
+                      child: Text(x.code))));
             }
-          } catch (x) {
-            print(x);
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                behavior: SnackBarBehavior.floating,
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                content: Container(
-                    height: 90,
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    child: Text(x.code))));
           }
         },
         child: Text("Create Account",

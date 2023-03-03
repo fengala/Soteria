@@ -103,4 +103,8 @@ class UserAuth {
     var res = await auth.signOut();
     return res;
   }
+
+  static Future forgotPassword(String email) async {
+    auth.sendPasswordResetEmail(email: email);
+  }
 }
