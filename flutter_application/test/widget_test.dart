@@ -11,7 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../lib/pages/authentication/loadingpage.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Soteria test for petitions', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(MyApp());
 
@@ -20,7 +20,7 @@ void main() {
     expect(find.text('1'), findsNothing);
 
     // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    await tester.tap(find.byIcon(Icons.refresh));
     await tester.pump();
 
     // Verify that our counter has incremented.
