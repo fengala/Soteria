@@ -14,6 +14,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 Future _petitionsFuture;
+int filter_val = 0;
 
 class PetitionP extends StatelessWidget {
   @override
@@ -51,7 +52,7 @@ class _PetitionPageState extends State<PetitionPage> {
   @override
   void initState() {
     super.initState();
-    _petitionsFuture = getAllPetitions();
+    _petitionsFuture = getAllPetitions(filter_val);
     petitionsStream().listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
       // Trigger an automatic update
       initPetitionsFuture();
@@ -60,7 +61,7 @@ class _PetitionPageState extends State<PetitionPage> {
 
   void initPetitionsFuture() {
     setState(() {
-      _petitionsFuture = getAllPetitions();
+      _petitionsFuture = getAllPetitions(filter_val);
     });
   }
 
@@ -93,6 +94,12 @@ class _PetitionPageState extends State<PetitionPage> {
         ),
         actions: [
           IconButton(
+            icon: Icon(Icons.filter_list),
+            onPressed: () {
+              showFilterMenu(context);
+            },
+          ),
+          IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () async {
               var user = FirebaseAuth.instance.currentUser;
@@ -100,7 +107,7 @@ class _PetitionPageState extends State<PetitionPage> {
               await DatabaseService().updateVerification(user.uid);
 
               setState(() {
-                _petitionsFuture = getAllPetitions();
+                _petitionsFuture = getAllPetitions(filter_val);
               });
             },
           ),
@@ -109,7 +116,7 @@ class _PetitionPageState extends State<PetitionPage> {
       body: RefreshIndicator(
         onRefresh: () async {
           setState(() {
-            _petitionsFuture = getAllPetitions();
+            _petitionsFuture = getAllPetitions(filter_val);
           });
         },
         child: petitionList(),
@@ -205,7 +212,7 @@ class _PetitionPageState extends State<PetitionPage> {
 
                               Navigator.pop(context);
                               setState(() {
-                                _petitionsFuture = getAllPetitions();
+                                _petitionsFuture = getAllPetitions(filter_val);
                               });
                             }
                           },
@@ -219,13 +226,13 @@ class _PetitionPageState extends State<PetitionPage> {
   }
 
   Widget petitionList() {
-    Future load() async {
-      var myFuture = await getAllPetitions() as List;
-      return myFuture;
-    }
+    // Future load() async {
+    //   var myFuture = await getAllPetitions(filter_val) as List;
+    //   return myFuture;
+    // }
 
     return FutureBuilder(
-      future: getAllPetitions(),
+      future: getAllPetitions(filter_val),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<dynamic> petitions = snapshot.data;
@@ -250,34 +257,57 @@ class _PetitionPageState extends State<PetitionPage> {
       },
     );
   }
-  // Widget petitionList() {
-  //   return FutureBuilder<List<Tweet>>(
-  //     future: getAllPetitions(),
-  //     builder: (context, snapshot) {
-  //       if (!snapshot.hasData) {
-  //         return Center(child: CircularProgressIndicator());
-  //       }
-  //       List<Tweet> tweets = snapshot.data;
-  //       return Container(
-  //         color: Colors.white,
-  //         child: ListView.separated(
-  //           padding: const EdgeInsets.only(bottom: 150.0),
-  //           itemBuilder: (BuildContext context, int index) {
-  //             return tweets[index];
-  //             // return ListTile(
-  //             //   title: Text(tweet.text),
-  //             //   subtitle: Text(tweet.description),
-  //             // );
-  //           },
-  //           separatorBuilder: (BuildContext context, int index) => Divider(
-  //             height: 0,
-  //           ),
-  //           itemCount: tweets.length,
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+
+  void showFilterMenu(BuildContext context) {
+    final List<String> filters = [
+      'None',
+      'Oldest',
+      'High Upvotes',
+      'Low Upvotes',
+      'High Replies',
+      'Low Replies'
+    ];
+
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(0, 50, 0, 0),
+      items: filters.asMap().entries.map((entry) {
+        int index = entry.key;
+        String filter = entry.value;
+        return PopupMenuItem<String>(
+          value: filter,
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(filter),
+              ),
+              if (index == filter_val)
+                Icon(
+                    Icons.check), // Show a checkmark icon for the selected item
+            ],
+          ),
+        );
+      }).toList(),
+    ).then((value) {
+      if (value != null) {
+        setState(() {
+          if (value == 'None') {
+            filter_val = 0;
+          } else if (value == 'Oldest') {
+            filter_val = 1;
+          } else if (value == 'High Upvotes') {
+            filter_val = 2;
+          } else if (value == 'Low Upvotes') {
+            filter_val = 3;
+          } else if (value == 'High Replies') {
+            filter_val = 4;
+          } else if (value == 'Low Replies') {
+            filter_val = 5;
+          }
+        });
+      }
+    });
+  }
 }
 
 class Tweet extends StatefulWidget {
@@ -434,7 +464,7 @@ class _TweetState extends State<Tweet> {
           onPressed: () {
             print("Pressed Comment");
             setState(() {
-              _petitionsFuture = getAllPetitions();
+              _petitionsFuture = getAllPetitions(filter_val);
             });
           },
           iconSize: 16.0,
@@ -467,7 +497,7 @@ class _TweetState extends State<Tweet> {
               icon = FontAwesomeIcons.solidHeart;
             }
             setState(() {
-              _petitionsFuture = getAllPetitions();
+              _petitionsFuture = getAllPetitions(filter_val);
             });
           },
           icon: Icon(icon),
@@ -501,7 +531,7 @@ class _TweetState extends State<Tweet> {
               icon = FontAwesomeIcons.solidHeart;
             }
             setState(() {
-              _petitionsFuture = getAllPetitions();
+              _petitionsFuture = getAllPetitions(filter_val);
             });
           },
           icon: Icon(icon),

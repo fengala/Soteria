@@ -4,6 +4,7 @@ import 'dart:ffi';
 import 'package:flutter_login_ui/services/auth.dart';
 import 'package:flutter_login_ui/services/database.dart';
 import 'tweet.dart';
+import 'package:intl/intl.dart';
 
 // var petitions = DatabaseService().getPetitions();
 // var p = json.decode(petitions as String);
@@ -11,10 +12,10 @@ import 'tweet.dart';
 // for (var i = 0; i < 5; i++) {
 //   print(i);
 // }
+// int filter_val = 4;
+//var tweets = getAllPetitions();
 
-var tweets = getAllPetitions();
-
-Future<List<Tweet>> getAllPetitions() async {
+Future<List<Tweet>> getAllPetitions(int filter_val) async {
   List<Object> petitions =
       await DatabaseService().getPetitions() as List<Object>;
   var length = petitions.length;
@@ -48,12 +49,6 @@ Future<List<Tweet>> getAllPetitions() async {
       ver = 1;
     }
 
-    // print("##########");
-    // print(petitions[i]);
-    // print(title);
-    print(ver);
-    // print('Length: $length');
-    // print("##########");
     tweeds.add(Tweet(
       avatar:
           'https://pbs.twimg.com/profile_images/1187814172307800064/MhnwJbxw_400x400.jpg',
@@ -61,7 +56,6 @@ Future<List<Tweet>> getAllPetitions() async {
       name: name,
       text: title,
       comments: comments.toString(),
-      retweets: '23K',
       favorites: upvotes.toString(),
       time: time,
       id: id,
@@ -72,5 +66,32 @@ Future<List<Tweet>> getAllPetitions() async {
     ));
     // print("Here!");
   }
+  if (filter_val == 0) {
+    tweeds.sort((a, b) {
+      DateTime a_time = DateFormat('MM/dd/yyyy hh:mm a').parse(a.time);
+      DateTime b_time = DateFormat('MM/dd/yyyy hh:mm a').parse(b.time);
+      return b_time.compareTo(a_time);
+    });
+  }
+  if (filter_val == 1) {
+    tweeds.sort((a, b) {
+      DateTime a_time = DateFormat('MM/dd/yyyy hh:mm a').parse(a.time);
+      DateTime b_time = DateFormat('MM/dd/yyyy hh:mm a').parse(b.time);
+      return a_time.compareTo(b_time);
+    });
+  } else if (filter_val == 2) {
+    // tweeds.sort(favor)
+    tweeds.sort((a, b) => b.favorites.compareTo(a.favorites));
+  } else if (filter_val == 3) {
+    // tweeds.sort(favor)
+    tweeds.sort((a, b) => a.favorites.compareTo(b.favorites));
+  } else if (filter_val == 4) {
+    // tweeds.sort(favor)
+    tweeds.sort((a, b) => b.comments.compareTo(a.comments));
+  } else if (filter_val == 5) {
+    // tweeds.sort(favor)
+    tweeds.sort((a, b) => a.comments.compareTo(b.comments));
+  }
+
   return tweeds;
 }

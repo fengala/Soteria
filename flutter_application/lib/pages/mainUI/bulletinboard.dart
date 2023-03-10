@@ -718,8 +718,11 @@ class _RSVPDialogState extends State<RSVPDialog> {
         TextButton(
           child: Text("Yes"),
           onPressed: () {
+            // setState(() {
+            //   _rsvp = true;
+            // });
             setState(() {
-              _rsvp = true;
+              _eventsFuture = getAllEvents();
             });
             Navigator.pop(
                 context, true); // Return true when 'Yes' button clicked

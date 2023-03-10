@@ -13,7 +13,6 @@ class Tweet extends StatefulWidget {
   final String name;
   final String text;
   String comments;
-  String retweets;
   String favorites;
   final String time;
   final String id;
@@ -28,7 +27,6 @@ class Tweet extends StatefulWidget {
     @required this.username,
     @required this.name,
     @required this.text,
-    @required this.retweets,
     @required this.comments,
     @required this.time,
     @required this.favorites,
