@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_login_ui/pages/authentication/forgotPassword.dart';
 import 'package:flutter_login_ui/pages/authentication/loadingPage.dart';
 import 'package:flutter_login_ui/pages/mainUI/petitionpage.dart';
 import 'package:flutter_login_ui/pages/authentication/register.dart';
@@ -118,6 +119,27 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
 
+    final forgotPassword = Material(
+        elevation: 5.0,
+        borderRadius: BorderRadius.circular(30.0),
+        color: Colors.amber,
+        child: MaterialButton(
+          minWidth: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          onPressed: () async {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => forgotPage(
+                          myUser: userAuth.user1,
+                          userAuth: userAuth,
+                        )));
+          },
+          child: Text("Forgot Password?",
+              textAlign: TextAlign.right,
+              style: style.copyWith(
+                  color: Colors.white, fontWeight: FontWeight.bold)),
+        ));
     final loginButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
@@ -163,12 +185,18 @@ class _LoginPageState extends State<LoginPage> {
               try {
                 var user_detail =
                     await DatabaseService().getUser(userAuth.user.uid);
+
+                var final_password = password;
+                if (final_password != user_detail['password']) {
+                  await DatabaseService(uid: userAuth.user.uid)
+                      .resetPassword(final_password);
+                }
                 print(user_detail['remember']);
                 userAuth.user1 = new UserModel(
                     userAuth.user.uid,
                     user_detail['name'],
                     user_detail['username'],
-                    user_detail['password'],
+                    final_password,
                     user_detail['emergency_contacts'],
                     user_detail['phone_number'],
                     user_detail['remember'],
@@ -246,8 +274,8 @@ class _LoginPageState extends State<LoginPage> {
               style.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
         ));
     final createAccount = Material(
-      elevation: 0.0,
-      borderRadius: BorderRadius.circular(10.0),
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
       color: Colors.amber,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
@@ -293,6 +321,10 @@ class _LoginPageState extends State<LoginPage> {
                     height: 15.0,
                   ),
                   hintText,
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  forgotPassword,
                   SizedBox(
                     height: 5.0,
                   ),

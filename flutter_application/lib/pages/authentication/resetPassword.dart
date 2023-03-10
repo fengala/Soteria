@@ -141,50 +141,48 @@ class _resetPageState extends State<resetPage> {
                       ),
                       child: Text("You are using that password"))));
             } else {
-              userAuth.resetPassword(password);
+              try {
+                if (password == null || password.isEmpty) {
+                  prompt = false;
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      elevation: 100,
+                      content: Container(
+                          height: 120,
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: Text("There are a few fields missing\n"))));
+                } else {
+                  myUser.password = password;
+
+                  print("After changing");
+
+                  print(myUser.password);
+
+                  this.userAuth.resetPassword(password);
+                }
+              } catch (x) {
+                print(x);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    content: Container(
+                        height: 90,
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: Text(x.code))));
+              }
             }
           }
 
-          try {
-            if (password == null || password.isEmpty) {
-              prompt = false;
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Colors.transparent,
-                  elevation: 100,
-                  content: Container(
-                      height: 120,
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                      ),
-                      child: Text("There are a few fields missing\n"))));
-            } else {
-              myUser.password = password;
-
-              print("After changing");
-
-              print(myUser.password);
-
-              var res = await DatabaseService(uid: myUser.uid)
-                  .resetPassword(password);
-            }
-          } catch (x) {
-            print(x);
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                behavior: SnackBarBehavior.floating,
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                content: Container(
-                    height: 90,
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    child: Text(x.code))));
-          }
           if (prompt) {
             Navigator.push(
                 context,

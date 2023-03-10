@@ -344,11 +344,6 @@ class _UpdatePageState extends State<UpdatePage> {
           emergency_contact1.trim();
           emergency_contact2.trim();
           emergency_contact3.trim();
-          List list = [
-            emergency_contact1,
-            emergency_contact2,
-            emergency_contact3
-          ];
 
           try {
             if (name == null ||
@@ -381,6 +376,15 @@ class _UpdatePageState extends State<UpdatePage> {
                       ),
                       child: Text("There are a few fields missing\n"))));
             } else {
+              emergency_contact1.trim();
+              emergency_contact2.trim();
+              emergency_contact3.trim();
+              List list = [
+                emergency_contact1,
+                emergency_contact2,
+                emergency_contact3
+              ];
+
               name = name + " " + last_name;
               name.trim();
               username.trim();
