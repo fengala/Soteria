@@ -260,7 +260,7 @@ class _PetitionPageState extends State<PetitionPage> {
 
   void showFilterMenu(BuildContext context) {
     final List<String> filters = [
-      'None',
+      'Newest',
       'Oldest',
       'High Upvotes',
       'Low Upvotes',

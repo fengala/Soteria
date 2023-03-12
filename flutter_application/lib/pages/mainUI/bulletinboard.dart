@@ -12,6 +12,7 @@ import '../../services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 Future _eventsFuture;
+int filter_val = 0;
 
 class BulletinBoardP extends StatelessWidget {
   @override
@@ -50,7 +51,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
   @override
   void initState() {
     super.initState();
-    _eventsFuture = getAllEvents(0);
+    _eventsFuture = getAllEvents(filter_val);
     eventsStream().listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
       initEventsFuture();
     });
@@ -58,7 +59,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
 
   void initEventsFuture() {
     setState(() {
-      _eventsFuture = getAllEvents(0);
+      _eventsFuture = getAllEvents(filter_val);
     });
   }
 
@@ -90,6 +91,12 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
         ),
         actions: [
           IconButton(
+            icon: Icon(Icons.filter_list),
+            onPressed: () {
+              showFilterMenu(context);
+            },
+          ),
+          IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () async {
               var user = FirebaseAuth.instance.currentUser;
@@ -97,7 +104,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                 await DatabaseService().updateVerification(user.uid);
               }
               setState(() {
-                _eventsFuture = getAllEvents(0);
+                _eventsFuture = getAllEvents(filter_val);
               });
             },
           ),
@@ -106,7 +113,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
       body: RefreshIndicator(
         onRefresh: () async {
           setState(() {
-            _eventsFuture = getAllEvents(0);
+            _eventsFuture = getAllEvents(filter_val);
           });
         },
         child: eventList(),
@@ -234,12 +241,12 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
 
   Widget eventList() {
     Future load() async {
-      var myFuture = await getAllEvents(0) as List;
+      var myFuture = await getAllEvents(filter_val) as List;
       return myFuture;
     }
 
     return FutureBuilder(
-      future: getAllEvents(0),
+      future: getAllEvents(filter_val),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<dynamic> events = snapshot.data;
@@ -263,6 +270,57 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
         }
       },
     );
+  }
+
+  void showFilterMenu(BuildContext context) {
+    final List<String> filters = [
+      'Newest',
+      'Oldest',
+      'High Upvotes',
+      'Low Upvotes',
+      'High Replies',
+      'Low Replies'
+    ];
+
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(0, 50, 0, 0),
+      items: filters.asMap().entries.map((entry) {
+        int index = entry.key;
+        String filter = entry.value;
+        return PopupMenuItem<String>(
+          value: filter,
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(filter),
+              ),
+              if (index == filter_val)
+                Icon(
+                    Icons.check), // Show a checkmark icon for the selected item
+            ],
+          ),
+        );
+      }).toList(),
+    ).then((value) {
+      if (value != null) {
+        setState(() {
+          if (value == 'None') {
+            filter_val = 0;
+          } else if (value == 'Oldest') {
+            filter_val = 1;
+          } else if (value == 'High Upvotes') {
+            filter_val = 2;
+          } else if (value == 'Low Upvotes') {
+            filter_val = 3;
+          } else if (value == 'High Replies') {
+            filter_val = 4;
+          } else if (value == 'Low Replies') {
+            filter_val = 5;
+          }
+        });
+      }
+    });
   }
 }
 
@@ -507,7 +565,7 @@ class _EventState extends State<Event> {
               icon = FontAwesomeIcons.solidHeart;
             }
             setState(() {
-              _eventsFuture = getAllEvents(0);
+              _eventsFuture = getAllEvents(filter_val);
             });
           },
           icon: Icon(icon),
@@ -540,7 +598,7 @@ class _EventState extends State<Event> {
               icon = FontAwesomeIcons.solidHeart;
             }
             setState(() {
-              _eventsFuture = getAllEvents(0);
+              _eventsFuture = getAllEvents(filter_val);
             });
           },
           icon: Icon(icon),
@@ -630,12 +688,12 @@ class _EventState extends State<Event> {
                               //   icon = FontAwesomeIcons.solidHeart;
                               // }
                               setState(() {
-                                _eventsFuture = getAllEvents(0);
+                                _eventsFuture = getAllEvents(filter_val);
                               });
 
                               // setState(() {
                               //   // _rsvp = true;
-                              //   _eventsFuture = getAllEvents(0);
+                              //   _eventsFuture = getAllEvents(filter_val);
                               //   print("here");
                               // });
                               Navigator.pop(context,
@@ -657,7 +715,7 @@ class _EventState extends State<Event> {
                 print('DB');
                 setState(() {
                   print('setting...');
-                  _eventsFuture = getAllEvents(0);
+                  _eventsFuture = getAllEvents(filter_val);
                 });
                 print('DB done');
               } else {
@@ -668,7 +726,7 @@ class _EventState extends State<Event> {
 
               setState(() {
                 print('setting...');
-                _eventsFuture = getAllEvents(0);
+                _eventsFuture = getAllEvents(filter_val);
               });
 
               print('DONE');
@@ -678,7 +736,7 @@ class _EventState extends State<Event> {
 
             setState(() {
               print('setting...');
-              _eventsFuture = getAllEvents(0);
+              _eventsFuture = getAllEvents(filter_val);
             });
 
             print('EXIT');
@@ -763,7 +821,7 @@ class _RSVPDialogState extends State<RSVPDialog> {
             //   _rsvp = true;
             // });
             setState(() {
-              _eventsFuture = getAllEvents(0);
+              _eventsFuture = getAllEvents(filter_val);
             });
             Navigator.pop(
                 context, true); // Return true when 'Yes' button clicked
