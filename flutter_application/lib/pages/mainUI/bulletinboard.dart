@@ -50,7 +50,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
   @override
   void initState() {
     super.initState();
-    _eventsFuture = getAllEvents();
+    _eventsFuture = getAllEvents(0);
     eventsStream().listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
       initEventsFuture();
     });
@@ -58,7 +58,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
 
   void initEventsFuture() {
     setState(() {
-      _eventsFuture = getAllEvents();
+      _eventsFuture = getAllEvents(0);
     });
   }
 
@@ -97,7 +97,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                 await DatabaseService().updateVerification(user.uid);
               }
               setState(() {
-                _eventsFuture = getAllEvents();
+                _eventsFuture = getAllEvents(0);
               });
             },
           ),
@@ -106,7 +106,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
       body: RefreshIndicator(
         onRefresh: () async {
           setState(() {
-            _eventsFuture = getAllEvents();
+            _eventsFuture = getAllEvents(0);
           });
         },
         child: eventList(),
@@ -234,12 +234,12 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
 
   Widget eventList() {
     Future load() async {
-      var myFuture = await getAllEvents() as List;
+      var myFuture = await getAllEvents(0) as List;
       return myFuture;
     }
 
     return FutureBuilder(
-      future: getAllEvents(),
+      future: getAllEvents(0),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<dynamic> events = snapshot.data;
@@ -507,7 +507,7 @@ class _EventState extends State<Event> {
               icon = FontAwesomeIcons.solidHeart;
             }
             setState(() {
-              _eventsFuture = getAllEvents();
+              _eventsFuture = getAllEvents(0);
             });
           },
           icon: Icon(icon),
@@ -540,7 +540,7 @@ class _EventState extends State<Event> {
               icon = FontAwesomeIcons.solidHeart;
             }
             setState(() {
-              _eventsFuture = getAllEvents();
+              _eventsFuture = getAllEvents(0);
             });
           },
           icon: Icon(icon),
@@ -630,12 +630,12 @@ class _EventState extends State<Event> {
                               //   icon = FontAwesomeIcons.solidHeart;
                               // }
                               setState(() {
-                                _eventsFuture = getAllEvents();
+                                _eventsFuture = getAllEvents(0);
                               });
 
                               // setState(() {
                               //   // _rsvp = true;
-                              //   _eventsFuture = getAllEvents();
+                              //   _eventsFuture = getAllEvents(0);
                               //   print("here");
                               // });
                               Navigator.pop(context,
@@ -657,7 +657,7 @@ class _EventState extends State<Event> {
                 print('DB');
                 setState(() {
                   print('setting...');
-                  _eventsFuture = getAllEvents();
+                  _eventsFuture = getAllEvents(0);
                 });
                 print('DB done');
               } else {
@@ -668,7 +668,7 @@ class _EventState extends State<Event> {
 
               setState(() {
                 print('setting...');
-                _eventsFuture = getAllEvents();
+                _eventsFuture = getAllEvents(0);
               });
 
               print('DONE');
@@ -678,7 +678,7 @@ class _EventState extends State<Event> {
 
             setState(() {
               print('setting...');
-              _eventsFuture = getAllEvents();
+              _eventsFuture = getAllEvents(0);
             });
 
             print('EXIT');
@@ -763,7 +763,7 @@ class _RSVPDialogState extends State<RSVPDialog> {
             //   _rsvp = true;
             // });
             setState(() {
-              _eventsFuture = getAllEvents();
+              _eventsFuture = getAllEvents(0);
             });
             Navigator.pop(
                 context, true); // Return true when 'Yes' button clicked

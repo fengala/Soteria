@@ -5,10 +5,11 @@ import 'package:flutter_login_ui/services/database.dart';
 import '../services/auth.dart';
 
 import '../pages/mainUI/bulletinboard.dart';
+import 'package:intl/intl.dart';
 
-var events = getAllEvents();
+var events = getAllEvents(0);
 
-Future<List<Event>> getAllEvents() async {
+Future<List<Event>> getAllEvents(int filter_val) async {
   List<Object> events = await DatabaseService().getEvents() as List<Object>;
   var length = events.length;
   List<Event> eves = [];
@@ -59,6 +60,35 @@ Future<List<Event>> getAllEvents() async {
       ver: ver,
     ));
   }
+
+
+  if (filter_val == 0) {
+    eves.sort((a, b) {
+      DateTime a_time = DateFormat('MM/dd/yyyy hh:mm a').parse(a.time);
+      DateTime b_time = DateFormat('MM/dd/yyyy hh:mm a').parse(b.time);
+      return b_time.compareTo(a_time);
+    });
+  }
+  if (filter_val == 1) {
+    eves.sort((a, b) {
+      DateTime a_time = DateFormat('MM/dd/yyyy hh:mm a').parse(a.time);
+      DateTime b_time = DateFormat('MM/dd/yyyy hh:mm a').parse(b.time);
+      return a_time.compareTo(b_time);
+    });
+  } else if (filter_val == 2) {
+    // tweeds.sort(favor)
+    eves.sort((a, b) => b.upvotes.compareTo(a.upvotes));
+  } else if (filter_val == 3) {
+    // tweeds.sort(favor)
+    eves.sort((a, b) => a.upvotes.compareTo(b.upvotes));
+  } else if (filter_val == 4) {
+    // tweeds.sort(favor)
+    eves.sort((a, b) => b.comments.compareTo(a.comments));
+  } else if (filter_val == 5) {
+    // tweeds.sort(favor)
+    eves.sort((a, b) => a.comments.compareTo(b.comments));
+  }
+
   return eves;
 }
 
