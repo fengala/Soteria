@@ -305,7 +305,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
     ).then((value) {
       if (value != null) {
         setState(() {
-          if (value == 'None') {
+          if (value == 'Newest') {
             filter_val = 0;
           } else if (value == 'Oldest') {
             filter_val = 1;

@@ -291,7 +291,7 @@ class _PetitionPageState extends State<PetitionPage> {
     ).then((value) {
       if (value != null) {
         setState(() {
-          if (value == 'None') {
+          if (value == 'Newest') {
             filter_val = 0;
           } else if (value == 'Oldest') {
             filter_val = 1;
