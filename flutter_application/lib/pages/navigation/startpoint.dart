@@ -93,9 +93,20 @@ class _HomePageState extends State<HomePage> {
         buttonSelectedColor: Colors.amber,
         fabIcon: Icon(Icons.sos, size: 40),
         fabColors: [Colors.amber, Colors.amber],
-        onFabButtonPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => LoginPage()));
+        onFabButtonPressed: () async {
+          print("This is when the user presses once");
+
+                List emer = user.get_emergency();
+                String val = await sendSMS(
+                        message: "This is an SOS message from your relation" +
+                            user.name +
+                            " please respond",
+                        recipients: emer)
+                    .catchError((onError) {
+                  print(onError);
+                });
+                print(val);
+              },
         },
       ),
     );
