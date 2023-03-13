@@ -284,6 +284,19 @@ class _RegisterPageState extends State<RegisterPage> {
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
                         child: Text("There are a few fields missing\n"))));
+              } else if (phone_number.length != 10 || emergency_contact1.length != 10 || emergency_contact2.length != 10 || emergency_contact3.length != 10) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    elevation: 100,
+                    content: Container(
+                        height: 120,
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: Text("These are invalid contacts, please try again\n"))));
               } else {
                 emergency_contact1.trim();
                 emergency_contact2.trim();
