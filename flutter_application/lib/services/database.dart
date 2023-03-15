@@ -19,6 +19,9 @@ class DatabaseService {
   final CollectionReference eveRef =
       FirebaseFirestore.instance.collection("Event");
 
+  final CollectionReference socialVenueRef =
+      FirebaseFirestore.instance.collection("SocialVenues");
+
   /**
    * USER
    */
@@ -295,5 +298,32 @@ class DatabaseService {
     Map<String, dynamic> data = snapshot.data();
     String form = data['rsvp_form'];
     return form;
+  }
+
+  /**
+   * Social Venues Backend
+   */
+
+  Future getVenue(String social_venue_id) async {
+    final value = await socialVenueRef.doc(social_venue_id).get();
+    final data = value.data() as Map<String, dynamic>;
+    return data;
+  }
+
+  Future addReviewToVenue(String social_venue_id, String username,
+      String review, bool anonymous) async {
+    final venue = await getVenue(social_venue_id);
+    final list = List<Map>.from(venue['reviews']);
+    Map map = {
+      'username': username,
+      'review': review,
+      'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now()),
+      'anonymous': anonymous,
+    };
+    list.add(map);
+    await socialVenueRef
+        .doc(social_venue_id)
+        .update({'num_reviews': FieldValue.increment(1)});
+    await socialVenueRef.doc(social_venue_id).update({'reviews': list});
   }
 }
