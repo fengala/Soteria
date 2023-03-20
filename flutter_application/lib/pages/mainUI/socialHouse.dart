@@ -48,9 +48,9 @@ class _socialHousePageState extends State<socialHousePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 50.0,
-              backgroundImage: AssetImage('../../../assets/frat.png'),
+            const CircleAvatar(
+              radius: 80.0,
+              backgroundImage: AssetImage('assets/frat.png'),
             ),
             Text(
               'Phi Delta Fraternity',
@@ -76,7 +76,7 @@ class _socialHousePageState extends State<socialHousePage> {
                   color: Colors.amber,
                 ),
                 title: Text(
-                  'This is text about Phi Delta',
+                  'This is text about Phi Delta. Blah Blah Blah. Blah Blah Blah. Blah Blah Blah. Blah Blah Blah. Blah Blah Blah. Blah Blah Blah.',
                   style: TextStyle(
                       fontSize: 20.0,
                       fontFamily: 'Montserrat',

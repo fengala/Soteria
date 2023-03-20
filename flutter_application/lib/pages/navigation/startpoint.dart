@@ -21,7 +21,7 @@ class HomeP extends StatelessWidget {
       title: 'Nav',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.amber,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: HomePage(
