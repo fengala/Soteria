@@ -135,7 +135,7 @@ class _UpdatePageState extends State<UpdatePage> {
       onChanged: (text) {
         name = text;
 
-        print(name);
+        //print(name);
 
         /*  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 behavior: SnackBarBehavior.floating,
@@ -411,14 +411,14 @@ class _UpdatePageState extends State<UpdatePage> {
               myUser.password = password;
               myUser.username = username;
               myUser.phone_number = phone_number;
-              print(myUser.name);
-              print("After changing");
-              print(myUser.name);
-              print(myUser.password);
-              print(myUser.username);
-              print(myUser.uid);
-              print(myUser.emergency_contacts);
-              print(myUser.phone_number);
+              //print(myUser.name);
+              //print("After changing");
+              //print(myUser.name);
+              //print(myUser.password);
+              //print(myUser.username);
+              //print(myUser.uid);
+              //print(myUser.emergency_contacts);
+              //print(myUser.phone_number);
 
               var res = await DatabaseService(uid: myUser.uid).updateUser(
                 username,
@@ -429,7 +429,7 @@ class _UpdatePageState extends State<UpdatePage> {
               );
             }
           } catch (x) {
-            print(x);
+            //print(x);
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: Colors.transparent,

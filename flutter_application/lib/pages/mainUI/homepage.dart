@@ -3,6 +3,8 @@ import 'package:flutter_login_ui/pages/authentication/loadingPage.dart';
 import 'package:flutter_login_ui/pages/authentication/login.dart';
 import 'package:flutter_login_ui/pages/mainUI/socialHouse.dart';
 import '../authentication/update.dart';
+
+import '../mainUI/placesPage.dart';
 import '../authentication/register.dart';
 import '../../models/user.dart';
 import '../../services/auth.dart';
@@ -126,7 +128,7 @@ class TePage extends State<TPage> {
                     // Navigator.push(context,
                     //     MaterialPageRoute(builder: (context) => LoginPage()));
                     Navigator.of(context, rootNavigator: true).pushReplacement(
-                        MaterialPageRoute(builder: (context) => socialHousePage()));
+                        MaterialPageRoute(builder: (context) => PlacesPage()));
                   } catch (e, stacktrace) {
                     print(e);
                     print(stacktrace);

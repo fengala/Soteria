@@ -10,7 +10,8 @@ class DatabaseService {
   final String uid;
   final String pid;
   final String eid;
-  DatabaseService({this.uid, this.pid, this.eid});
+  final String vid;
+  DatabaseService({this.uid, this.pid, this.eid, this.vid});
 
   final CollectionReference userRef =
       FirebaseFirestore.instance.collection("users");
@@ -18,9 +19,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection("Petitions");
   final CollectionReference eveRef =
       FirebaseFirestore.instance.collection("Event");
-
-  final CollectionReference socialVenueRef =
-      FirebaseFirestore.instance.collection("SocialVenues");
+  final CollectionReference venRef =
+      FirebaseFirestore.instance.collection("SocialHouse");
 
   /**
    * USER
@@ -304,8 +304,18 @@ class DatabaseService {
    * Social Venues Backend
    */
 
+  Future getPlaces() async {
+    QuerySnapshot querySnapshot = await venRef.get();
+    final Data = querySnapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      final id = doc.id;
+      return {...data, 'id': id};
+    }).toList();
+    return Data;
+  }
+
   Future getVenue(String social_venue_id) async {
-    final value = await socialVenueRef.doc(social_venue_id).get();
+    final value = await venRef.doc(social_venue_id).get();
     final data = value.data() as Map<String, dynamic>;
     return data;
   }
@@ -321,9 +331,14 @@ class DatabaseService {
       'anonymous': anonymous,
     };
     list.add(map);
-    await socialVenueRef
+    await venRef
         .doc(social_venue_id)
         .update({'num_reviews': FieldValue.increment(1)});
-    await socialVenueRef.doc(social_venue_id).update({'reviews': list});
+    await venRef.doc(social_venue_id).update({'reviews': list});
   }
 }
+
+
+
+
+
