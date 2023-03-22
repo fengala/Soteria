@@ -127,8 +127,14 @@ class TePage extends State<TPage> {
                     //this.userAuth.SignOut();
                     // Navigator.push(context,
                     //     MaterialPageRoute(builder: (context) => LoginPage()));
-                    Navigator.of(context, rootNavigator: true).pushReplacement(
-                        MaterialPageRoute(builder: (context) => PlacesPage()));
+                    // Navigator.of(context, rootNavigator: true).pushReplacement(
+                    //     MaterialPageRoute(builder: (context) => PlacesPage()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PlacesPage()
+                        ),
+                    );
                   } catch (e, stacktrace) {
                     print(e);
                     print(stacktrace);
