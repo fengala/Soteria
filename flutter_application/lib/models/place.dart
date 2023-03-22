@@ -9,17 +9,18 @@ class Place extends StatelessWidget {
   final String description;
   String rating;
   final String location;
+  final String contact;
 
-  Place(
-      {Key key,
-        @required this.name,
-        @required this.comments,
-        @required this.id,
-        @required this.description,
-        @required this.rating,
-        @required this.location,
-      })
-      : super(key: key);
+  Place({
+    Key key,
+    @required this.name,
+    @required this.comments,
+    @required this.id,
+    @required this.description,
+    @required this.rating,
+    @required this.location,
+    @required this.contact,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +70,14 @@ class Place extends StatelessWidget {
         Spacer(),
         GestureDetector(
           onTap: () {
-            Navigator.of(context, rootNavigator: true).pushReplacement(
-                MaterialPageRoute(builder: (context) => socialHousePage()));
+            Navigator.of(context, rootNavigator: true)
+                .pushReplacement(MaterialPageRoute(
+                    builder: (context) => socialHousePage(
+                          title: name,
+                          id: id,
+                          description: description,
+                          contact: contact,
+                        )));
           },
           child: IconButton(
             icon: Icon(

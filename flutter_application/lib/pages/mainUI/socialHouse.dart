@@ -13,9 +13,20 @@ import '../../models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // void main() => runApp(MyApp());
 
-
 class socialHousePage extends StatefulWidget {
-  socialHousePage({Key key, this.title}) : super(key: key);
+  final String title;
+  final String id;
+  final String contact;
+  final String description;
+
+  socialHousePage(
+      {Key key,
+      @required this.title,
+      @required this.id,
+      @required this.description,
+      @required this.contact})
+      : super(key: key);
+
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -23,13 +34,12 @@ class socialHousePage extends StatefulWidget {
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
-  final String title;
+
   @override
   _socialHousePageState createState() => _socialHousePageState();
 }
 
 class _socialHousePageState extends State<socialHousePage> {
-
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   UserAuth userAuth = new UserAuth();
   var user;
@@ -53,7 +63,7 @@ class _socialHousePageState extends State<socialHousePage> {
               backgroundImage: AssetImage('assets/frat.png'),
             ),
             Text(
-              'Phi Delta Fraternity',
+              widget.title,
               style: TextStyle(
                   fontSize: 20.0,
                   fontFamily: 'Montserrat',
@@ -76,7 +86,7 @@ class _socialHousePageState extends State<socialHousePage> {
                   color: Colors.amber,
                 ),
                 title: Text(
-                  'This is text about Phi Delta. Blah Blah Blah. Blah Blah Blah. Blah Blah Blah. Blah Blah Blah. Blah Blah Blah. Blah Blah Blah.',
+                  widget.description,
                   style: TextStyle(
                       fontSize: 20.0,
                       fontFamily: 'Montserrat',
@@ -92,7 +102,7 @@ class _socialHousePageState extends State<socialHousePage> {
                   color: Colors.teal,
                 ),
                 title: Text(
-                  'contact@gmail.com',
+                  widget.contact,
                   style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 20.0,
