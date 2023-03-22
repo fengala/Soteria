@@ -11,6 +11,7 @@ import '../../services/auth.dart';
 import '../../services/database.dart';
 import '../../models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_login_ui/pages/mainUI/placesPage.dart';
 // void main() => runApp(MyApp());
 
 class socialHousePage extends StatefulWidget {
@@ -54,6 +55,16 @@ class _socialHousePageState extends State<socialHousePage> {
     bool remember = false;
     return Scaffold(
       backgroundColor: Colors.amber,
+      appBar: AppBar(
+        title: Text('Back'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).pushReplacement(
+                MaterialPageRoute(builder: (context) => PlacesPage()));
+          },
+        ),
+      ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -111,6 +122,26 @@ class _socialHousePageState extends State<socialHousePage> {
               ),
             ),
           ],
+        ),
+      ),
+      floatingActionButton: Container(
+        padding: EdgeInsets.only(left: 35.0, bottom: 30.0),
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            width: 150.0,
+            height: 50.0,
+            child: ElevatedButton(
+              onPressed: () {},
+              child: Text("Reviews"),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );
