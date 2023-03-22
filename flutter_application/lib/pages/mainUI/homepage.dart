@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/pages/authentication/loadingPage.dart';
 import 'package:flutter_login_ui/pages/authentication/login.dart';
+import 'package:flutter_login_ui/pages/mainUI/socialHouse.dart';
 import '../authentication/update.dart';
+
+import '../mainUI/placesPage.dart';
 import '../authentication/register.dart';
 import '../../models/user.dart';
 import '../../services/auth.dart';
@@ -115,6 +118,29 @@ class TePage extends State<TPage> {
                   Icons.logout,
                   size: 26.0,
                 ),
+              )),
+          Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child: IconButton(
+                onPressed: () {
+                  try {
+                    //this.userAuth.SignOut();
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context) => LoginPage()));
+                    // Navigator.of(context, rootNavigator: true).pushReplacement(
+                    //     MaterialPageRoute(builder: (context) => PlacesPage()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PlacesPage()
+                        ),
+                    );
+                  } catch (e, stacktrace) {
+                    print(e);
+                    print(stacktrace);
+                  }
+                },
+                icon: const Icon(Icons.search),
               )),
         ],
       ),

@@ -42,7 +42,7 @@ Future<List<Event>> getAllEvents(int filter_val) async {
       shape2 = 1;
     }
     if (await DatabaseService().userVerCheck(userId) == true) {
-      print(ver);
+      //print(ver);
       ver = 1;
     }
     eves.add(Event(
