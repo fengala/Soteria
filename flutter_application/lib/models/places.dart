@@ -3,16 +3,6 @@ import 'dart:convert';
 import 'package:flutter_login_ui/services/auth.dart';
 import 'package:flutter_login_ui/services/database.dart';
 import 'place.dart';
-import 'package:intl/intl.dart';
-
-// var petitions = DatabaseService().getPetitions();
-// var p = json.decode(petitions as String);
-
-// for (var i = 0; i < 5; i++) {
-//   print(i);
-// }
-// int filter_val = 4;
-//var tweets = getAllPetitions();
 
 Future<List<Place>> getAllPlaces() async {
   List<Object> places =
@@ -31,6 +21,7 @@ Future<List<Place>> getAllPlaces() async {
     String desc = jsonMap['description'];
     int rating = jsonMap['num_rating'];
     String id = jsonMap['id'];
+    String address = jsonMap['location'];
 
     vens.add(Place(
       name: title,
@@ -38,6 +29,7 @@ Future<List<Place>> getAllPlaces() async {
       id: id,
       description: desc,
       rating: rating.toString(),
+      location: address,
     ));
 
     //print(id);

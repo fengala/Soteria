@@ -8,6 +8,7 @@ class Place extends StatelessWidget {
   final String id;
   final String description;
   String rating;
+  final String location;
 
   Place(
       {Key key,
@@ -16,6 +17,7 @@ class Place extends StatelessWidget {
         @required this.id,
         @required this.description,
         @required this.rating,
+        @required this.location,
       })
       : super(key: key);
 
@@ -57,16 +59,9 @@ class Place extends StatelessWidget {
       children: [
         Container(
           margin: const EdgeInsets.only(right: 5.0),
-          //child: Text(
-          //this.username,
-          //style: TextStyle(
-          //color: Colors.black,
-          //fontWeight: FontWeight.bold,
-          //),
-          //),
         ),
         Text(
-          '@$name',
+          '@$location',
           style: TextStyle(
             color: Colors.grey,
           ),
@@ -103,7 +98,7 @@ class Place extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           placeIconButton1(FontAwesomeIcons.comment, this.comments),
-          placeIconButton2(FontAwesomeIcons.heart, this.rating),
+          placeIconButton2(FontAwesomeIcons.solidStar, this.rating),
         ],
       ),
     );
