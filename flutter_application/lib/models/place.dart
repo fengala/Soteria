@@ -70,8 +70,9 @@ class Place extends StatelessWidget {
         Spacer(),
         GestureDetector(
           onTap: () {
-            Navigator.of(context, rootNavigator: true)
-                .pushReplacement(MaterialPageRoute(
+            Navigator.push(
+                context,
+                MaterialPageRoute(
                     builder: (context) => socialHousePage(
                           title: name,
                           id: id,

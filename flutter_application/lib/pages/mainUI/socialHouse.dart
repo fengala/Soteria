@@ -60,8 +60,17 @@ class _socialHousePageState extends State<socialHousePage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context, rootNavigator: true).pushReplacement(
-                MaterialPageRoute(builder: (context) => PlacesPage()));
+            // Navigator.of(context, rootNavigator: true).pushReplacement(
+            //     MaterialPageRoute(builder: (context) => PlacesPage()));
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PlacesPage()),
+            );
+            // Navigator.pop(context);
+            // Navigator.pop(context);
+            // Navigator.push()
+            // Navigator.of(context, rootNavigator: false)
+            //   ..push(MaterialPageRoute(builder: (context) => PlacesPage()));
           },
         ),
       ),
