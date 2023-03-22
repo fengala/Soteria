@@ -11,11 +11,23 @@ import '../../services/auth.dart';
 import '../../services/database.dart';
 import '../../models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_login_ui/pages/mainUI/placesPage.dart';
 // void main() => runApp(MyApp());
 
-
 class socialHousePage extends StatefulWidget {
-  socialHousePage({Key key, this.title}) : super(key: key);
+  final String title;
+  final String id;
+  final String contact;
+  final String description;
+
+  socialHousePage(
+      {Key key,
+      @required this.title,
+      @required this.id,
+      @required this.description,
+      @required this.contact})
+      : super(key: key);
+
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -23,13 +35,12 @@ class socialHousePage extends StatefulWidget {
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
-  final String title;
+
   @override
   _socialHousePageState createState() => _socialHousePageState();
 }
 
 class _socialHousePageState extends State<socialHousePage> {
-
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   UserAuth userAuth = new UserAuth();
   var user;
@@ -44,6 +55,16 @@ class _socialHousePageState extends State<socialHousePage> {
     bool remember = false;
     return Scaffold(
       backgroundColor: Colors.amber,
+      appBar: AppBar(
+        title: Text('Back'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).pushReplacement(
+                MaterialPageRoute(builder: (context) => PlacesPage()));
+          },
+        ),
+      ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -53,7 +74,7 @@ class _socialHousePageState extends State<socialHousePage> {
               backgroundImage: AssetImage('assets/frat.png'),
             ),
             Text(
-              'Phi Delta Fraternity',
+              widget.title,
               style: TextStyle(
                   fontSize: 20.0,
                   fontFamily: 'Montserrat',
@@ -76,7 +97,7 @@ class _socialHousePageState extends State<socialHousePage> {
                   color: Colors.amber,
                 ),
                 title: Text(
-                  'This is text about Phi Delta. Blah Blah Blah. Blah Blah Blah. Blah Blah Blah. Blah Blah Blah. Blah Blah Blah. Blah Blah Blah.',
+                  widget.description,
                   style: TextStyle(
                       fontSize: 20.0,
                       fontFamily: 'Montserrat',
@@ -92,7 +113,7 @@ class _socialHousePageState extends State<socialHousePage> {
                   color: Colors.teal,
                 ),
                 title: Text(
-                  'contact@gmail.com',
+                  widget.contact,
                   style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 20.0,
@@ -101,6 +122,26 @@ class _socialHousePageState extends State<socialHousePage> {
               ),
             ),
           ],
+        ),
+      ),
+      floatingActionButton: Container(
+        padding: EdgeInsets.only(left: 35.0, bottom: 30.0),
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            width: 150.0,
+            height: 50.0,
+            child: ElevatedButton(
+              onPressed: () {},
+              child: Text("Reviews"),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );

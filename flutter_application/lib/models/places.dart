@@ -5,8 +5,7 @@ import 'package:flutter_login_ui/services/database.dart';
 import 'place.dart';
 
 Future<List<Place>> getAllPlaces() async {
-  List<Object> places =
-  await DatabaseService().getPlaces() as List<Object>;
+  List<Object> places = await DatabaseService().getPlaces() as List<Object>;
   var length = places.length;
   List<Place> vens = [];
 
@@ -22,6 +21,7 @@ Future<List<Place>> getAllPlaces() async {
     int rating = jsonMap['num_rating'];
     String id = jsonMap['id'];
     String address = jsonMap['location'];
+    String contact = jsonMap['contact'];
 
     vens.add(Place(
       name: title,
@@ -30,6 +30,7 @@ Future<List<Place>> getAllPlaces() async {
       description: desc,
       rating: rating.toString(),
       location: address,
+      contact: contact,
     ));
 
     //print(id);
