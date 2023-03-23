@@ -21,6 +21,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection("Event");
   final CollectionReference venRef =
       FirebaseFirestore.instance.collection("SocialHouse");
+  final CollectionReference revRef =
+      FirebaseFirestore.instance.collection("reviews");
 
   /**
    * USER
@@ -320,6 +322,16 @@ class DatabaseService {
     return data;
   }
 
+  Future getReviews() async {
+    QuerySnapshot querySnapshot = await revRef.get();
+    final Data = querySnapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      final id = doc.id;
+      return {...data, 'id': id};
+    }).toList();
+    return Data;
+  }
+
   Future addReviewToVenue(String social_venue_id, String username,
       String review, bool anonymous) async {
     final venue = await getVenue(social_venue_id);
@@ -337,8 +349,3 @@ class DatabaseService {
     await venRef.doc(social_venue_id).update({'reviews': list});
   }
 }
-
-
-
-
-

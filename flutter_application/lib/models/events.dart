@@ -61,7 +61,6 @@ Future<List<Event>> getAllEvents(int filter_val) async {
     ));
   }
 
-
   if (filter_val == 0) {
     eves.sort((a, b) {
       DateTime a_time = DateFormat('MM/dd/yyyy hh:mm a').parse(a.time);
