@@ -141,7 +141,14 @@ class _socialHousePageState extends State<socialHousePage> {
             width: 150.0,
             height: 50.0,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+
+
+                  // code to navigate to review for that house
+                  // have to pass id
+
+
+              },
               child: Text("Reviews"),
               style: ElevatedButton.styleFrom(
                 primary: Colors.blue,

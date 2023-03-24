@@ -63,6 +63,7 @@ class _HomePageState extends State<HomePage> {
     Obj.setUser(this.myUser);
     Obj.setAuth(this.userAuth);
     List list = myUser.emergency_contacts;
+    List val = List.from(list);
 
     return Scaffold(
       extendBody: true,
@@ -105,7 +106,6 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.black,
               ),
               onLongPress: () async {
-                List val = List.from(list);
                 String temp1 = val[0];
                 String temp2 = val[1];
                 String temp3 = val[2];
@@ -114,10 +114,14 @@ class _HomePageState extends State<HomePage> {
 
                 while (!value) {
                   value = await FlutterPhoneDirectCaller.callNumber(temp1);
+                  print("This is the value after making a call:\n");
+                  print(value);
+
                   val[0] = temp3;
                   val[1] = temp1;
                   val[2] = temp2;
                 }
+                print(val[0]);
               },
             ),
             onPressed: () async {
