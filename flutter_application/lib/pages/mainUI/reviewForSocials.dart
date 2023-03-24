@@ -47,8 +47,43 @@ class BulletinBoardPage extends StatefulWidget {
   _BulletinBoardState createState() => _BulletinBoardState();
 }
 
+class AnonymousCheckbox extends StatefulWidget {
+  final bool initialValue;
+  final ValueChanged<bool> onChanged;
+
+  AnonymousCheckbox({this.initialValue = false, this.onChanged});
+
+  @override
+  _AnonymousCheckboxState createState() => _AnonymousCheckboxState();
+}
+
+class _AnonymousCheckboxState extends State<AnonymousCheckbox> {
+  bool _value;
+
+  @override
+  void initState() {
+    super.initState();
+    _value = widget.initialValue;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CheckboxListTile(
+      title: Text("Anonymous"),
+      value: _value,
+      onChanged: (newValue) {
+        setState(() {
+          _value = newValue;
+          widget.onChanged(newValue);
+        });
+      },
+    );
+  }
+}
+
 class _BulletinBoardState extends State<BulletinBoardPage> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  bool isAnonymous = false;
   final myController = TextEditingController();
   final myController2 = TextEditingController();
   final myController3 = TextEditingController();
@@ -145,83 +180,95 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
           ),
           onPressed: () {
             showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                      title: Text("Write a Review"),
-                      content: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            TextField(
-                              controller: myController,
-                              autofocus: true,
-                              decoration: const InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black45, width: 3.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black45, width: 2.0),
-                                  ),
-                                  hintStyle: TextStyle(fontSize: 20),
-                                  hintText:
-                                      "Enter your review description here"),
-                            ),
-                          ],
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text("Write a Review"),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      TextField(
+                        controller: myController,
+                        autofocus: true,
+                        decoration: const InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black45, width: 3.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black45, width: 2.0),
+                          ),
+                          hintStyle: TextStyle(fontSize: 20),
+                          hintText: "Enter your review description here",
                         ),
                       ),
-                      actions: [
-                        TextButton(
-                            child: Text("CANCEL"),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            }),
-                        TextButton(
-                          child: Text("CREATE"),
-                          onPressed: () async {
-                            var user = await DatabaseService()
-                                .getUser(UserAuth.auth.currentUser.uid);
-                            if (myController.text == "") {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                      title: Text("Error"),
-                                      content: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: <Widget>[
-                                            Icon(Icons.close),
-                                            DefaultTextStyle(
-                                                style: style,
-                                                child: Text(
-                                                  "A few fields are missing!",
-                                                  textAlign: TextAlign.center,
-                                                  style: style.copyWith(
-                                                    color: Colors.red,
-                                                  ),
-                                                )),
-                                          ])));
-                            } else {
-                              var user = await DatabaseService()
-                                  .getUser(UserAuth.auth.currentUser.uid);
-                              print("yolo");
-                              var eve = await DatabaseService()
-                                  .addReviewToVenue(
-                                      widget.id,
-                                      user['username'],
-                                      myController.text,
-                                      false,
-                                      UserAuth.auth.currentUser.uid);
-                              print("yo");
-                              Navigator.pop(context);
-                            }
-                          },
-                        )
-                      ],
-                    ));
+                      AnonymousCheckbox(
+                        initialValue: isAnonymous,
+                        onChanged: (newValue) {
+                          setState(() {
+                            isAnonymous = newValue;
+                            print(isAnonymous);
+                          });
+                        },
+                      )
+                    ],
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    child: Text("CANCEL"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  TextButton(
+                    child: Text("CREATE"),
+                    onPressed: () async {
+                      var user = await DatabaseService()
+                          .getUser(UserAuth.auth.currentUser.uid);
+                      if (myController.text == "") {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text("Error"),
+                            content: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Icon(Icons.close),
+                                DefaultTextStyle(
+                                  style: style,
+                                  child: Text(
+                                    "A few fields are missing!",
+                                    textAlign: TextAlign.center,
+                                    style: style.copyWith(
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      } else {
+                        var user = await DatabaseService()
+                            .getUser(UserAuth.auth.currentUser.uid);
+                        var eve = await DatabaseService().addReviewToVenue(
+                          widget.id,
+                          user['username'],
+                          myController.text,
+                          isAnonymous,
+                          UserAuth.auth.currentUser.uid,
+                        );
+                        Navigator.pop(context);
+                      }
+                    },
+                  ),
+                ],
+              ),
+            );
           },
         ),
       ),
