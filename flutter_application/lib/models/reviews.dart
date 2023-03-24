@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_login_ui/services/database.dart';
 
 import '../services/auth.dart';
@@ -27,7 +28,7 @@ Future<List<Review>> getSpecificReviews(
     String time = jsonMap['time'];
     String id = jsonMap['id'];
     String userId = jsonMap['userId'];
-    bool anonymous = jsonMap['anonymous'];
+    bool anonymous = jsonMap['anonynmous'];
     int shape = 0;
     int ver = 0;
 

@@ -371,7 +371,7 @@ class Review extends StatefulWidget {
   final int hasUpvote;
   final String userId;
   final int ver;
-  bool anonymous;
+  final bool anonymous;
 
   Review({
     Key key,
@@ -442,7 +442,13 @@ class _EventState extends State<Review> {
                 margin: const EdgeInsets.only(right: 5.0),
               ),
               Text(
-                '@${widget.name} · ${widget.time}',
+                widget.anonymous ? 'Anonymous' : widget.name,
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
+              Text(
+                ' · ${widget.time}',
                 style: TextStyle(
                   color: Colors.grey,
                 ),
