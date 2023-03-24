@@ -63,6 +63,8 @@ class _HomePageState extends State<HomePage> {
     Obj.setUser(this.myUser);
     Obj.setAuth(this.userAuth);
     List list = myUser.emergency_contacts;
+    List val = List.from(list);
+    int count = 0;
 
     return Scaffold(
       extendBody: true,
@@ -105,19 +107,81 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.black,
               ),
               onLongPress: () async {
-                List val = List.from(list);
                 String temp1 = val[0];
                 String temp2 = val[1];
                 String temp3 = val[2];
 
                 bool value = false;
 
-                while (!value) {
-                  value = await FlutterPhoneDirectCaller.callNumber(temp1);
-                  val[0] = temp3;
-                  val[1] = temp1;
-                  val[2] = temp2;
+                if (count % 4 == 0 && count != 0) {
+                  print("THis is emergency call\n");
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text("Please Confirm!"),
+                          content: const Text("Do you want to call 911?"),
+                          actions: [
+                            // The "Yes" button
+                            TextButton(
+                                onPressed: () async {
+                                  value =
+                                      await FlutterPhoneDirectCaller.callNumber(
+                                          "9112");
+
+                                  // Close the dialog
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Yes')),
+                            TextButton(
+                                onPressed: () {
+                                  // Close the dialog
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('No'))
+                          ],
+                        );
+                      });
+                } else {
+                  while (!value) {
+                    value = await FlutterPhoneDirectCaller.callNumber(temp1);
+                    print("This is the value after making a call:\n");
+                    print(value);
+
+                    val[0] = temp3;
+                    val[1] = temp1;
+                    val[2] = temp2;
+                    count++;
+                  }
+                  print(val[0]);
                 }
+
+                /* if (count % 3 == 0) {
+                  print("THis is emergency call\n");
+                  AlertDialog(
+                    title: const Text("Please Confirm!"),
+                    content: const Text("Do you want to call 911?"),
+                    actions: [
+                      // The "Yes" button
+                      TextButton(
+                          onPressed: () async {
+                            value = await FlutterPhoneDirectCaller.callNumber(
+                                "9112");
+
+                            // Close the dialog
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Yes')),
+                      TextButton(
+                          onPressed: () {
+                            // Close the dialog
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('No'))
+                    ],
+                  );
+                }
+                */
               },
             ),
             onPressed: () async {
@@ -144,6 +208,18 @@ class _HomePageState extends State<HomePage> {
                   print(onError);
                 });
                 print(val);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    content: Container(
+                        height: 90,
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.amber,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: Text("Successfully sent message!"))));
               }
             }),
         buttonColor: Colors.white,
