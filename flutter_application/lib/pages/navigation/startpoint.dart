@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/pages/mainUI/bulletinboard.dart';
 import 'package:pandabar/pandabar.dart';
@@ -114,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                 bool value = false;
 
                 if (count % 4 == 0 && count != 0) {
-                  print("THis is emergency call\n");
+                  print("This is emergency call\n");
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -220,6 +221,25 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
                         child: Text("Successfully sent message!"))));
+              } else if (status.isPermanentlyDenied) {
+
+                 if(Platform.isIOS) {
+                   PermissionStatus status;
+
+                   status = await Permission.contacts.request();
+
+
+                     String val = await sendSMS(
+                         message: "This is an SOS message from your relation" +
+                             myUser.name +
+                             " please respond",
+                         recipients: emer)
+                         .catchError((onError) {
+                       print(onError);
+                     });
+                     print(val);
+
+                 }
               }
             }),
         buttonColor: Colors.white,
