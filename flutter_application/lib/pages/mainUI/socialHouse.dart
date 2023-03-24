@@ -5,6 +5,7 @@ import 'package:flutter_login_ui/pages/authentication/forgotPassword.dart';
 import 'package:flutter_login_ui/pages/authentication/loadingPage.dart';
 import 'package:flutter_login_ui/pages/mainUI/petitionpage.dart';
 import 'package:flutter_login_ui/pages/authentication/register.dart';
+import 'package:flutter_login_ui/pages/mainUI/reviewForSocials.dart';
 import 'package:flutter_login_ui/pages/navigation/startpoint.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../services/auth.dart';
@@ -134,7 +135,7 @@ class _socialHousePageState extends State<socialHousePage> {
         ),
       ),
       floatingActionButton: Container(
-        padding: EdgeInsets.only(left: 35.0, bottom: 30.0),
+        padding: EdgeInsets.only(left: 35.0, bottom: 110.0),
         child: Align(
           alignment: Alignment.bottomCenter,
           child: SizedBox(
@@ -142,12 +143,28 @@ class _socialHousePageState extends State<socialHousePage> {
             height: 50.0,
             child: ElevatedButton(
               onPressed: () {
-
-
-                  // code to navigate to review for that house
-                  // have to pass id
-
-
+                // code to navigate to review for that house
+                // have to pass id
+                try {
+                  print("\n");
+                  print("\n");
+                  print(widget.id);
+                  print("\n");
+                  print("\n");
+                  //this.userAuth.SignOut();
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) => LoginPage()));
+                  // Navigator.of(context, rootNavigator: true).pushReplacement(
+                  //     MaterialPageRoute(builder: (context) => PlacesPage()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => reviewForSocials(id: widget.id)),
+                  );
+                } catch (e, stacktrace) {
+                  print(e);
+                  print(stacktrace);
+                }
               },
               child: Text("Reviews"),
               style: ElevatedButton.styleFrom(
