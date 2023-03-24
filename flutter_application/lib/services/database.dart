@@ -37,6 +37,7 @@ class DatabaseService {
       'emergency_contacts': emergency_contacts,
       'phone_number': phone_number,
       'upvotedPetitions': [],
+      'upvotedReviews': [],
       'remember': remember,
       'upvotedEvents': [],
       'RSVPEvents': [],
@@ -307,6 +308,7 @@ class DatabaseService {
    */
 
   Future getPlaces() async {
+    print("\n\nyamachilli\n");
     QuerySnapshot querySnapshot = await venRef.get();
     final Data = querySnapshot.docs.map((doc) {
       final data = doc.data() as Map<String, dynamic>;
@@ -317,22 +319,27 @@ class DatabaseService {
   }
 
   Future getVenue(String social_venue_id) async {
+    print("\n\nchilli\n");
     final value = await venRef.doc(social_venue_id).get();
     final data = value.data() as Map<String, dynamic>;
     return data;
   }
 
-  Future getReviews() async {
-    QuerySnapshot querySnapshot = await revRef.get();
+  Future getReviews(String str) async {
+    ////////////////////////////////////////////////////////////////////////
+    print("li");
+    QuerySnapshot querySnapshot =
+        await revRef.where("ownerSocialHouse", isEqualTo: str).get();
     final Data = querySnapshot.docs.map((doc) {
       final data = doc.data() as Map<String, dynamic>;
       final id = doc.id;
       return {...data, 'id': id};
     }).toList();
+    print("yamamma");
     return Data;
   }
 
-  Future addReviewToVenue(String social_venue_id, String username,
+  /*Future addReviewToVenue(String social_venue_id, String username,
       String review, bool anonymous) async {
     final venue = await getVenue(social_venue_id);
     final list = List<Map>.from(venue['reviews']);
@@ -347,5 +354,85 @@ class DatabaseService {
         .doc(social_venue_id)
         .update({'num_reviews': FieldValue.increment(1)});
     await venRef.doc(social_venue_id).update({'reviews': list});
+  }
+  */
+
+  Future addReviewToVenue(String social_venue_id, String username,
+      String review, bool anonymous, String uid) async {
+    print("\n\nTrust\n");
+    return await FirebaseFirestore.instance.collection("reviews").doc().set({
+      'username': username,
+      'description': review,
+      'num_upvotes': 0,
+      'num_comments': 0,
+      'replies': [],
+      'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now()),
+      'userId': uid,
+      'anonynmous': anonymous,
+      'ownerSocialHouse': social_venue_id
+    });
+  }
+
+  Future<bool> userUpvoteCheckReview(String pid, String uid, int change) async {
+    print("\n\nTrustree\n");
+    final data = await getUser(uid);
+    final list = List<String>.from(data['upvotedReviews']);
+    if (!list.contains(pid)) {
+      if (change == 1) {
+        list.add(pid);
+        await userRef.doc(uid).update({'upvotedReviews': list});
+        await revRef.doc(pid).update({'num_upvotes': FieldValue.increment(1)});
+      }
+      return true;
+    }
+    if (change == 1) {
+      list.remove(pid);
+      await userRef.doc(uid).update({'upvotedReviews': list});
+      await revRef.doc(pid).update({'num_upvotes': FieldValue.increment(-1)});
+    }
+    return false;
+  }
+
+  Future getRepliesRev(String eid) async {
+    print("\n\nTrusty\n");
+    final value = await revRef.doc(eid).get();
+    final data = value.data() as Map<String, dynamic>;
+    return data['replies'];
+  }
+
+  Future getReview(String eid) async {
+    print("\n\nhahaTrust\n");
+    final value = await revRef.doc(eid).get();
+    final data = value.data() as Map<String, dynamic>;
+    return data;
+  }
+
+  Future addReplyToAReview(String eid, String username, String reply) async {
+    print("\n\nergreTrust\n");
+    final eve = await getReview(eid);
+    final list = List<Map>.from(eve['replies']);
+    Map map = {
+      'username': username,
+      'replyText': reply,
+      'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now())
+    };
+    list.add(map);
+    await revRef.doc(eid).update({'num_comments': FieldValue.increment(1)});
+    await revRef.doc(eid).update({'replies': list});
+  }
+
+  Future getFilteredReviews(String str) async {
+    revRef.where("ownerSocialHouse", isEqualTo: str);
+
+    print("li");
+    QuerySnapshot querySnapshot =
+        await revRef.where("ownerSocialHouse", isEqualTo: str).get();
+    final Data = querySnapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      final id = doc.id;
+      return {...data, 'id': id};
+    }).toList();
+    print("yamamma");
+    return Data;
   }
 }

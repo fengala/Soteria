@@ -36,11 +36,32 @@ Future<List<Reply>> getAllRepliesPet(String pid) async {
   return tweeds;
 }
 
-
-
 Future<List<Reply>> getAllRepliesEve(String eid) async {
   List<Object> events =
-  await DatabaseService().getRepliesEve(eid) as List<Object>;
+      await DatabaseService().getRepliesEve(eid) as List<Object>;
+  var length = events.length;
+  List<Reply> eve = [];
+
+  for (var i = 0; i < length; i++) {
+    String jsonString = jsonEncode(events[i]);
+    Map<String, dynamic> jsonMap = jsonDecode(jsonString);
+    String username = jsonMap['username'];
+    String replyText = jsonMap['replyText'];
+    String time = jsonMap['time'];
+
+    eve.add(Reply(
+      username: username,
+      replyText: replyText,
+      time: time,
+    ));
+  }
+
+  return eve;
+}
+
+Future<List<Reply>> getAllRepliesRev(String eid) async {
+  List<Object> events =
+      await DatabaseService().getRepliesRev(eid) as List<Object>;
   var length = events.length;
   List<Reply> eve = [];
 

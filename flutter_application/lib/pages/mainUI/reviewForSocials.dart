@@ -3,18 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../models/eventdetails.dart';
-import '../../models/events.dart';
+import '../../models/reviews.dart';
 import '../../models/replies.dart';
 import '../../models/reply.dart';
 import '../../services/auth.dart';
 import '../../services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../models/reviewdetails.dart';
 
 Future _eventsFuture;
 int filter_val = 0;
 
 class reviewForSocials extends StatelessWidget {
+  final String id;
+
+  reviewForSocials({
+    Key key,
+    @required this.id,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,13 +31,17 @@ class reviewForSocials extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: BulletinBoardPage(),
+      home: BulletinBoardPage(id: id),
     );
   }
 }
 
 class BulletinBoardPage extends StatefulWidget {
-  BulletinBoardPage({Key key}) : super(key: key);
+  final String id;
+  BulletinBoardPage({
+    Key key,
+    @required this.id,
+  }) : super(key: key);
 
   @override
   _BulletinBoardState createState() => _BulletinBoardState();
@@ -51,7 +62,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
   @override
   void initState() {
     super.initState();
-    _eventsFuture = getAllEvents(filter_val);
+    _eventsFuture = getSpecificReviews(filter_val, widget.id);
     reviewForSocialsStream()
         .listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
       initEventsFuture();
@@ -59,9 +70,11 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
   }
 
   void initEventsFuture() {
-    setState(() {
-      _eventsFuture = getAllEvents(filter_val);
-    });
+    if (this.mounted) {
+      setState(() {
+        _eventsFuture = getSpecificReviews(filter_val, widget.id);
+      });
+    }
   }
 
   @override
@@ -84,7 +97,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
           margin: const EdgeInsets.all(10.0),
         ),
         title: Text(
-          'Bulletin Board',
+          'Reviews',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -105,7 +118,9 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                 await DatabaseService().updateVerification(user.uid);
               }
               setState(() {
-                _eventsFuture = getAllEvents(filter_val);
+                print("lol ho gaya");
+                _eventsFuture = getSpecificReviews(filter_val, widget.id);
+                print("jkjk");
               });
             },
           ),
@@ -113,9 +128,11 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          setState(() {
-            _eventsFuture = getAllEvents(filter_val);
-          });
+          if (this.mounted) {
+            setState(() {
+              _eventsFuture = getSpecificReviews(filter_val, widget.id);
+            });
+          }
         },
         child: eventList(),
       ),
@@ -130,7 +147,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
             showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                      title: Text("Create an Event"),
+                      title: Text("Write a Review"),
                       content: SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -149,39 +166,8 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                                         color: Colors.black45, width: 2.0),
                                   ),
                                   hintStyle: TextStyle(fontSize: 20),
-                                  hintText: "Enter your event title here"),
-                            ),
-                            TextField(
-                              controller: myController3,
-                              autofocus: true,
-                              decoration: const InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 1.0),
-                                  ),
-                                  hintStyle: TextStyle(fontSize: 15),
-                                  hintText: "When is the event"),
-                            ),
-                            TextField(
-                              controller: myController2,
-                              autofocus: true,
-                              decoration: const InputDecoration(
-                                  hintStyle: TextStyle(fontSize: 15),
                                   hintText:
-                                      "Enter your event description here"),
-                              keyboardType: TextInputType.multiline,
-                              minLines: null,
-                              maxLines: null,
-                            ),
-                            TextField(
-                              controller: myController4,
-                              autofocus: true,
-                              decoration: const InputDecoration(
-                                  hintStyle: TextStyle(fontSize: 15),
-                                  hintText: "Enter RSVP form (optional)"),
-                              keyboardType: TextInputType.multiline,
-                              minLines: null,
-                              maxLines: null,
+                                      "Enter your review description here"),
                             ),
                           ],
                         ),
@@ -197,9 +183,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                           onPressed: () async {
                             var user = await DatabaseService()
                                 .getUser(UserAuth.auth.currentUser.uid);
-                            if (myController.text == "" ||
-                                myController2.text == "" ||
-                                myController3.text == "") {
+                            if (myController.text == "") {
                               showDialog(
                                   context: context,
                                   builder: (context) => AlertDialog(
@@ -221,13 +205,17 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                                                 )),
                                           ])));
                             } else {
-                              var eve = await DatabaseService().addEvent(
-                                  user['name'],
-                                  myController.text,
-                                  myController2.text,
-                                  myController3.text,
-                                  myController4.text,
-                                  UserAuth.auth.currentUser.uid);
+                              var user = await DatabaseService()
+                                  .getUser(UserAuth.auth.currentUser.uid);
+                              print("yolo");
+                              var eve = await DatabaseService()
+                                  .addReviewToVenue(
+                                      widget.id,
+                                      user['username'],
+                                      myController.text,
+                                      false,
+                                      UserAuth.auth.currentUser.uid);
+                              print("yo");
                               Navigator.pop(context);
                             }
                           },
@@ -241,13 +229,14 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
   }
 
   Widget eventList() {
+    print("turky");
     Future load() async {
-      var myFuture = await getAllEvents(filter_val) as List;
+      var myFuture = await getSpecificReviews(filter_val, widget.id) as List;
       return myFuture;
     }
 
     return FutureBuilder(
-      future: getAllEvents(filter_val),
+      future: getSpecificReviews(filter_val, widget.id),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<dynamic> events = snapshot.data;
@@ -265,7 +254,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
             ),
           );
         } else if (snapshot.hasError) {
-          return Center(child: Text('Error fetching events'));
+          return Center(child: Text('Error fetching reviews'));
         } else {
           return Center(child: CircularProgressIndicator());
         }
@@ -325,25 +314,20 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
   }
 }
 
-class Event extends StatefulWidget {
-  final String title;
+class Review extends StatefulWidget {
   final String name;
   String comments;
   String upvotes;
   final String time;
-  final String when;
   final String id;
   final String description;
   final int hasUpvote;
-  final int hasRSVP;
-  final String rsvp_form;
-  final int alreadyRSVP;
   final String userId;
   final int ver;
+  bool anonymous;
 
-  Event({
+  Review({
     Key key,
-    @required this.title,
     @required this.name,
     @required this.comments,
     @required this.time,
@@ -351,19 +335,16 @@ class Event extends StatefulWidget {
     @required this.id,
     @required this.description,
     @required this.hasUpvote,
-    @required this.when,
-    @required this.hasRSVP,
-    @required this.rsvp_form,
-    @required this.alreadyRSVP,
     @required this.userId,
     @required this.ver,
+    @required this.anonymous,
   }) : super(key: key);
 
   @override
   _EventState createState() => _EventState();
 }
 
-class _EventState extends State<Event> {
+class _EventState extends State<Review> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -391,7 +372,6 @@ class _EventState extends State<Event> {
         children: [
           eventHeader(context),
           eventText(),
-          eventWhen(),
           eventButtons(),
         ],
       ),
@@ -400,7 +380,7 @@ class _EventState extends State<Event> {
 
   Widget eventHeader(BuildContext context) {
     return FutureBuilder<List<Reply>>(
-      future: getAllRepliesEve(widget.id),
+      future: getAllRepliesRev(widget.id),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           print(widget.id);
@@ -426,12 +406,10 @@ class _EventState extends State<Event> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => eventdetails(
-                        title: widget.title,
+                      builder: (context) => reviewdetails(
                         description: widget.description,
                         eid: widget.id,
                         replies: replies,
-                        when: widget.when,
                       ),
                     ),
                   );
@@ -453,16 +431,10 @@ class _EventState extends State<Event> {
 
   Widget eventText() {
     return Text(
-      widget.title,
+      widget
+          .description, //////////////////////////////////////////////////////////
       overflow: TextOverflow.clip,
       style: const TextStyle(fontWeight: FontWeight.bold),
-    );
-  }
-
-  Widget eventWhen() {
-    return Text(
-      widget.when,
-      overflow: TextOverflow.clip,
     );
   }
 
@@ -483,12 +455,6 @@ class _EventState extends State<Event> {
               ? eventIconButton2_1(FontAwesomeIcons.heart, this.widget.upvotes)
               : eventIconButton2(
                   FontAwesomeIcons.solidHeart, this.widget.upvotes),
-          this.widget.hasRSVP == 1
-              ? this.widget.alreadyRSVP == 1
-                  ? eventIconButton3_1(
-                      FontAwesomeIcons.solidCalendarCheck, 'RSVP')
-                  : eventIconButton3(FontAwesomeIcons.calendarCheck, 'RSVP')
-              : eventIconButton3_X(FontAwesomeIcons.calendarXmark, ''),
         ],
       ),
     );
@@ -559,14 +525,14 @@ class _EventState extends State<Event> {
         IconButton(
           onPressed: () async {
             print("Pressed Undo Upvote");
-            Future x = DatabaseService().userUpvoteCheckEve(
+            Future x = DatabaseService().userUpvoteCheckReview(
                 widget.id, UserAuth.auth.currentUser.uid, 1);
             if (x == true) {
               print(this.widget.upvotes);
               icon = FontAwesomeIcons.solidHeart;
             }
             setState(() {
-              _eventsFuture = getAllEvents(filter_val);
+              _eventsFuture = getSpecificReviews(filter_val, widget.id);
             });
           },
           icon: Icon(icon),
@@ -593,13 +559,13 @@ class _EventState extends State<Event> {
         IconButton(
           onPressed: () {
             print("Pressed Upvote");
-            Future x = DatabaseService().userUpvoteCheckEve(
+            Future x = DatabaseService().userUpvoteCheckReview(
                 widget.id, UserAuth.auth.currentUser.uid, 1);
             if (x == true) {
               icon = FontAwesomeIcons.solidHeart;
             }
             setState(() {
-              _eventsFuture = getAllEvents(filter_val);
+              _eventsFuture = getSpecificReviews(filter_val, widget.id);
             });
           },
           icon: Icon(icon),
@@ -615,218 +581,6 @@ class _EventState extends State<Event> {
               fontSize: 14.0,
             ),
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget eventIconButton3_X(IconData icon, String text) {
-    return Row(
-      children: [
-        IconButton(
-          onPressed: () async {
-            print("Pressed No RSVP");
-          },
-          icon: Icon(icon),
-          iconSize: 16.0,
-        ),
-        Container(
-          margin: const EdgeInsets.all(6.0),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: Colors.black45,
-              fontSize: 14.0,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget eventIconButton3(IconData icon, String text) {
-    return Row(
-      children: [
-        IconButton(
-          onPressed: () async {
-            print("Pressed RSVP");
-            String form = await DatabaseService()
-                .getFormCheck(widget.id, UserAuth.auth.currentUser.uid);
-            final uri = Uri.parse(form);
-            if (await canLaunchUrl(uri)) {
-              await launchUrl(uri);
-
-              bool rsvp = await showDialog(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                        title: Text("RSVP"),
-                        content: Text("Have you RSVP'd for this event?"),
-                        actions: <Widget>[
-                          TextButton(
-                            child: Text("No"),
-                            onPressed: () {
-                              Navigator.pop(context,
-                                  false); // Return false when 'No' button clicked
-                            },
-                          ),
-                          TextButton(
-                            child: Text("Yes"),
-                            onPressed: () async {
-                              bool x = await DatabaseService()
-                                  .userUpvoteCheckEve(widget.id,
-                                      UserAuth.auth.currentUser.uid, 1);
-                              x = !x;
-                              x = await DatabaseService().userUpvoteCheckEve(
-                                  widget.id, UserAuth.auth.currentUser.uid, 1);
-                              // Future y = DatabaseService().userUpvoteCheckEve(
-                              //     widget.id, UserAuth.auth.currentUser.uid, 1);
-                              // Future x = DatabaseService().getEvents();
-                              // if (y == false) {
-                              //   print(this.widget.upvotes);
-                              //   icon = FontAwesomeIcons.solidHeart;
-                              // }
-                              // if (x == true) {
-                              //   icon = FontAwesomeIcons.solidHeart;
-                              // }
-                              setState(() {
-                                _eventsFuture = getAllEvents(filter_val);
-                              });
-
-                              // setState(() {
-                              //   // _rsvp = true;
-                              //   _eventsFuture = getAllEvents(filter_val);
-                              //   print("here");
-                              // });
-                              Navigator.pop(context,
-                                  true); // Return true when 'Yes' button clicked
-                            },
-                          ),
-                        ],
-                      ));
-
-              print("RSVP: $rsvp");
-              if (rsvp) {
-                icon = FontAwesomeIcons.solidCalendarCheck;
-                Future x = DatabaseService()
-                    .addRSVPConfirm(widget.id, UserAuth.auth.currentUser.uid);
-                if (x == true) {
-                  icon = FontAwesomeIcons.solidCalendarCheck;
-                }
-
-                print('DB');
-                setState(() {
-                  print('setting...');
-                  _eventsFuture = getAllEvents(filter_val);
-                });
-                print('DB done');
-              } else {
-                icon = FontAwesomeIcons.calendarCheck;
-              }
-
-              print('RSVP YES/NO');
-
-              setState(() {
-                print('setting...');
-                _eventsFuture = getAllEvents(filter_val);
-              });
-
-              print('DONE');
-            } else {
-              throw 'Could not launch rsvp_form';
-            }
-
-            setState(() {
-              print('setting...');
-              _eventsFuture = getAllEvents(filter_val);
-            });
-
-            print('EXIT');
-          },
-          icon: Icon(icon),
-          iconSize: 16.0,
-        ),
-        Container(
-          margin: const EdgeInsets.all(6.0),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: Colors.black45,
-              fontSize: 14.0,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget eventIconButton3_1(IconData icon, String text) {
-    return Row(
-      children: [
-        IconButton(
-          onPressed: () async {
-            print("Pressed RSVP");
-            String form = await DatabaseService()
-                .getFormCheck(widget.id, UserAuth.auth.currentUser.uid);
-            final uri = Uri.parse(form);
-            if (await canLaunchUrl(uri)) {
-              await launchUrl(uri);
-              icon = FontAwesomeIcons.solidCalendarCheck;
-            } else {
-              throw 'Could not launch rsvp_form';
-            }
-          },
-          icon: Icon(icon),
-          iconSize: 16.0,
-          color: Colors.amber,
-        ),
-        Container(
-          margin: const EdgeInsets.all(6.0),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: Colors.black45,
-              fontSize: 14.0,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class RSVPDialog extends StatefulWidget {
-  @override
-  _RSVPDialogState createState() => _RSVPDialogState();
-}
-
-class _RSVPDialogState extends State<RSVPDialog> {
-  // bool _rsvp = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text("RSVP"),
-      content: Text("Have you RSVP'd for this event?"),
-      actions: <Widget>[
-        TextButton(
-          child: Text("No"),
-          onPressed: () {
-            Navigator.pop(
-                context, false); // Return false when 'No' button clicked
-          },
-        ),
-        TextButton(
-          child: Text("Yes"),
-          onPressed: () {
-            // setState(() {
-            //   _rsvp = true;
-            // });
-            setState(() {
-              _eventsFuture = getAllEvents(filter_val);
-            });
-            Navigator.pop(
-                context, true); // Return true when 'Yes' button clicked
-          },
         ),
       ],
     );
