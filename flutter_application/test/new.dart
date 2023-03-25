@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/services/auth.dart';
 import 'package:flutter_login_ui/services/database.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -32,6 +34,12 @@ class MockPetRef extends Mock implements DatabaseService {
 }
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase
+  setUpAll(() async {
+    await Firebase.initializeApp();
+  });
   final MockFirebaseAuth mockAuth = MockFirebaseAuth();
   final UserAuth auth = UserAuth();
   final MockPetRef pet = MockPetRef();
@@ -65,5 +73,4 @@ Future<void> main() async {
     //final DatabaseService database = MockPetRef();
     expect(pid, "your-petition-id-here");
   });
-  
 }

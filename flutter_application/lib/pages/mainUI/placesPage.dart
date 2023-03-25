@@ -1,11 +1,14 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/models/places.dart';
 import 'package:flutter_login_ui/services/auth.dart';
 import 'package:flutter_login_ui/services/database.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../models/places.dart';
+
+int filter_val = 0;
 
 class PlacesP extends StatelessWidget {
   @override
@@ -65,11 +68,21 @@ class _PlacesPageState extends State<PlacesPage> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.refresh),
+            icon: Icon(Icons.filter_list),
             onPressed: () {
-              setState(() {
-                _placessFuture = getAllPlaces();
-              });
+              showFilterMenu(context);
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () async {
+              var user = FirebaseAuth.instance.currentUser;
+
+              await DatabaseService().updateVerification(user.uid);
+
+              // setState(() {
+              //   _petitionsFuture = getAllPetitions(filter_val);
+              // });
             },
           ),
         ],
@@ -102,10 +115,9 @@ class _PlacesPageState extends State<PlacesPage> {
               itemBuilder: (BuildContext context, int index) {
                 return venues[index];
               },
-              separatorBuilder: (BuildContext context, int index) =>
-                  Divider(
-                    height: 0,
-                  ),
+              separatorBuilder: (BuildContext context, int index) => Divider(
+                height: 0,
+              ),
               itemCount: venues.length,
             ),
           );
@@ -116,5 +128,56 @@ class _PlacesPageState extends State<PlacesPage> {
         }
       },
     );
+  }
+
+  void showFilterMenu(BuildContext context) {
+    final List<String> filters = [
+      'Newest',
+      'Oldest',
+      'High Upvotes',
+      'Low Upvotes',
+      'High Replies',
+      'Low Replies'
+    ];
+
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(0, 50, 0, 0),
+      items: filters.asMap().entries.map((entry) {
+        int index = entry.key;
+        String filter = entry.value;
+        return PopupMenuItem<String>(
+          value: filter,
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(filter),
+              ),
+              if (index == filter_val)
+                Icon(
+                    Icons.check), // Show a checkmark icon for the selected item
+            ],
+          ),
+        );
+      }).toList(),
+    ).then((value) {
+      if (value != null) {
+        setState(() {
+          if (value == 'Newest') {
+            filter_val = 0;
+          } else if (value == 'Oldest') {
+            filter_val = 1;
+          } else if (value == 'High Upvotes') {
+            filter_val = 2;
+          } else if (value == 'Low Upvotes') {
+            filter_val = 3;
+          } else if (value == 'High Replies') {
+            filter_val = 4;
+          } else if (value == 'Low Replies') {
+            filter_val = 5;
+          }
+        });
+      }
+    });
   }
 }
