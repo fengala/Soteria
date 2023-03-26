@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_ui/pages/mainUI/reviewForSocials.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import '../../models/reviews.dart';
 import '../../services/auth.dart';
 import 'package:flutter_login_ui/pages/mainUI/placesPage.dart';
 // void main() => runApp(MyApp());
@@ -23,22 +24,23 @@ class socialHousePage extends StatefulWidget {
         @required this.num_stars})
       : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+
+  Future<num> getUserRating() {
+    return getUserReview(id, UserAuth.auth.currentUser.uid);
+  }
+
 
   @override
   _socialHousePageState createState() => _socialHousePageState();
 }
 
+
+
 class _socialHousePageState extends State<socialHousePage> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   UserAuth userAuth = new UserAuth();
   var user;
+
 
   @override
   void dispose() {
@@ -99,6 +101,29 @@ class _socialHousePageState extends State<socialHousePage> {
                   fontWeight: FontWeight.w700,
                   letterSpacing: 2.5),
             ),
+
+
+            // RatingBarIndicator(
+            //   rating: double.parse(widget.getUserRating().toString()),
+            //   itemBuilder: (context, index) => Icon(
+            //     Icons.star,
+            //     color: Colors.amber,
+            //   ),
+            //   itemCount: 5,
+            //   itemSize: 50.0,
+            //   direction: Axis.horizontal,
+            // ),
+            // Text(
+            //   "User Rating: ${widget.getUserRating()}",
+            //   style: TextStyle(
+            //       fontSize: 20.0,
+            //       fontFamily: 'Montserrat',
+            //       color: Colors.amber.shade700,
+            //       fontWeight: FontWeight.w700,
+            //       letterSpacing: 2.5),
+            // ),
+
+
             SizedBox(
               width: 150.0,
               height: 20.0,

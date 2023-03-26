@@ -335,10 +335,13 @@ class DatabaseService {
   }
 
   Future addReviewToVenue(String social_venue_id, String username,
-      String review, bool anonymous, String uid) async {
+      String review, bool anonymous, String uid, double rating) async {
+    await venRef.doc(social_venue_id).update({'num_comments': FieldValue.increment(1)});
+
     return await FirebaseFirestore.instance.collection("reviews").doc().set({
       'username': username,
       'description': review,
+      'rating': rating,
       'num_upvotes': 0,
       'num_comments': 0,
       'replies': [],
@@ -403,6 +406,24 @@ class DatabaseService {
       final id = doc.id;
       return {...data, 'id': id};
     }).toList();
+    return Data;
+  }
+
+  Future getUserRating(String placeId, String userId) async {
+    revRef.where("ownerSocialHouse", isEqualTo: placeId)
+          .where("userId", isEqualTo: userId);
+
+    QuerySnapshot querySnapshot =
+    await revRef.where("ownerSocialHouse", isEqualTo: placeId)
+        .where("userId", isEqualTo: userId).get();
+
+    final Data = querySnapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      final id = doc.id;
+      num rating = data['rating'];
+      return rating;
+    }).first;
+
     return Data;
   }
 }
