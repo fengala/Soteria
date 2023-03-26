@@ -21,6 +21,7 @@ Future<List<Place>> getAllPlaces(int filter_val) async {
     String id = jsonMap['id'];
     String address = jsonMap['location'];
     String contact = jsonMap['contact'];
+    String acc = jsonMap['acc'];
 
     vens.add(Place(
       name: title,
@@ -31,6 +32,7 @@ Future<List<Place>> getAllPlaces(int filter_val) async {
       location: address,
       contact: contact,
       ratio: ratio.toString(),
+      acc: acc,
     ));
   }
 
