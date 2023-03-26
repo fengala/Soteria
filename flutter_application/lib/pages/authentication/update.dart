@@ -111,6 +111,9 @@ class _UpdatePageState extends State<UpdatePage> {
   }
 
   // GlobalKey<_RegisterPageState> form_key = GlobalKey();
+  Future<String> revertPhoneNumber(String formattedPhoneNumber) async {
+    return formattedPhoneNumber.replaceAll(RegExp(r'\D+'), '').substring(0, 10);
+  }
 
   String validate_first_name(String val) {
     if (val == null || val.isEmpty) {
@@ -255,6 +258,7 @@ class _UpdatePageState extends State<UpdatePage> {
           selection: TextSelection.collapsed(offset: formatted.length),
         );
         emergency_contact1 = text;
+        print("This si teh emenrfe1 " + emergency_contact1);
       },
       keyboardType: TextInputType.phone,
       obscureText: false,
@@ -280,6 +284,7 @@ class _UpdatePageState extends State<UpdatePage> {
           selection: TextSelection.collapsed(offset: formatted.length),
         );
         emergency_contact2 = text;
+        print("This si teh emenrfe2 " + emergency_contact2);
       },
       keyboardType: TextInputType.phone,
       obscureText: false,
@@ -305,6 +310,7 @@ class _UpdatePageState extends State<UpdatePage> {
           selection: TextSelection.collapsed(offset: formatted.length),
         );
         emergency_contact3 = text;
+        print("This si teh emenrfe3 " + emergency_contact3);
       },
       keyboardType: TextInputType.phone,
       obscureText: false,
@@ -451,74 +457,88 @@ class _UpdatePageState extends State<UpdatePage> {
                         child: Text(
                             "These are invalid contacts, please try again\n"))));
               }
-              if (!emergency_contact1.isEmpty &&
-                  emergency_contact1.length != 10) {
-                print("hello");
-                prompt = false;
-                test2 = false;
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    behavior: SnackBarBehavior.floating,
-                    backgroundColor: Colors.transparent,
-                    elevation: 100,
-                    content: Container(
-                        height: 120,
-                        padding: EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: Text(
-                            "These are invalid contacts, please try again\n"))));
+              if (!emergency_contact1.isEmpty && emergency_contact1 != null) {
+                if (emergency_contact1.length != 13 &&
+                    (emergency_contact1.contains("("))) {
+                  print("hello");
+                  prompt = false;
+                  test2 = false;
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      elevation: 100,
+                      content: Container(
+                          height: 120,
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: Text(
+                              "These are invalid contacts, please try again\n"))));
+                }
               }
-              if (!emergency_contact2.isEmpty &&
-                  emergency_contact2.length != 10) {
-                prompt = false;
-                test3 = false;
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    behavior: SnackBarBehavior.floating,
-                    backgroundColor: Colors.transparent,
-                    elevation: 100,
-                    content: Container(
-                        height: 120,
-                        padding: EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: Text(
-                            "These are invalid contacts, please try again\n"))));
+              if (!emergency_contact2.isEmpty && emergency_contact2 != null) {
+                if (emergency_contact2.length != 13 &&
+                    (emergency_contact2.contains("("))) {
+                  prompt = false;
+                  test3 = false;
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      elevation: 100,
+                      content: Container(
+                          height: 120,
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: Text(
+                              "These are invalid contacts, please try again\n"))));
+                }
               }
 
-              if (!emergency_contact3.isEmpty &&
-                  emergency_contact3.length != 10) {
-                prompt = false;
-                test4 = false;
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    behavior: SnackBarBehavior.floating,
-                    backgroundColor: Colors.transparent,
-                    elevation: 100,
-                    content: Container(
-                        height: 120,
-                        padding: EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: Text(
-                            "These are invalid contacts, please try again\n"))));
+              if (!emergency_contact3.isEmpty && emergency_contact3 != null) {
+                if (emergency_contact3.length != 13 &&
+                    (emergency_contact3.contains("("))) {
+                  prompt = false;
+                  test4 = false;
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      elevation: 100,
+                      content: Container(
+                          height: 120,
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: Text(
+                              "These are invalid contacts, please try again\n"))));
+                }
               }
               if (test1 && test2 && test3 && test4) {
-                if (emergency_contact1 != null) {
+                print("Hello\n");
+
+                if (emergency_contact1 != null && !emergency_contact1.isEmpty) {
+                  emergency_contact1 =
+                      await revertPhoneNumber(emergency_contact1);
                   emergency_contact1.trim();
                 } else {
                   emergency_contact1 = "";
                 }
-                if (emergency_contact2 != null) {
+                if (emergency_contact2 != null && !emergency_contact2.isEmpty) {
+                  emergency_contact2 =
+                      await revertPhoneNumber(emergency_contact2);
                   emergency_contact2.trim();
                 } else {
                   emergency_contact2 = "";
                 }
-                if (emergency_contact3 != null) {
+                if (emergency_contact3 != null && !emergency_contact3.isEmpty) {
+                  emergency_contact3 =
+                      await revertPhoneNumber(emergency_contact3);
                   emergency_contact3.trim();
                 } else {
                   emergency_contact3 = "";
