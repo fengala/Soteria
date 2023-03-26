@@ -427,10 +427,10 @@ class _UpdatePageState extends State<UpdatePage> {
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
                       child: Text("There are a few fields missing\n"))));
-            } else if (phone_number.length != 10 ||
-                emergency_contact1.length != 10 ||
-                emergency_contact2.length != 10 ||
-                emergency_contact3.length != 10) {
+            } else if (phone_number.length > 10 ||
+                emergency_contact1.length > 10 ||
+                emergency_contact2.length > 10 ||
+                emergency_contact3.length > 10) {
               prompt = false;
               print(emergency_contact1);
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(

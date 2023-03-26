@@ -11,6 +11,7 @@ class Place extends StatelessWidget {
   String rating;
   final String location;
   final String contact;
+  final String acc;
 
   Place({
     Key key,
@@ -22,6 +23,7 @@ class Place extends StatelessWidget {
     @required this.location,
     @required this.contact,
     @required this.ratio,
+    @required this.acc,
   }) : super(key: key);
 
   @override
@@ -51,7 +53,7 @@ class Place extends StatelessWidget {
         children: [
           placeHeader(context),
           placeText(),
-          placeButtons(),
+          placeButtons(context),
         ],
       ),
     );
@@ -102,7 +104,7 @@ class Place extends StatelessWidget {
     );
   }
 
-  Widget placeButtons() {
+  Widget placeButtons(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 10.0, right: 20.0),
       child: Row(
@@ -110,7 +112,29 @@ class Place extends StatelessWidget {
         children: [
           placeIconButton1(FontAwesomeIcons.comment, this.comments),
           placeIconButton2(FontAwesomeIcons.solidStar, this.rating),
-          //placeIconButton2(FontAwesomeIcons.solidStar, this.ratio),
+          IconButton(
+            icon: Icon(
+              Icons.info_outline,
+              size: 24.0,
+              color: Colors.grey,
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return SimpleDialog(
+                    title: Text("Accredited Information"),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(acc),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
         ],
       ),
     );
