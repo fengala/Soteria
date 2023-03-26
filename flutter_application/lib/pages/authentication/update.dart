@@ -30,6 +30,16 @@ class UpdatePage extends StatefulWidget {
   _UpdatePageState createState() => _UpdatePageState(myUser, userAuth);
 }
 
+String _formatPhoneNumber(String digits) {
+  if (digits.length < 3) {
+    return digits;
+  } else if (digits.length < 6) {
+    return '(${digits.substring(0, 3)})${digits.substring(3)}';
+  } else {
+    return '(${digits.substring(0, 3)})${digits.substring(3, 6)}-${digits.substring(6)}';
+  }
+}
+
 //TO-DO:
 //Scroll bar
 //Contacts (+ button)
@@ -46,6 +56,9 @@ class _UpdatePageState extends State<UpdatePage> {
   String emergency_contact1 = "";
   String emergency_contact2 = "";
   String emergency_contact3 = "";
+  TextEditingController phoneNumberController;
+  TextEditingController phoneNumberController2;
+  TextEditingController phoneNumberController3;
   _UpdatePageState(this.myUser, this.userAuth) {
     name = myUser.name.split(" ")[0];
     last_name = myUser.name.split(" ")[1];
@@ -55,6 +68,12 @@ class _UpdatePageState extends State<UpdatePage> {
     emergency_contact1 = myUser.emergency_contacts[0];
     emergency_contact2 = myUser.emergency_contacts[1];
     emergency_contact3 = myUser.emergency_contacts[2];
+    phoneNumberController =
+        TextEditingController(text: _formatPhoneNumber(emergency_contact1));
+    phoneNumberController2 =
+        TextEditingController(text: _formatPhoneNumber(emergency_contact2));
+    phoneNumberController3 =
+        TextEditingController(text: _formatPhoneNumber(emergency_contact3));
   }
   TextEditingController text_widgets = TextEditingController();
 
@@ -224,46 +243,79 @@ class _UpdatePageState extends State<UpdatePage> {
               style.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
         ));
     final emergencyContact1 = TextFormField(
-      controller: TextEditingController(text: emergency_contact1),
+      controller: phoneNumberController,
       onChanged: (text) {
+        // remove any non-digit characters
+        String digits = text.replaceAll(RegExp(r'\D+'), '');
+        // format the phone number
+        String formatted = _formatPhoneNumber(digits);
+        // update the controller with the formatted phone number
+        phoneNumberController.value = TextEditingValue(
+          text: formatted,
+          selection: TextSelection.collapsed(offset: formatted.length),
+        );
         emergency_contact1 = text;
       },
       keyboardType: TextInputType.phone,
       obscureText: false,
       style: style,
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Enter emergency contact number",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        hintText: "Enter emergency contact number",
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(32.0),
+        ),
+      ),
     );
     final emergencyContact2 = TextFormField(
-      controller: TextEditingController(text: emergency_contact2),
+      controller: phoneNumberController2,
       onChanged: (text) {
+        // remove any non-digit characters
+        String digits = text.replaceAll(RegExp(r'\D+'), '');
+        // format the phone number
+        String formatted = _formatPhoneNumber(digits);
+        // update the controller with the formatted phone number
+        phoneNumberController2.value = TextEditingValue(
+          text: formatted,
+          selection: TextSelection.collapsed(offset: formatted.length),
+        );
         emergency_contact2 = text;
       },
       keyboardType: TextInputType.phone,
       obscureText: false,
       style: style,
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Enter emergency contact number",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        hintText: "Enter emergency contact number",
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(32.0),
+        ),
+      ),
     );
     final emergencyContact3 = TextFormField(
-      controller: TextEditingController(text: emergency_contact3),
+      controller: phoneNumberController3,
       onChanged: (text) {
+        // remove any non-digit characters
+        String digits = text.replaceAll(RegExp(r'\D+'), '');
+        // format the phone number
+        String formatted = _formatPhoneNumber(digits);
+        // update the controller with the formatted phone number
+        phoneNumberController3.value = TextEditingValue(
+          text: formatted,
+          selection: TextSelection.collapsed(offset: formatted.length),
+        );
         emergency_contact3 = text;
       },
       keyboardType: TextInputType.phone,
       obscureText: false,
       style: style,
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Enter emergency contact number",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        hintText: "Enter emergency contact number",
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(32.0),
+        ),
+      ),
     );
 
     final verifyUser = Material(
@@ -375,8 +427,12 @@ class _UpdatePageState extends State<UpdatePage> {
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
                       child: Text("There are a few fields missing\n"))));
-            } else if (phone_number.length != 10 || emergency_contact1.length != 10 || emergency_contact2.length != 10 || emergency_contact3.length != 10) {
+            } else if (phone_number.length != 10 ||
+                emergency_contact1.length != 10 ||
+                emergency_contact2.length != 10 ||
+                emergency_contact3.length != 10) {
               prompt = false;
+              print(emergency_contact1);
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   behavior: SnackBarBehavior.floating,
                   backgroundColor: Colors.transparent,
@@ -388,7 +444,8 @@ class _UpdatePageState extends State<UpdatePage> {
                         color: Colors.red,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
-                      child: Text("These are invalid contacts, please try again\n"))));
+                      child: Text(
+                          "These are invalid contacts, please try again\n"))));
             } else {
               emergency_contact1.trim();
               emergency_contact2.trim();
