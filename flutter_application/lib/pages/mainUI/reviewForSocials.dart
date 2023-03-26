@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/pages/mainUI/placesPage.dart';
+import 'package:flutter_login_ui/pages/mainUI/socialHouse.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -128,8 +130,14 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
       appBar: AppBar(
         elevation: 1,
         backgroundColor: Colors.amber,
-        leading: Container(
-          margin: const EdgeInsets.all(10.0),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PlacesPage()),
+            );
+          },
         ),
         title: Text(
           'Reviews',

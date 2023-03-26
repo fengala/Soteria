@@ -108,7 +108,7 @@ class Place extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           placeIconButton1(FontAwesomeIcons.comment, this.comments),
-          placeIconButton2(FontAwesomeIcons.solidStar, this.ratio),
+          placeIconButton2(FontAwesomeIcons.solidStar, this.rating),
           //placeIconButton2(FontAwesomeIcons.solidStar, this.ratio),
         ],
       ),

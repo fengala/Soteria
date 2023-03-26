@@ -1,17 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_login_ui/pages/authentication/forgotPassword.dart';
-import 'package:flutter_login_ui/pages/authentication/loadingPage.dart';
-import 'package:flutter_login_ui/pages/mainUI/petitionpage.dart';
-import 'package:flutter_login_ui/pages/authentication/register.dart';
 import 'package:flutter_login_ui/pages/mainUI/reviewForSocials.dart';
-import 'package:flutter_login_ui/pages/navigation/startpoint.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../services/auth.dart';
-import '../../services/database.dart';
-import '../../models/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_login_ui/pages/mainUI/placesPage.dart';
 // void main() => runApp(MyApp());
 
@@ -58,11 +49,10 @@ class _socialHousePageState extends State<socialHousePage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Venue Informaiton'),
+        backgroundColor: Colors.amber,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            // Navigator.of(context, rootNavigator: true).pushReplacement(
-            //     MaterialPageRoute(builder: (context) => PlacesPage()));
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => PlacesPage()),
