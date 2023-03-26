@@ -66,7 +66,21 @@ class _HomePageState extends State<HomePage> {
     List list = myUser.emergency_contacts;
     List val = List.from(list);
     int count = 0;
+    bool no = false;
 
+    int len = val.length;
+    int num = 0;
+    for (int i = 0; i < len; i++) {
+      if (val[i] == null || val[i] == "" || val[i] == " ") {
+        num++;
+      }
+    }
+    print("The val length is empty");
+    print(val.length);
+    if (val.length == num) {
+      print("THis list is empty");
+      no = true;
+    }
     return Scaffold(
       extendBody: true,
       body: _children[page],
@@ -108,13 +122,15 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.black,
               ),
               onLongPress: () async {
+                /*
                 String temp1 = val[0];
                 String temp2 = val[1];
                 String temp3 = val[2];
+                */
 
                 bool value = false;
-
-                if (count % 4 == 0 && count != 0) {
+                count++;
+                if ((count % (val.length + 1) == 0 && count != 0) || no) {
                   print("This is emergency call\n");
                   showDialog(
                       context: context,
@@ -143,7 +159,28 @@ class _HomePageState extends State<HomePage> {
                           ],
                         );
                       });
-                } else {
+                } else if (!no) {
+                  for (int i = 0; i < val.length; i++) {
+                    String first;
+                    int j;
+                    first = val[0];
+
+                    value = await FlutterPhoneDirectCaller.callNumber(first);
+                    if (!value) {
+                      print("Hello this is wrong\n");
+                      break;
+                    }
+
+                    for (j = 0; j < val.length - 1; j++) {
+                      val[j] = val[j + 1];
+                    }
+                    val[j] = first;
+
+                    if (value) {
+                      break;
+                    }
+                  }
+                  /*
                   while (!value) {
                     value = await FlutterPhoneDirectCaller.callNumber(temp1);
                     print("This is the value after making a call:\n");
@@ -156,8 +193,9 @@ class _HomePageState extends State<HomePage> {
                   }
                   print(val[0]);
                 }
+                */
 
-                /* if (count % 3 == 0) {
+                  /* if (count % 3 == 0) {
                   print("THis is emergency call\n");
                   AlertDialog(
                     title: const Text("Please Confirm!"),
@@ -183,6 +221,7 @@ class _HomePageState extends State<HomePage> {
                   );
                 }
                 */
+                }
               },
             ),
             onPressed: () async {
@@ -222,25 +261,22 @@ class _HomePageState extends State<HomePage> {
                         ),
                         child: Text("Successfully sent message!"))));
               } else if (status.isPermanentlyDenied) {
+                if (Platform.isIOS) {
+                  PermissionStatus status;
 
-                 if(Platform.isIOS) {
-                   PermissionStatus status;
+                  status = await Permission.contacts.request();
 
-                   status = await Permission.contacts.request();
-
-
-                     String val = await sendSMS(
-                         message: "This is an SOS message from your relation" +
-                             myUser.name +
-                             " please respond",
-                         recipients: emer,
+                  String val = await sendSMS(
+                          message: "This is an SOS message from your relation" +
+                              myUser.name +
+                              " please respond",
+                          recipients: emer,
                           sendDirect: true)
-                         .catchError((onError) {
-                       print(onError);
-                     });
-                     print(val);
-
-                 }
+                      .catchError((onError) {
+                    print(onError);
+                  });
+                  print(val);
+                }
               }
             }),
         buttonColor: Colors.white,
