@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_ui/pages/mainUI/reviewForSocials.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../services/auth.dart';
 import 'package:flutter_login_ui/pages/mainUI/placesPage.dart';
 // void main() => runApp(MyApp());
@@ -11,13 +12,15 @@ class socialHousePage extends StatefulWidget {
   final String id;
   final String contact;
   final String description;
+  final String num_stars;
 
   socialHousePage(
       {Key key,
       @required this.title,
       @required this.id,
       @required this.description,
-      @required this.contact})
+      @required this.contact,
+        @required this.num_stars})
       : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -75,6 +78,25 @@ class _socialHousePageState extends State<socialHousePage> {
                   fontFamily: 'Montserrat',
                   color: Colors.amber.shade900,
                   fontWeight: FontWeight.bold,
+                  letterSpacing: 2.5),
+            ),
+            RatingBarIndicator(
+              rating: double.parse(widget.num_stars),
+              itemBuilder: (context, index) => Icon(
+                Icons.star,
+                color: Colors.amber,
+              ),
+              itemCount: 5,
+              itemSize: 50.0,
+              direction: Axis.horizontal,
+            ),
+            Text(
+              "Rating: " + widget.num_stars,
+              style: TextStyle(
+                  fontSize: 20.0,
+                  fontFamily: 'Montserrat',
+                  color: Colors.amber.shade700,
+                  fontWeight: FontWeight.w700,
                   letterSpacing: 2.5),
             ),
             SizedBox(

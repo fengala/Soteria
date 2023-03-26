@@ -80,6 +80,7 @@ class Place extends StatelessWidget {
                           id: id,
                           description: description,
                           contact: contact,
+                          num_stars: rating,
                         )));
           },
           child: IconButton(
