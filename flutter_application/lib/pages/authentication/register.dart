@@ -241,7 +241,7 @@ class _RegisterPageState extends State<RegisterPage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () async {
-          if (password != password2) {
+           if (password != password2) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: Colors.transparent,
@@ -255,6 +255,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     child: Text("Passwords don't match"))));
           } else {
+            bool test1 = true;
+            bool test2 = true;
+            bool test3 = true;
+            bool test4 = true;
             try {
               if (first_name == null ||
                   first_name.isEmpty ||
@@ -264,12 +268,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   username.isEmpty ||
                   phone_number == null ||
                   phone_number.isEmpty ||
-                  emergency_contact1 == null ||
-                  emergency_contact1.isEmpty ||
-                  emergency_contact2.isEmpty ||
-                  emergency_contact2 == null ||
-                  emergency_contact3.isEmpty ||
-                  emergency_contact3 == null ||
                   last_name == null ||
                   last_name.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -284,7 +282,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
                         child: Text("There are a few fields missing\n"))));
-              } else if (phone_number.length != 10 || emergency_contact1.length != 10 || emergency_contact2.length != 10 || emergency_contact3.length != 10) {
+              }
+              if (phone_number.length != 10) {
+                test1 = false;
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     behavior: SnackBarBehavior.floating,
                     backgroundColor: Colors.transparent,
@@ -296,11 +296,77 @@ class _RegisterPageState extends State<RegisterPage> {
                           color: Colors.red,
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
-                        child: Text("These are invalid contacts, please try again\n"))));
-              } else {
-                emergency_contact1.trim();
-                emergency_contact2.trim();
-                emergency_contact3.trim();
+                        child: Text("There are a few fields missing\n"))));
+              }
+
+              if (emergency_contact1 != null && !emergency_contact1.isEmpty) {
+                if (emergency_contact1.length != 10) {
+                  test2 = false;
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      elevation: 100,
+                      content: Container(
+                          height: 120,
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: Text("There are a few fields missing\n"))));
+                }
+              }
+              if (emergency_contact2 != null && !emergency_contact2.isEmpty) {
+                if (emergency_contact2.length != 10) {
+                  test3 = false;
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      elevation: 100,
+                      content: Container(
+                          height: 120,
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: Text("There are a few fields missing\n"))));
+                }
+              }
+
+              if (emergency_contact3 != null && !emergency_contact3.isEmpty) {
+                if (emergency_contact3.length != 10) {
+                  test4 = false;
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      elevation: 100,
+                      content: Container(
+                          height: 120,
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: Text("There are a few fields missing\n"))));
+                }
+              }
+              if (test1 && test2 && test4 && test3) {
+                if (emergency_contact1 != null) {
+                  emergency_contact1.trim();
+                } else {
+                  emergency_contact1 = "";
+                }
+                if (emergency_contact2 != null) {
+                  emergency_contact2.trim();
+                } else {
+                  emergency_contact2 = "";
+                }
+                if (emergency_contact3 != null) {
+                  emergency_contact3.trim();
+                } else {
+                  emergency_contact3 = "";
+                }
                 List list = [
                   emergency_contact1,
                   emergency_contact2,
@@ -314,10 +380,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 password = password.trim();
                 name.trim();
                 phone_number.trim();
-
+                print("hello\n");
                 var res = await userAuth.createUser(
                     username, password, name, phone_number, list);
-                showDialog(
+                print("hello2\n");
+
+                /*showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
                         title: Text("Success!"),
@@ -336,6 +404,22 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                   )),
                             ])));
+                            */
+
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    elevation: 100,
+                    content: Container(
+                        height: 120,
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: Text(
+                            "We have successfully sent a verification mail to your mail address\n"))));
+
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => LoginPage()));
               }

@@ -393,9 +393,21 @@ class _UpdatePageState extends State<UpdatePage> {
         padding: EdgeInsets.fromLTRB(5.0, 3.75, 5.0, 3.75),
         onPressed: () async {
           bool prompt = true;
-          emergency_contact1.trim();
-          emergency_contact2.trim();
-          emergency_contact3.trim();
+
+          if (emergency_contact1 != null) {
+            emergency_contact1.trim();
+          }
+          if (emergency_contact2 != null) {
+            emergency_contact2.trim();
+          }
+          if (emergency_contact3 != null) {
+            emergency_contact3.trim();
+          }
+
+          bool test1 = true;
+          bool test2 = true;
+          bool test3 = true;
+          bool test4 = true;
 
           try {
             if (name == null ||
@@ -406,12 +418,6 @@ class _UpdatePageState extends State<UpdatePage> {
                 username.isEmpty ||
                 phone_number == null ||
                 phone_number.isEmpty ||
-                emergency_contact1 == null ||
-                emergency_contact1.isEmpty ||
-                emergency_contact2.isEmpty ||
-                emergency_contact2 == null ||
-                emergency_contact3.isEmpty ||
-                emergency_contact3 == null ||
                 last_name == null ||
                 last_name.isEmpty) {
               prompt = false;
@@ -427,63 +433,131 @@ class _UpdatePageState extends State<UpdatePage> {
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
                       child: Text("There are a few fields missing\n"))));
-            } else if (phone_number.length > 10 ||
-                emergency_contact1.length > 10 ||
-                emergency_contact2.length > 10 ||
-                emergency_contact3.length > 10) {
-              prompt = false;
-              print(emergency_contact1);
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Colors.transparent,
-                  elevation: 100,
-                  content: Container(
-                      height: 120,
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                      ),
-                      child: Text(
-                          "These are invalid contacts, please try again\n"))));
             } else {
-              emergency_contact1.trim();
-              emergency_contact2.trim();
-              emergency_contact3.trim();
-              List list = [
-                emergency_contact1,
-                emergency_contact2,
-                emergency_contact3
-              ];
+              if (phone_number.length != 10) {
+                prompt = false;
+                test1 = false;
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    elevation: 100,
+                    content: Container(
+                        height: 120,
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: Text(
+                            "These are invalid contacts, please try again\n"))));
+              }
+              if (!emergency_contact1.isEmpty &&
+                  emergency_contact1.length != 10) {
+                print("hello");
+                prompt = false;
+                test2 = false;
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    elevation: 100,
+                    content: Container(
+                        height: 120,
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: Text(
+                            "These are invalid contacts, please try again\n"))));
+              }
+              if (!emergency_contact2.isEmpty &&
+                  emergency_contact2.length != 10) {
+                prompt = false;
+                test3 = false;
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    elevation: 100,
+                    content: Container(
+                        height: 120,
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: Text(
+                            "These are invalid contacts, please try again\n"))));
+              }
 
-              name = name + " " + last_name;
-              name.trim();
-              username.trim();
-              password.trim();
-              name.trim();
-              phone_number.trim();
+              if (!emergency_contact3.isEmpty &&
+                  emergency_contact3.length != 10) {
+                prompt = false;
+                test4 = false;
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    elevation: 100,
+                    content: Container(
+                        height: 120,
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: Text(
+                            "These are invalid contacts, please try again\n"))));
+              }
+              if (test1 && test2 && test3 && test4) {
+                if (emergency_contact1 != null) {
+                  emergency_contact1.trim();
+                } else {
+                  emergency_contact1 = "";
+                }
+                if (emergency_contact2 != null) {
+                  emergency_contact2.trim();
+                } else {
+                  emergency_contact2 = "";
+                }
+                if (emergency_contact3 != null) {
+                  emergency_contact3.trim();
+                } else {
+                  emergency_contact3 = "";
+                }
+                List list = [
+                  emergency_contact1,
+                  emergency_contact2,
+                  emergency_contact3
+                ];
 
-              myUser.name = name;
-              myUser.emergency_contacts = list;
-              myUser.password = password;
-              myUser.username = username;
-              myUser.phone_number = phone_number;
-              //print(myUser.name);
-              //print("After changing");
-              //print(myUser.name);
-              //print(myUser.password);
-              //print(myUser.username);
-              //print(myUser.uid);
-              //print(myUser.emergency_contacts);
-              //print(myUser.phone_number);
+                name = name + " " + last_name;
+                name.trim();
+                username.trim();
+                password.trim();
+                name.trim();
+                phone_number.trim();
 
-              var res = await DatabaseService(uid: myUser.uid).updateUser(
-                username,
-                password,
-                name,
-                list,
-                phone_number,
-              );
+                myUser.name = name;
+                myUser.emergency_contacts = list;
+                myUser.password = password;
+                myUser.username = username;
+                myUser.phone_number = phone_number;
+                //print(myUser.name);
+                //print("After changing");
+                //print(myUser.name);
+                //print(myUser.password);
+                //print(myUser.username);
+                //print(myUser.uid);
+                //print(myUser.emergency_contacts);
+                //print(myUser.phone_number);
+
+                var res = await DatabaseService(uid: myUser.uid).updateUser(
+                  username,
+                  password,
+                  name,
+                  list,
+                  phone_number,
+                );
+              }
             }
           } catch (x) {
             //print(x);
