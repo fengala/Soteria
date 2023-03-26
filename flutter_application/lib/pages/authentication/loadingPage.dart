@@ -73,10 +73,11 @@ class splashScreen extends State<flashScreen> {
           duration: 1500,
           splash: ClipOval(
             child: Image.asset(
-                'assets/logo.png',
-                fit: BoxFit.cover,),
-             clipper: MyClip(),
+              'assets/logo.png',
+              fit: BoxFit.cover,
             ),
+            clipper: MyClip(),
+          ),
           splashIconSize: double.infinity,
           screenFunction: () async {
             if (!value) {
