@@ -55,9 +55,9 @@ class _socialHousePageState extends State<socialHousePage> {
   Widget build(BuildContext context) {
     bool remember = false;
     return Scaffold(
-      backgroundColor: Colors.amber,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Back'),
+        title: Text('Venue Informaiton'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -67,11 +67,6 @@ class _socialHousePageState extends State<socialHousePage> {
               context,
               MaterialPageRoute(builder: (context) => PlacesPage()),
             );
-            // Navigator.pop(context);
-            // Navigator.pop(context);
-            // Navigator.push()
-            // Navigator.of(context, rootNavigator: false)
-            //   ..push(MaterialPageRoute(builder: (context) => PlacesPage()));
           },
         ),
       ),
@@ -88,7 +83,7 @@ class _socialHousePageState extends State<socialHousePage> {
               style: TextStyle(
                   fontSize: 20.0,
                   fontFamily: 'Montserrat',
-                  color: Colors.amber.shade100,
+                  color: Colors.amber.shade900,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2.5),
             ),
@@ -120,7 +115,7 @@ class _socialHousePageState extends State<socialHousePage> {
               child: ListTile(
                 leading: Icon(
                   Icons.email,
-                  color: Colors.teal,
+                  color: Colors.amber,
                 ),
                 title: Text(
                   widget.contact,
@@ -143,19 +138,7 @@ class _socialHousePageState extends State<socialHousePage> {
             height: 50.0,
             child: ElevatedButton(
               onPressed: () {
-                // code to navigate to review for that house
-                // have to pass id
                 try {
-                  print("\n");
-                  print("\n");
-                  print(widget.id);
-                  print("\n");
-                  print("\n");
-                  //this.userAuth.SignOut();
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => LoginPage()));
-                  // Navigator.of(context, rootNavigator: true).pushReplacement(
-                  //     MaterialPageRoute(builder: (context) => PlacesPage()));
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -168,7 +151,7 @@ class _socialHousePageState extends State<socialHousePage> {
               },
               child: Text("Reviews"),
               style: ElevatedButton.styleFrom(
-                primary: Colors.blue,
+                primary: Colors.amber,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),

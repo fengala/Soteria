@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class Place extends StatelessWidget {
   final String name;
   String comments;
+  String ratio;
   final String id;
   final String description;
   String rating;
@@ -20,6 +21,7 @@ class Place extends StatelessWidget {
     @required this.rating,
     @required this.location,
     @required this.contact,
+    @required this.ratio,
   }) : super(key: key);
 
   @override
@@ -106,7 +108,8 @@ class Place extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           placeIconButton1(FontAwesomeIcons.comment, this.comments),
-          placeIconButton2(FontAwesomeIcons.solidStar, this.rating),
+          placeIconButton2(FontAwesomeIcons.solidStar, this.ratio),
+          //placeIconButton2(FontAwesomeIcons.solidStar, this.ratio),
         ],
       ),
     );

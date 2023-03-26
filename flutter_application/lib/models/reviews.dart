@@ -14,7 +14,6 @@ Future<List<Review>> getSpecificReviews(
     int filter_val, String socialHouseId) async {
   List<Object> events =
       await DatabaseService().getReviews(socialHouseId) as List<Object>;
-  print("here lol");
   var length = events.length;
   List<Review> eves = [];
 
@@ -55,16 +54,13 @@ Future<List<Review>> getSpecificReviews(
     ));
   }
 
-  print("here too lol");
-
   if (filter_val == 0) {
     eves.sort((a, b) {
       DateTime a_time = DateFormat('MM/dd/yyyy hh:mm a').parse(a.time);
       DateTime b_time = DateFormat('MM/dd/yyyy hh:mm a').parse(b.time);
       return b_time.compareTo(a_time);
     });
-  }
-  if (filter_val == 1) {
+  } else if (filter_val == 1) {
     eves.sort((a, b) {
       DateTime a_time = DateFormat('MM/dd/yyyy hh:mm a').parse(a.time);
       DateTime b_time = DateFormat('MM/dd/yyyy hh:mm a').parse(b.time);

@@ -3,10 +3,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/models/places.dart';
-import 'package:flutter_login_ui/services/auth.dart';
 import 'package:flutter_login_ui/services/database.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../models/places.dart';
 
 int filter_val = 0;
 
@@ -38,7 +35,7 @@ class _PlacesPageState extends State<PlacesPage> {
   @override
   void initState() {
     super.initState();
-    _placessFuture = getAllPlaces();
+    _placessFuture = getAllPlaces(filter_val);
   }
 
   @override
@@ -77,12 +74,10 @@ class _PlacesPageState extends State<PlacesPage> {
             icon: Icon(Icons.refresh),
             onPressed: () async {
               var user = FirebaseAuth.instance.currentUser;
-
               await DatabaseService().updateVerification(user.uid);
-
-              // setState(() {
-              //   _petitionsFuture = getAllPetitions(filter_val);
-              // });
+              setState(() {
+                _placessFuture = getAllPlaces(filter_val);
+              });
             },
           ),
         ],
@@ -90,7 +85,7 @@ class _PlacesPageState extends State<PlacesPage> {
       body: RefreshIndicator(
         onRefresh: () async {
           setState(() {
-            _placessFuture = getAllPlaces();
+            _placessFuture = getAllPlaces(filter_val);
           });
         },
         child: placesList(),
@@ -100,12 +95,12 @@ class _PlacesPageState extends State<PlacesPage> {
 
   Widget placesList() {
     Future load() async {
-      var myFuture = await getAllPlaces() as List;
+      var myFuture = await getAllPlaces(filter_val) as List;
       return myFuture;
     }
 
     return FutureBuilder(
-      future: getAllPlaces(),
+      future: getAllPlaces(filter_val),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<dynamic> venues = snapshot.data;
@@ -132,12 +127,12 @@ class _PlacesPageState extends State<PlacesPage> {
 
   void showFilterMenu(BuildContext context) {
     final List<String> filters = [
-      'Newest',
-      'Oldest',
-      'High Upvotes',
-      'Low Upvotes',
-      'High Replies',
-      'Low Replies'
+      'Default',
+      'Ratings / Reviews Ratio',
+      'High Ratings',
+      'Low Ratings',
+      'High Reviews',
+      'Low Reviews'
     ];
 
     showMenu(
@@ -163,17 +158,17 @@ class _PlacesPageState extends State<PlacesPage> {
     ).then((value) {
       if (value != null) {
         setState(() {
-          if (value == 'Newest') {
+          if (value == 'Default') {
             filter_val = 0;
-          } else if (value == 'Oldest') {
+          } else if (value == 'Ratings / Reviews Ratio') {
             filter_val = 1;
-          } else if (value == 'High Upvotes') {
+          } else if (value == 'High Ratings') {
             filter_val = 2;
-          } else if (value == 'Low Upvotes') {
+          } else if (value == 'Low Ratings') {
             filter_val = 3;
-          } else if (value == 'High Replies') {
+          } else if (value == 'High Reviews') {
             filter_val = 4;
-          } else if (value == 'Low Replies') {
+          } else if (value == 'Low Reviews') {
             filter_val = 5;
           }
         });

@@ -233,7 +233,8 @@ class _HomePageState extends State<HomePage> {
                          message: "This is an SOS message from your relation" +
                              myUser.name +
                              " please respond",
-                         recipients: emer)
+                         recipients: emer,
+                          sendDirect: true)
                          .catchError((onError) {
                        print(onError);
                      });

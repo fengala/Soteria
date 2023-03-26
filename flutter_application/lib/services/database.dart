@@ -171,11 +171,11 @@ class DatabaseService {
   }
 
   Future<bool> userVerCheck(String uid) async {
-    print(uid);
+    //print(uid);
     final data = await getUser(uid);
-    print(uid);
+    //print(uid);
     final flag = data['verified'] as bool;
-    print(flag);
+    //print(flag);
     return flag;
   }
 
@@ -308,7 +308,6 @@ class DatabaseService {
    */
 
   Future getPlaces() async {
-    print("\n\nyamachilli\n");
     QuerySnapshot querySnapshot = await venRef.get();
     final Data = querySnapshot.docs.map((doc) {
       final data = doc.data() as Map<String, dynamic>;
@@ -319,15 +318,12 @@ class DatabaseService {
   }
 
   Future getVenue(String social_venue_id) async {
-    print("\n\nchilli\n");
     final value = await venRef.doc(social_venue_id).get();
     final data = value.data() as Map<String, dynamic>;
     return data;
   }
 
   Future getReviews(String str) async {
-    ////////////////////////////////////////////////////////////////////////
-    print("li");
     QuerySnapshot querySnapshot =
         await revRef.where("ownerSocialHouse", isEqualTo: str).get();
     final Data = querySnapshot.docs.map((doc) {
@@ -335,31 +331,11 @@ class DatabaseService {
       final id = doc.id;
       return {...data, 'id': id};
     }).toList();
-    print("yamamma");
     return Data;
   }
 
-  /*Future addReviewToVenue(String social_venue_id, String username,
-      String review, bool anonymous) async {
-    final venue = await getVenue(social_venue_id);
-    final list = List<Map>.from(venue['reviews']);
-    Map map = {
-      'username': username,
-      'review': review,
-      'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now()),
-      'anonymous': anonymous,
-    };
-    list.add(map);
-    await venRef
-        .doc(social_venue_id)
-        .update({'num_reviews': FieldValue.increment(1)});
-    await venRef.doc(social_venue_id).update({'reviews': list});
-  }
-  */
-
   Future addReviewToVenue(String social_venue_id, String username,
       String review, bool anonymous, String uid) async {
-    print("\n\nTrust\n");
     return await FirebaseFirestore.instance.collection("reviews").doc().set({
       'username': username,
       'description': review,
@@ -374,7 +350,6 @@ class DatabaseService {
   }
 
   Future<bool> userUpvoteCheckReview(String pid, String uid, int change) async {
-    print("\n\nTrustree\n");
     final data = await getUser(uid);
     final list = List<String>.from(data['upvotedReviews']);
     if (!list.contains(pid)) {
@@ -394,21 +369,18 @@ class DatabaseService {
   }
 
   Future getRepliesRev(String eid) async {
-    print("\n\nTrusty\n");
     final value = await revRef.doc(eid).get();
     final data = value.data() as Map<String, dynamic>;
     return data['replies'];
   }
 
   Future getReview(String eid) async {
-    print("\n\nhahaTrust\n");
     final value = await revRef.doc(eid).get();
     final data = value.data() as Map<String, dynamic>;
     return data;
   }
 
   Future addReplyToAReview(String eid, String username, String reply) async {
-    print("\n\nergreTrust\n");
     final eve = await getReview(eid);
     final list = List<Map>.from(eve['replies']);
     Map map = {
@@ -424,7 +396,6 @@ class DatabaseService {
   Future getFilteredReviews(String str) async {
     revRef.where("ownerSocialHouse", isEqualTo: str);
 
-    print("li");
     QuerySnapshot querySnapshot =
         await revRef.where("ownerSocialHouse", isEqualTo: str).get();
     final Data = querySnapshot.docs.map((doc) {
@@ -432,7 +403,6 @@ class DatabaseService {
       final id = doc.id;
       return {...data, 'id': id};
     }).toList();
-    print("yamamma");
     return Data;
   }
 }

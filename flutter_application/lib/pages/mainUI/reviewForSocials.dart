@@ -153,9 +153,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                 await DatabaseService().updateVerification(user.uid);
               }
               setState(() {
-                print("lol ho gaya");
                 _eventsFuture = getSpecificReviews(filter_val, widget.id);
-                print("jkjk");
               });
             },
           ),
@@ -209,7 +207,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                         onChanged: (newValue) {
                           setState(() {
                             isAnonymous = newValue;
-                            print(isAnonymous);
+                            //print(isAnonymous);
                           });
                         },
                       )
@@ -276,7 +274,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
   }
 
   Widget eventList() {
-    print("turky");
+    //print("turky");
     Future load() async {
       var myFuture = await getSpecificReviews(filter_val, widget.id) as List;
       return myFuture;
@@ -430,7 +428,7 @@ class _EventState extends State<Review> {
       future: getAllRepliesRev(widget.id),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          print(widget.id);
+          //print(widget.id);
           return Text('Error loading replies');
         } else if (!snapshot.hasData) {
           return Text('Loading...');
