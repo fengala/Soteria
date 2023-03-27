@@ -65,8 +65,9 @@ class Place extends StatelessWidget {
         Container(
           margin: const EdgeInsets.only(right: 5.0),
         ),
+        Icon(Icons.location_on),
         Text(
-          '@$location',
+          '$location',
           style: TextStyle(
             color: Colors.grey,
           ),

@@ -47,9 +47,17 @@ class _socialHousePageState extends State<socialHousePage> {
     super.dispose();
   }
 
+
+  String assetFixer() {
+    String asset = "assets/" + widget.title + "png";
+    return asset;
+  }
+
   @override
   Widget build(BuildContext context) {
     bool remember = false;
+    //String asset = "assets/" + widget.title + "png";
+    List<String> descriptions = widget.description.split("/");
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -66,12 +74,12 @@ class _socialHousePageState extends State<socialHousePage> {
         ),
       ),
       body: SafeArea(
-        child: Column(
+        child: SingleChildScrollView( child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const CircleAvatar(
               radius: 80.0,
-              backgroundImage: AssetImage('assets/frat.png'),
+              backgroundImage: AssetImage('assets/Phi Delta Theta.png'),
             ),
             Text(
               widget.title,
@@ -130,20 +138,84 @@ class _socialHousePageState extends State<socialHousePage> {
               child: Divider(
                 color: Colors.amber.shade100,
               ),
-            ),
-            Card(
+                ),
+            Container(
+              height: 70,
+              child: Card(
               margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-              child: ListTile(
+              child: SingleChildScrollView( child: ListTile(
                 leading: Icon(
                   Icons.info,
                   color: Colors.amber,
                 ),
                 title: Text(
-                  widget.description,
+                  descriptions[0],
                   style: TextStyle(
-                      fontSize: 20.0,
+                      fontSize: 17.0,
                       fontFamily: 'Montserrat',
                       color: Colors.amber.shade900),
+                ),
+              ),
+              ),
+            ),
+            ),
+            Container(
+              height: 70,
+              child: Card(
+                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                child: SingleChildScrollView( child: ListTile(
+                  leading: Icon(
+                    Icons.local_drink,
+                    color: Colors.amber,
+                  ),
+                  title: Text(
+                    descriptions[1],
+                    style: TextStyle(
+                        fontSize: 17.0,
+                        fontFamily: 'Montserrat',
+                        color: Colors.amber.shade900),
+                  ),
+                ),
+                ),
+              ),
+            ),
+            Container(
+              height: 70,
+              child: Card(
+                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                child: SingleChildScrollView( child: ListTile(
+                  leading: Icon(
+                    Icons.security,
+                    color: Colors.amber,
+                  ),
+                  title: Text(
+                    descriptions[2],
+                    style: TextStyle(
+                        fontSize: 17.0,
+                        fontFamily: 'Montserrat',
+                        color: Colors.amber.shade900),
+                  ),
+                ),
+                ),
+              ),
+            ),
+            Container(
+              height: 70,
+              child: Card(
+                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                child: SingleChildScrollView( child: ListTile(
+                  leading: Icon(
+                    Icons.plagiarism,
+                    color: Colors.amber,
+                  ),
+                  title: Text(
+                    descriptions[3],
+                    style: TextStyle(
+                        fontSize: 17.0,
+                        fontFamily: 'Montserrat',
+                        color: Colors.amber.shade900),
+                  ),
+                ),
                 ),
               ),
             ),
@@ -158,12 +230,29 @@ class _socialHousePageState extends State<socialHousePage> {
                   widget.contact,
                   style: TextStyle(
                       fontFamily: 'Montserrat',
-                      fontSize: 20.0,
+                      fontSize: 15.0,
                       color: Colors.amber.shade900),
                 ),
               ),
             ),
+            Card(
+              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+              child: ListTile(
+                leading: Icon(
+                  Icons.phone,
+                  color: Colors.amber,
+                ),
+                title: Text(
+                  '765123456',
+                  style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 20.0,
+                      color: Colors.amber.shade900),
+                ),
+              ),
+            )
           ],
+        ),
         ),
       ),
       floatingActionButton: Container(
