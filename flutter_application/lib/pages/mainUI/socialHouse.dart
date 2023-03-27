@@ -74,6 +74,7 @@ class _socialHousePageState extends State<socialHousePage> {
         ),
       ),
       body: SafeArea(
+        minimum: EdgeInsets.only(bottom: 110.0),
         child: SingleChildScrollView( child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -250,42 +251,43 @@ class _socialHousePageState extends State<socialHousePage> {
                       color: Colors.amber.shade900),
                 ),
               ),
-            )
+            ),
+            Material(
+              //padding: EdgeInsets.only(left: 35.0, bottom: 110.0),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                  width: 150.0,
+                  height: 50.0,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      try {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => reviewForSocials(id: widget.id)),
+                        );
+                      } catch (e, stacktrace) {
+                        print(e);
+                        print(stacktrace);
+                      }
+                    },
+                    child: Text("Reviews"),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.amber,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
         ),
       ),
-      floatingActionButton: Container(
-        padding: EdgeInsets.only(left: 35.0, bottom: 110.0),
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: SizedBox(
-            width: 150.0,
-            height: 50.0,
-            child: ElevatedButton(
-              onPressed: () {
-                try {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => reviewForSocials(id: widget.id)),
-                  );
-                } catch (e, stacktrace) {
-                  print(e);
-                  print(stacktrace);
-                }
-              },
-              child: Text("Reviews"),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.amber,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+
     );
   }
 }
