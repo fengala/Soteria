@@ -1,20 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_login_ui/pages/authentication/loadingPage.dart';
 import 'package:flutter_login_ui/pages/authentication/login.dart';
-import 'package:flutter_login_ui/pages/mainUI/socialHouse.dart';
 import '../authentication/update.dart';
-
 import '../mainUI/placesPage.dart';
-import '../authentication/register.dart';
 import '../../models/user.dart';
-import '../../services/auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-import '../../services/database.dart';
-import '../../models/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class TP extends StatelessWidget {
   var myUser;
@@ -32,7 +22,7 @@ class TP extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Events',
+      title: 'Home Page',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -131,9 +121,7 @@ class TePage extends State<TPage> {
                     //     MaterialPageRoute(builder: (context) => PlacesPage()));
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => PlacesPage()
-                        ),
+                      MaterialPageRoute(builder: (context) => PlacesPage()),
                     );
                   } catch (e, stacktrace) {
                     print(e);
