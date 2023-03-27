@@ -127,7 +127,7 @@ class _eventDetailsPageState extends State<eventdetails> {
         ],
       ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 40.0),
+        padding: const EdgeInsets.only(bottom: 60.0),
         child: FloatingActionButton(
           child: Icon(
             FontAwesomeIcons.pen,
@@ -175,7 +175,7 @@ class _eventDetailsPageState extends State<eventdetails> {
                                         title: Text("Error"),
                                         content: Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
+                                                CrossAxisAlignment.stretch,
                                             mainAxisSize: MainAxisSize.min,
                                             children: <Widget>[
                                               Icon(Icons.close),
@@ -192,7 +192,7 @@ class _eventDetailsPageState extends State<eventdetails> {
                               } else {
                                 var eve = await DatabaseService()
                                     .addReplyToAEvent(widget.eid, user['name'],
-                                    myController2.text);
+                                        myController2.text);
                                 Navigator.pop(context);
                                 if (_mounted) {
                                   setState(() {
@@ -200,7 +200,6 @@ class _eventDetailsPageState extends State<eventdetails> {
                                   });
                                 }
                               }
-
                             })
                       ],
                     ));
@@ -210,6 +209,51 @@ class _eventDetailsPageState extends State<eventdetails> {
     );
   }
 
+  // Widget replyList() {
+  //   return FutureBuilder(
+  //     future: getAllRepliesEve(widget.eid),
+  //     builder: (context, snapshot) {
+  //       if (snapshot.hasData) {
+  //         List<dynamic> replies = snapshot.data;
+  //         return Container(
+  //           color: Colors.white,
+  //           child: ListView.separated(
+  //             // padding: const EdgeInsets.only(bottom: 150.0),
+  //             shrinkWrap: false,
+  //             padding: EdgeInsets.only(top: 10, bottom: 10),
+
+  //             itemBuilder: (BuildContext context, int index) {
+  //               return Container(
+  //                 padding:
+  //                     EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
+  //                 child: Align(
+  //                   alignment: Alignment.topRight,
+  //                   child: Container(
+  //                     decoration: BoxDecoration(
+  //                       borderRadius: BorderRadius.circular(20),
+  //                       color: Colors.amber[200],
+  //                     ),
+  //                     padding: EdgeInsets.all(16),
+  //                     child: replies[index],
+  //                   ),
+  //                 ),
+  //               );
+  //               // return replies[index];
+  //             },
+  //             separatorBuilder: (BuildContext context, int index) => Divider(
+  //               height: 0,
+  //             ),
+  //             itemCount: replies.length,
+  //           ),
+  //         );
+  //       } else if (snapshot.hasError) {
+  //         return Center(child: Text('Error fetching replies'));
+  //       } else {
+  //         return Center(child: CircularProgressIndicator());
+  //       }
+  //     },
+  //   );
+  // }
   Widget replyList() {
     return FutureBuilder(
       future: getAllRepliesEve(widget.eid),
@@ -217,14 +261,32 @@ class _eventDetailsPageState extends State<eventdetails> {
         if (snapshot.hasData) {
           List<dynamic> replies = snapshot.data;
           return Container(
-            color: Colors.white,
+            height: 300, // set a fixed height for the container
+            color: Colors.amber[50],
             child: ListView.separated(
+              shrinkWrap: true, // set shrinkWrap to true
+              // padding: EdgeInsets.only(top: 10, bottom: 10),
               padding: const EdgeInsets.only(bottom: 150.0),
               itemBuilder: (BuildContext context, int index) {
-                return replies[index];
+                return Container(
+                  padding:
+                      EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.amber[200],
+                      ),
+                      padding: EdgeInsets.all(16),
+                      child: replies[index],
+                    ),
+                  ),
+                );
               },
               separatorBuilder: (BuildContext context, int index) => Divider(
                 height: 0,
+                color: Colors.amber,
               ),
               itemCount: replies.length,
             ),

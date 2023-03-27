@@ -17,15 +17,19 @@ class Reply extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          tweetAvatar(),
-          tweetBody(context),
-        ],
-      ),
-    );
+        child: Align(
+            alignment: Alignment.topLeft,
+            child: Container(
+              // color: Colors.white,
+              color: Colors.amber[200],
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  tweetAvatar(),
+                  tweetBody(context),
+                ],
+              ),
+            )));
   }
 
   Widget tweetAvatar() {
@@ -63,8 +67,9 @@ class Reply extends StatelessWidget {
         Text(
           '@$username · $time',
           style: TextStyle(
-            color: Colors.grey,
-          ),
+              // color: Colors.grey,
+              color: Colors.brown,
+              fontSize: 13),
         ),
         Spacer(),
         // IconButton(
@@ -106,6 +111,7 @@ class Reply extends StatelessWidget {
   Widget tweetText() {
     return Text(
       replyText,
+      textScaleFactor: 1.25,
       overflow: TextOverflow.clip,
     );
   }

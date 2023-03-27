@@ -118,7 +118,7 @@ class _TweetDetailsPageState extends State<tweetdetails> {
         ],
       ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 40.0),
+        padding: const EdgeInsets.only(bottom: 60.0),
         child: FloatingActionButton(
           child: Icon(
             FontAwesomeIcons.pen,
@@ -200,6 +200,33 @@ class _TweetDetailsPageState extends State<tweetdetails> {
     );
   }
 
+  // Widget replyList() {
+  //   return FutureBuilder(
+  //     future: getAllRepliesPet(widget.pid),
+  //     builder: (context, snapshot) {
+  //       if (snapshot.hasData) {
+  //         List<dynamic> replies = snapshot.data;
+  //         return Container(
+  //           color: Colors.white,
+  //           child: ListView.separated(
+  //             padding: const EdgeInsets.only(bottom: 150.0),
+  //             itemBuilder: (BuildContext context, int index) {
+  //               return replies[index];
+  //             },
+  //             separatorBuilder: (BuildContext context, int index) => Divider(
+  //               height: 0,
+  //             ),
+  //             itemCount: replies.length,
+  //           ),
+  //         );
+  //       } else if (snapshot.hasError) {
+  //         return Center(child: Text('Error fetching replies'));
+  //       } else {
+  //         return Center(child: CircularProgressIndicator());
+  //       }
+  //     },
+  //   );
+  // }
   Widget replyList() {
     return FutureBuilder(
       future: getAllRepliesPet(widget.pid),
@@ -207,11 +234,28 @@ class _TweetDetailsPageState extends State<tweetdetails> {
         if (snapshot.hasData) {
           List<dynamic> replies = snapshot.data;
           return Container(
+            height: 300, // set a fixed height for the container
             color: Colors.white,
             child: ListView.separated(
+              shrinkWrap: true, // set shrinkWrap to true
+              // padding: EdgeInsets.only(top: 10, bottom: 10),
               padding: const EdgeInsets.only(bottom: 150.0),
               itemBuilder: (BuildContext context, int index) {
-                return replies[index];
+                return Container(
+                  padding:
+                      EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.amber[200],
+                      ),
+                      padding: EdgeInsets.all(16),
+                      child: replies[index],
+                    ),
+                  ),
+                );
               },
               separatorBuilder: (BuildContext context, int index) => Divider(
                 height: 0,
