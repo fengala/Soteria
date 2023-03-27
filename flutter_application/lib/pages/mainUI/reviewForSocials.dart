@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/pages/mainUI/placesPage.dart';
 import 'package:flutter_login_ui/pages/mainUI/socialHouse.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -46,7 +47,7 @@ class BulletinBoardPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _BulletinBoardState createState() => _BulletinBoardState();
+  _BulletinBoardState createState() => _BulletinBoardState(3);
 }
 
 class AnonymousCheckbox extends StatefulWidget {
@@ -90,8 +91,12 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
   final myController2 = TextEditingController();
   final myController3 = TextEditingController();
   final myController4 = TextEditingController();
+  double _rating;
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  _BulletinBoardState(this._rating);
+
   Stream<QuerySnapshot<Map<String, dynamic>>> reviewForSocialsStream() {
     return firestore.collection('reviews').snapshots();
   }
@@ -210,6 +215,29 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                           hintText: "Enter your review description here",
                         ),
                       ),
+                      RatingBar.builder(
+                        initialRating: _rating,
+                        minRating: 0,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        unratedColor: Colors.amber.withAlpha(50),
+                        itemCount: 5,
+                        itemSize: 50.0,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        onRatingUpdate: (rating) {
+                          setState(() {
+                             //print(rating);
+                             _rating = rating;
+                             print(_rating);
+                          });
+                        },
+                        updateOnDrag: true,
+                      ),
+
                       AnonymousCheckbox(
                         initialValue: isAnonymous,
                         onChanged: (newValue) {
@@ -234,7 +262,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                     onPressed: () async {
                       var user = await DatabaseService()
                           .getUser(UserAuth.auth.currentUser.uid);
-                      if (myController.text == "") {
+                      if (_rating == 0) {
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
@@ -247,7 +275,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                                 DefaultTextStyle(
                                   style: style,
                                   child: Text(
-                                    "A few fields are missing!",
+                                    "Must give a rating from 1 to 5!",
                                     textAlign: TextAlign.center,
                                     style: style.copyWith(
                                       color: Colors.red,
@@ -267,6 +295,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                           myController.text,
                           isAnonymous,
                           UserAuth.auth.currentUser.uid,
+                          _rating,
                         );
                         Navigator.pop(context);
                       }
@@ -378,6 +407,7 @@ class Review extends StatefulWidget {
   final String userId;
   final int ver;
   final bool anonymous;
+  final String rating;
 
   Review({
     Key key,
@@ -391,6 +421,7 @@ class Review extends StatefulWidget {
     @required this.userId,
     @required this.ver,
     @required this.anonymous,
+    @required this.rating,
   }) : super(key: key);
 
   @override
@@ -509,6 +540,7 @@ class _EventState extends State<Review> {
               /// change this
               ? tweetIconButton0(FontAwesomeIcons.checkToSlot)
               : tweetIconButton0_1(FontAwesomeIcons.checkDouble),
+          eventIconButton1_1(FontAwesomeIcons.star, this.widget.rating),
           eventIconButton1(FontAwesomeIcons.comments, this.widget.comments),
           this.widget.hasUpvote == 1
               ? eventIconButton2_1(FontAwesomeIcons.heart, this.widget.upvotes)
@@ -550,6 +582,29 @@ class _EventState extends State<Review> {
         ),
         Container(
           margin: const EdgeInsets.all(6.0),
+        ),
+      ],
+    );
+  }
+
+  Widget eventIconButton1_1(IconData icon, String text) {
+    return Row(
+      children: [
+        IconButton(
+          icon: const Icon(FontAwesomeIcons.solidStar),
+          onPressed: () {
+            print("Pressed Rating");
+          },
+          iconSize: 16.0,
+          color: Colors.amber,
+        ),
+        Container(
+          margin: const EdgeInsets.all(6.0),
+          child: Text(text,
+              style: TextStyle(
+                color: Colors.black45,
+                fontSize: 14.0,
+              )),
         ),
       ],
     );
