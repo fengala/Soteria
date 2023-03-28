@@ -17,7 +17,8 @@ Future<List<Place>> getAllPlaces(int filter_val) async {
     num comments = jsonMap['num_comments'];
     String desc = jsonMap['description'];
     num rating = jsonMap['num_rating'];
-    double ratio = (comments * 1.0) / rating;
+    num reviews = jsonMap['num_reviews'];
+    double ratio = (rating * 1.0) / (reviews * 1.0);
     String id = jsonMap['id'];
     String address = jsonMap['location'];
     String contact = jsonMap['contact'];
@@ -33,13 +34,14 @@ Future<List<Place>> getAllPlaces(int filter_val) async {
       contact: contact,
       ratio: ratio.toString(),
       acc: acc,
+      num_reviews: reviews.toString(),
     ));
   }
 
   if (filter_val == 0) {
     return vens;
   } else if (filter_val == 1) {
-    vens.sort((a, b) => (b.ratio).compareTo(a.ratio));
+    vens.sort((a, b) => (a.ratio).compareTo(b.ratio));
   } else if (filter_val == 2) {
     vens.sort((a, b) => b.rating.compareTo(a.rating));
   } else if (filter_val == 3) {

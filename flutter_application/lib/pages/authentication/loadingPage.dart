@@ -71,12 +71,11 @@ class splashScreen extends State<flashScreen> {
         title: 'Flash_screen',
         home: AnimatedSplashScreen.withScreenFunction(
           duration: 1500,
-          splash: ClipOval(
+          splash: ClipRect(
             child: Image.asset(
               'assets/logo.png',
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
             ),
-            clipper: MyClip(),
           ),
           splashIconSize: double.infinity,
           screenFunction: () async {
@@ -114,15 +113,5 @@ class splashScreen extends State<flashScreen> {
           splashTransition: SplashTransition.fadeTransition,
           pageTransitionType: PageTransitionType.leftToRight,
         ));
-  }
-}
-
-class MyClip extends CustomClipper<Rect> {
-  Rect getClip(Size size) {
-    return Rect.fromLTWH(10, 93, 410, 475);
-  }
-
-  bool shouldReclip(oldClipper) {
-    return false;
   }
 }

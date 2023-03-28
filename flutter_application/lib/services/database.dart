@@ -336,7 +336,20 @@ class DatabaseService {
 
   Future addReviewToVenue(String social_venue_id, String username,
       String review, bool anonymous, String uid, double rating) async {
-    await venRef.doc(social_venue_id).update({'num_comments': FieldValue.increment(1)});
+    if (review.length != 0) {
+      await venRef.doc(social_venue_id).update({'num_comments': FieldValue.increment(1)});
+    }
+    DocumentSnapshot snapshot = await venRef.doc(social_venue_id).get();
+    Map<String, dynamic> data = snapshot.data();
+    num rate = data['num_rating'];
+    //print(rate);
+    num ppl = data['num_reviews'];
+    //print(ppl);
+    num x = (((rate * ppl) + rating) / (ppl + 1)) - rate;
+    //print(x);
+
+    await venRef.doc(social_venue_id).update({'num_rating': FieldValue.increment(x)});
+    await venRef.doc(social_venue_id).update({'num_reviews': FieldValue.increment(1)});
 
     return await FirebaseFirestore.instance.collection("reviews").doc().set({
       'username': username,

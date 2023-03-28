@@ -9,6 +9,7 @@ class Place extends StatelessWidget {
   final String id;
   final String description;
   String rating;
+  String num_reviews;
   final String location;
   final String contact;
   final String acc;
@@ -24,6 +25,7 @@ class Place extends StatelessWidget {
     @required this.contact,
     @required this.ratio,
     @required this.acc,
+    @required this.num_reviews,
   }) : super(key: key);
 
   @override
@@ -34,7 +36,7 @@ class Place extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           placeAvatar(),
-          placeBody(context),
+           placeBody(context),
         ],
       ),
     );
@@ -112,30 +114,30 @@ class Place extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           placeIconButton1(FontAwesomeIcons.comment, this.comments),
-          placeIconButton2(FontAwesomeIcons.solidStar, this.rating),
-          IconButton(
-            icon: Icon(
-              Icons.info_outline,
-              size: 24.0,
-              color: Colors.grey,
-            ),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return SimpleDialog(
-                    title: Text("Accredited Information"),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(acc),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
+          placeIconButton2(FontAwesomeIcons.solidStar, rating + "  /  " + num_reviews),
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.info_outline,
+          //     size: 24.0,
+          //     color: Colors.grey,
+          //   ),
+          //   onPressed: () {
+          //     showDialog(
+          //       context: context,
+          //       builder: (BuildContext context) {
+          //         return SimpleDialog(
+          //           title: Text("Accredited Information"),
+          //           children: [
+          //             Padding(
+          //               padding: const EdgeInsets.all(16.0),
+          //               child: Text(acc),
+          //             ),
+          //           ],
+          //         );
+          //       },
+          //     );
+          //   },
+          // ),
         ],
       ),
     );
