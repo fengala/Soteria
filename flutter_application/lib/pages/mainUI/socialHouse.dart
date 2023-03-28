@@ -58,6 +58,11 @@ class _socialHousePageState extends State<socialHousePage> {
     bool remember = false;
     //String asset = "assets/" + widget.title + "png";
     List<String> descriptions = widget.description.split("/");
+    if (descriptions.length < 2) {
+      for (int c = 0; c < 4; c++) {
+        descriptions.add("No valid info");
+      }
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
