@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter_login_ui/services/auth.dart';
 import 'package:flutter_login_ui/services/database.dart';
@@ -18,11 +19,21 @@ Future<List<Place>> getAllPlaces(int filter_val) async {
     String desc = jsonMap['description'];
     num rating = jsonMap['num_rating'];
     num reviews = jsonMap['num_reviews'];
-    double ratio = (rating * 1.0) / (reviews * 1.0);
+    double ratio = log((reviews * 1.0 * rating));
     String id = jsonMap['id'];
     String address = jsonMap['location'];
     String contact = jsonMap['contact'];
     String acc = jsonMap['acc'];
+
+    String userId = UserAuth.auth.currentUser.uid;
+    List<num> usrate = await DatabaseService().getUserRating(id, userId) as List<Object>;
+    num r;
+    if (usrate.isEmpty) {
+      r = 0.0;
+    } else {
+      r = usrate[0];
+    }
+
 
     vens.add(Place(
       name: title,
@@ -35,13 +46,14 @@ Future<List<Place>> getAllPlaces(int filter_val) async {
       ratio: ratio.toString(),
       acc: acc,
       num_reviews: reviews.toString(),
+      user_rate: r.toString(),
     ));
   }
 
   if (filter_val == 0) {
     return vens;
   } else if (filter_val == 1) {
-    vens.sort((a, b) => (a.ratio).compareTo(b.ratio));
+    vens.sort((a, b) => (b.ratio).compareTo(a.ratio));
   } else if (filter_val == 2) {
     vens.sort((a, b) => b.rating.compareTo(a.rating));
   } else if (filter_val == 3) {

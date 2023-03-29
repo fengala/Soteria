@@ -12,6 +12,7 @@ var events;
 
 Future<List<Review>> getSpecificReviews(
     int filter_val, int filter_val2, String socialHouseId) async {
+
   List<Object> events =
   await DatabaseService().getReviews(socialHouseId) as List<Object>;
 
@@ -45,6 +46,7 @@ Future<List<Review>> getSpecificReviews(
       events =
       await DatabaseService().getReviews(socialHouseId) as List<Object>;
   }
+
   var length = events.length;
   List<Review> revs = [];
 
@@ -73,6 +75,7 @@ Future<List<Review>> getSpecificReviews(
       //print(ver);
       ver = 1;
     }
+    //comment the if if you want to display even empty ratings
     if (desc != "") {
       revs.add(Review(
         name: name,
@@ -116,24 +119,4 @@ Future<List<Review>> getSpecificReviews(
   }
 
   return revs;
-}
-
-
-
-Future<num> getUserReview(
-    String socialHouseId, String userId) async {
-  num revs =
-  await DatabaseService().getUserRating(socialHouseId, userId);
-
-  if (revs == null) {
-    return 0;
-  } else {
-    //String jsonString = jsonEncode(revs[0]);
-    //print(jsonString);
-    //
-    // Map<String, dynamic> jsonMap = jsonDecode(jsonString);
-    //num rate = revs[0];
-    print("Num: "+ revs.toString());
-    return revs;
-  }
 }

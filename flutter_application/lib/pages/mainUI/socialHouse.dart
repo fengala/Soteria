@@ -14,21 +14,17 @@ class socialHousePage extends StatefulWidget {
   final String contact;
   final String description;
   final String num_stars;
+  final String user_rate;
 
   socialHousePage(
       {Key key,
-      @required this.title,
-      @required this.id,
-      @required this.description,
-      @required this.contact,
-        @required this.num_stars})
-      : super(key: key);
-
-
-  Future<num> getUserRating() {
-    return getUserReview(id, UserAuth.auth.currentUser.uid);
-  }
-
+        @required this.title,
+        @required this.id,
+        @required this.description,
+        @required this.contact,
+        @required this.num_stars,
+        @required this.user_rate
+      }) : super(key: key);
 
   @override
   _socialHousePageState createState() => _socialHousePageState();
@@ -66,48 +62,82 @@ class _socialHousePageState extends State<socialHousePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Venue Informaiton'),
-        backgroundColor: Colors.amber,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => PlacesPage()),
-            );
-          },
-        ),
+          backgroundColor: Colors.amber,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PlacesPage()),
+              );
+            },
+          ),
+          title: Text(
+            'Venue Information',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.add_comment, color: Colors.white,),
+              onPressed: () {
+                try {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => reviewForSocials(id: widget.id)),
+                  );
+                } catch (e, stacktrace) {
+                  print(e);
+                  print(stacktrace);
+                }
+              },
+            ),
+        ],
       ),
       body: SafeArea(
-        minimum: EdgeInsets.only(bottom: 110.0),
+        minimum: EdgeInsets.only(bottom: 110.0, top: 20),
         child: SingleChildScrollView( child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
             const CircleAvatar(
-              radius: 80.0,
+              radius: 100,
               backgroundImage: AssetImage('assets/Phi Delta Theta.png'),
             ),
+
             Text(
               widget.title,
               style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 37.5,
                   fontFamily: 'Montserrat',
-                  color: Colors.amber.shade900,
+                  color: Colors.amber.shade800,
                   fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
                   letterSpacing: 2.5),
             ),
-            RatingBarIndicator(
-              rating: double.parse(widget.num_stars),
-              itemBuilder: (context, index) => Icon(
-                Icons.star,
-                color: Colors.amber,
+
+            Container(
+              height: 70,
+              child: Card(
+                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                child: SingleChildScrollView( child: RatingBarIndicator(
+                  rating: double.parse(widget.num_stars),
+                  itemBuilder: (context, index) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  itemCount: 5,
+                  itemSize: 50.0,
+                  direction: Axis.horizontal,
+                ),
+                ),
               ),
-              itemCount: 5,
-              itemSize: 50.0,
-              direction: Axis.horizontal,
             ),
             Text(
-              "Rating: " + widget.num_stars,
+              "Average Rating: " + widget.num_stars,
               style: TextStyle(
                   fontSize: 20.0,
                   fontFamily: 'Montserrat',
@@ -115,55 +145,57 @@ class _socialHousePageState extends State<socialHousePage> {
                   fontWeight: FontWeight.w700,
                   letterSpacing: 2.5),
             ),
-
-
-            // RatingBarIndicator(
-            //   rating: double.parse(widget.getUserRating().toString()),
-            //   itemBuilder: (context, index) => Icon(
-            //     Icons.star,
-            //     color: Colors.amber,
-            //   ),
-            //   itemCount: 5,
-            //   itemSize: 50.0,
-            //   direction: Axis.horizontal,
-            // ),
-            // Text(
-            //   "User Rating: ${widget.getUserRating()}",
-            //   style: TextStyle(
-            //       fontSize: 20.0,
-            //       fontFamily: 'Montserrat',
-            //       color: Colors.amber.shade700,
-            //       fontWeight: FontWeight.w700,
-            //       letterSpacing: 2.5),
-            // ),
-
-
             SizedBox(
               width: 150.0,
               height: 20.0,
               child: Divider(
                 color: Colors.amber.shade100,
               ),
-                ),
+            ),
             Container(
               height: 70,
               child: Card(
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-              child: SingleChildScrollView( child: ListTile(
-                leading: Icon(
-                  Icons.info,
-                  color: Colors.amber,
+                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                child: SingleChildScrollView( child: RatingBarIndicator(
+                  rating: double.parse(widget.user_rate),
+                  itemBuilder: (context, index) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  itemCount: 5,
+                  itemSize: 40.0,
+                  direction: Axis.horizontal,
                 ),
-                title: Text(
-                  descriptions[0],
-                  style: TextStyle(
-                      fontSize: 17.0,
-                      fontFamily: 'Montserrat',
-                      color: Colors.amber.shade900),
                 ),
-              ),
               ),
             ),
+            Text(
+              "Your Rating: " + widget.user_rate,
+              style: TextStyle(
+                  fontSize: 20.0,
+                  fontFamily: 'Montserrat',
+                  color: Colors.amber.shade700,
+                  fontWeight: FontWeight.w500),
+            ),
+            Container(
+              height: 70,
+              child: Card(
+                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                child: SingleChildScrollView( child: ListTile(
+                  leading: Icon(
+                    Icons.info,
+                    color: Colors.amber,
+                  ),
+                  title: Text(
+                    descriptions[0],
+                    style: TextStyle(
+                        fontSize: 17.0,
+                        fontFamily: 'Montserrat',
+                        color: Colors.amber.shade900),
+                  ),
+                ),
+                ),
+              ),
             ),
             Container(
               height: 70,
@@ -241,22 +273,22 @@ class _socialHousePageState extends State<socialHousePage> {
                 ),
               ),
             ),
-            Card(
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-              child: ListTile(
-                leading: Icon(
-                  Icons.phone,
-                  color: Colors.amber,
-                ),
-                title: Text(
-                  '765123456',
-                  style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 20.0,
-                      color: Colors.amber.shade900),
-                ),
-              ),
-            ),
+            // Card(
+            //   margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+            //   child: ListTile(
+            //     leading: Icon(
+            //       Icons.phone,
+            //       color: Colors.amber,
+            //     ),
+            //     title: Text(
+            //       '765123456',
+            //       style: TextStyle(
+            //           fontFamily: 'Montserrat',
+            //           fontSize: 20.0,
+            //           color: Colors.amber.shade900),
+            //     ),
+            //   ),
+            // ),
             Material(
               //padding: EdgeInsets.only(left: 35.0, bottom: 110.0),
               child: Align(

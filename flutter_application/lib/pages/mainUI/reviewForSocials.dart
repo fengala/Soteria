@@ -223,7 +223,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                       ),
                       RatingBar.builder(
                         initialRating: _rating,
-                        minRating: 0,
+                        minRating: 1,
                         direction: Axis.horizontal,
                         allowHalfRating: true,
                         unratedColor: Colors.amber.withAlpha(50),
@@ -243,7 +243,6 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                         },
                         updateOnDrag: true,
                       ),
-
                       AnonymousCheckbox(
                         initialValue: isAnonymous,
                         onChanged: (newValue) {

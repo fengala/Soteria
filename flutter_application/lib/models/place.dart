@@ -10,6 +10,7 @@ class Place extends StatelessWidget {
   final String description;
   String rating;
   String num_reviews;
+  String user_rate;
   final String location;
   final String contact;
   final String acc;
@@ -26,6 +27,7 @@ class Place extends StatelessWidget {
     @required this.ratio,
     @required this.acc,
     @required this.num_reviews,
+    @required this.user_rate,
   }) : super(key: key);
 
   @override
@@ -86,6 +88,7 @@ class Place extends StatelessWidget {
                           description: description,
                           contact: contact,
                           num_stars: rating,
+                          user_rate: user_rate,
                         )));
           },
           child: IconButton(
@@ -114,7 +117,7 @@ class Place extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           placeIconButton1(FontAwesomeIcons.comment, this.comments),
-          placeIconButton2(FontAwesomeIcons.solidStar, rating + "  /  " + num_reviews),
+          placeIconButton2(FontAwesomeIcons.solidStar, rating + "  ||  " + num_reviews + "  ratings"),
           // IconButton(
           //   icon: Icon(
           //     Icons.info_outline,

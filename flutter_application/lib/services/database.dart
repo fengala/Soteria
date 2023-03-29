@@ -369,14 +369,12 @@ class DatabaseService {
     if (review.length != 0) {
       await venRef.doc(social_venue_id).update({'num_comments': FieldValue.increment(1)});
     }
+
     DocumentSnapshot snapshot = await venRef.doc(social_venue_id).get();
     Map<String, dynamic> data = snapshot.data();
     num rate = data['num_rating'];
-    //print(rate);
     num ppl = data['num_reviews'];
-    //print(ppl);
     num x = (((rate * ppl) + rating) / (ppl + 1)) - rate;
-    //print(x);
 
     await venRef.doc(social_venue_id).update({'num_rating': FieldValue.increment(x)});
     await venRef.doc(social_venue_id).update({'num_reviews': FieldValue.increment(1)});
@@ -465,7 +463,7 @@ class DatabaseService {
       final id = doc.id;
       num rating = data['rating'];
       return rating;
-    }).first;
+    }).toList();
 
     return Data;
   }
