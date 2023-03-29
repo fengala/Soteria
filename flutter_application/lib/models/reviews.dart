@@ -11,9 +11,44 @@ import 'package:intl/intl.dart';
 var events;
 
 Future<List<Review>> getSpecificReviews(
-    int filter_val, String socialHouseId) async {
+    int filter_val, int filter_val2, String socialHouseId) async {
   List<Object> events =
+  await DatabaseService().getReviews(socialHouseId) as List<Object>;
+
+  switch (filter_val2) {
+    case 0:
+      events =
+      await DatabaseService().getReviewsByStar(socialHouseId, 0) as List<
+          Object>;
+      filter_val = 6;
+      break;
+    case 1:
+      events =
+      await DatabaseService().getReviewsByStar(socialHouseId, 1) as List<
+          Object>;
+      filter_val = 6;
+      //print(events.toString());
+      break;
+    case 2:
+      events =
+      await DatabaseService().getReviewsByStar(socialHouseId, 2) as List<
+          Object>;
+      filter_val = 6;
+      break;
+    case 3:
+      events =
+      await DatabaseService().getReviewsByStar(socialHouseId, 3) as List<
+          Object>;
+      filter_val = 6;
+      break;
+    case 4:
+      events =
       await DatabaseService().getReviews(socialHouseId) as List<Object>;
+      break;
+    default:
+      events =
+      await DatabaseService().getReviews(socialHouseId) as List<Object>;
+  }
   var length = events.length;
   List<Review> revs = [];
 
@@ -82,6 +117,10 @@ Future<List<Review>> getSpecificReviews(
   } else if (filter_val == 5) {
     // tweeds.sort(favor)
     revs.sort((a, b) => a.comments.compareTo(b.comments));
+  } else if (filter_val == 6) {
+    revs.sort((a, b) => b.rating.compareTo(a.rating));
+  } else if (filter_val == 7) {
+    revs.sort((a, b) => a.rating.compareTo(b.rating));
   }
   return revs;
 }

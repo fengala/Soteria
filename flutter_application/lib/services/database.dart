@@ -334,6 +334,36 @@ class DatabaseService {
     return Data;
   }
 
+  Future getReviewsByStar(String str, int x) async {
+    // if (x == 5) {
+    //   getReviews(str);
+    // }
+    x++;
+    QuerySnapshot querySnapshot = null;
+    if (x != 4) {
+      querySnapshot =
+      await revRef.where("ownerSocialHouse", isEqualTo: str).where(
+          "rating", isGreaterThanOrEqualTo: x).where(
+          "rating", isLessThan: x + 1)
+          .orderBy("rating", descending: true)
+          .get();
+    } else {
+      querySnapshot =
+      await revRef.where("ownerSocialHouse", isEqualTo: str).where(
+          "rating", isGreaterThanOrEqualTo: x).where(
+          "rating", isLessThanOrEqualTo: x + 1)
+          .orderBy("rating", descending: true)
+          .get();
+    }
+    final Data = querySnapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      final id = doc.id;
+      return {...data, 'id': id};
+    }).toList();
+    return Data;
+  }
+
+
   Future addReviewToVenue(String social_venue_id, String username,
       String review, bool anonymous, String uid, double rating) async {
     if (review.length != 0) {
