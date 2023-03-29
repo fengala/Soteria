@@ -326,6 +326,7 @@ class DatabaseService {
   Future getReviews(String str) async {
     QuerySnapshot querySnapshot =
         await revRef.where("ownerSocialHouse", isEqualTo: str).get();
+
     final Data = querySnapshot.docs.map((doc) {
       final data = doc.data() as Map<String, dynamic>;
       final id = doc.id;
@@ -335,9 +336,6 @@ class DatabaseService {
   }
 
   Future getReviewsByStar(String str, int x) async {
-    // if (x == 5) {
-    //   getReviews(str);
-    // }
     x++;
     QuerySnapshot querySnapshot = null;
     if (x != 4) {
@@ -362,6 +360,8 @@ class DatabaseService {
     }).toList();
     return Data;
   }
+
+
 
 
   Future addReviewToVenue(String social_venue_id, String username,

@@ -410,10 +410,10 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
 
 void showFilterMenu2(BuildContext context) {
   final List<String> filters = [
-    '2',
-    '3',
-    '4',
-    '5',
+    'Ratings 1-2',
+    'Ratings 2-3',
+    'Ratings 3-4',
+    'Ratings 4-5',
     'Default',
   ];
 
@@ -440,16 +440,21 @@ void showFilterMenu2(BuildContext context) {
   ).then((value) {
     if (value != null) {
       setState(() {
-        if (value == '2') {
+        if (value == 'Ratings 1-2') {
           filter_val2 = 0;
-        } else if (value == '3') {
+          filter_val = 6;
+        } else if (value == 'Ratings 2-3') {
           filter_val2 = 1;
-        } else if (value == '4') {
+          filter_val = 6;
+        } else if (value == 'Ratings 3-4') {
           filter_val2 = 2;
-        } else if (value == '5') {
+          filter_val = 6;
+        } else if (value == 'Ratings 4-5') {
           filter_val2 = 3;
+          filter_val = 6;
         } else if (value == 'Default') {
           filter_val2 = 4;
+          filter_val = 6;
         }
       });
     }

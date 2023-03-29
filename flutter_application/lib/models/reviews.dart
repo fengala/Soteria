@@ -20,26 +20,22 @@ Future<List<Review>> getSpecificReviews(
       events =
       await DatabaseService().getReviewsByStar(socialHouseId, 0) as List<
           Object>;
-      filter_val = 6;
       break;
     case 1:
       events =
       await DatabaseService().getReviewsByStar(socialHouseId, 1) as List<
           Object>;
-      filter_val = 6;
       //print(events.toString());
       break;
     case 2:
       events =
       await DatabaseService().getReviewsByStar(socialHouseId, 2) as List<
           Object>;
-      filter_val = 6;
       break;
     case 3:
       events =
       await DatabaseService().getReviewsByStar(socialHouseId, 3) as List<
           Object>;
-      filter_val = 6;
       break;
     case 4:
       events =
@@ -106,22 +102,19 @@ Future<List<Review>> getSpecificReviews(
       return a_time.compareTo(b_time);
     });
   } else if (filter_val == 2) {
-    // tweeds.sort(favor)
     revs.sort((a, b) => b.upvotes.compareTo(a.upvotes));
   } else if (filter_val == 3) {
-    // tweeds.sort(favor)
     revs.sort((a, b) => a.upvotes.compareTo(b.upvotes));
   } else if (filter_val == 4) {
-    // tweeds.sort(favor)
     revs.sort((a, b) => b.comments.compareTo(a.comments));
   } else if (filter_val == 5) {
-    // tweeds.sort(favor)
     revs.sort((a, b) => a.comments.compareTo(b.comments));
   } else if (filter_val == 6) {
     revs.sort((a, b) => b.rating.compareTo(a.rating));
   } else if (filter_val == 7) {
     revs.sort((a, b) => a.rating.compareTo(b.rating));
   }
+
   return revs;
 }
 
