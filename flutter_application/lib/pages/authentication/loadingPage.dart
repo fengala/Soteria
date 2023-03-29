@@ -74,7 +74,7 @@ class splashScreen extends State<flashScreen> {
           splash: ClipRect(
             child: Image.asset(
               'assets/logo.png',
-              fit: BoxFit.fill,
+              fit: BoxFit.contain,
             ),
           ),
           splashIconSize: double.infinity,
@@ -109,7 +109,7 @@ class splashScreen extends State<flashScreen> {
               return obj;
             }
           },
-          backgroundColor: Colors.amber,
+          backgroundColor: Colors.white,
           splashTransition: SplashTransition.fadeTransition,
           pageTransitionType: PageTransitionType.leftToRight,
         ));
