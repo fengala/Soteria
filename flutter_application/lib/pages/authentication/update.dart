@@ -63,6 +63,7 @@ class _UpdatePageState extends State<UpdatePage> {
   TextEditingController phoneNumberController;
   TextEditingController phoneNumberController2;
   TextEditingController phoneNumberController3;
+  TextEditingController phoneNumberController4;
   _UpdatePageState(this.myUser, this.userAuth) {
     name = myUser.name.split(" ")[0];
     last_name = myUser.name.split(" ")[1];
@@ -78,6 +79,8 @@ class _UpdatePageState extends State<UpdatePage> {
         TextEditingController(text: _formatPhoneNumber(emergency_contact2));
     phoneNumberController3 =
         TextEditingController(text: _formatPhoneNumber(emergency_contact3));
+    phoneNumberController4 =
+        TextEditingController(text: _formatPhoneNumber(phone_number));
     _isAnonymous = myUser.anon;
   }
   TextEditingController text_widgets = TextEditingController();
@@ -229,8 +232,16 @@ class _UpdatePageState extends State<UpdatePage> {
     );
 
     final phoneNumber = TextField(
-      controller: TextEditingController(text: phone_number),
+      controller: phoneNumberController4,
       onChanged: (text) {
+         String digits = text.replaceAll(RegExp(r'\D+'), '');
+        // format the phone number
+        String formatted = _formatPhoneNumber(digits);
+        // update the controller with the formatted phone number
+        phoneNumberController4.value = TextEditingValue(
+          text: formatted,
+          selection: TextSelection.collapsed(offset: formatted.length),
+        );
         phone_number = text;
       },
       keyboardType: TextInputType.phone,
@@ -445,7 +456,7 @@ class _UpdatePageState extends State<UpdatePage> {
                       ),
                       child: Text("There are a few fields missing\n"))));
             } else {
-              if (phone_number.length != 10) {
+              if (phone_number.length != 13) {
                 prompt = false;
                 test1 = false;
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -548,6 +559,7 @@ class _UpdatePageState extends State<UpdatePage> {
                 } else {
                   emergency_contact3 = "";
                 }
+                phone_number = await revertPhoneNumber(phone_number);
                 List list = [
                   emergency_contact1,
                   emergency_contact2,
