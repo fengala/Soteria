@@ -232,7 +232,8 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                         unratedColor: Colors.amber.withAlpha(50),
                         itemCount: 5,
                         itemSize: 50.0,
-                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                        itemPadding: EdgeInsets.symmetric(
+                            horizontal: 2.0, vertical: 25.0),
                         itemBuilder: (context, _) => Icon(
                           Icons.star,
                           color: Colors.amber,
@@ -246,15 +247,6 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                         },
                         updateOnDrag: true,
                       ),
-                      AnonymousCheckbox(
-                        initialValue: isAnonymous,
-                        onChanged: (newValue) {
-                          setState(() {
-                            isAnonymous = newValue;
-                            //print(isAnonymous);
-                          });
-                        },
-                      )
                     ],
                   ),
                 ),
@@ -297,14 +289,25 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                       } else {
                         var user = await DatabaseService()
                             .getUser(UserAuth.auth.currentUser.uid);
-                        var eve = await DatabaseService().addReviewToVenue(
-                          widget.id,
-                          user['username'],
-                          myController.text,
-                          isAnonymous,
-                          UserAuth.auth.currentUser.uid,
-                          _rating,
-                        );
+                        if (user['anon']) {
+                          var eve = await DatabaseService().addReviewToVenue(
+                            widget.id,
+                            user['username'],
+                            myController.text,
+                            true,
+                            UserAuth.auth.currentUser.uid,
+                            _rating,
+                          );
+                        } else {
+                          var eve = await DatabaseService().addReviewToVenue(
+                            widget.id,
+                            user['username'],
+                            myController.text,
+                            false,
+                            UserAuth.auth.currentUser.uid,
+                            _rating,
+                          );
+                        }
                         Navigator.pop(context);
                       }
                     },
