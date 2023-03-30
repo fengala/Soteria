@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:math';
 
 import 'package:flutter_login_ui/services/auth.dart';
@@ -19,11 +20,11 @@ Future<List<Place>> getAllPlaces(int filter_val) async {
     String desc = jsonMap['description'];
     num rating = jsonMap['num_rating'];
     num reviews = jsonMap['num_reviews'];
-    double ratio = log((reviews * 1.0 * rating));
     String id = jsonMap['id'];
     String address = jsonMap['location'];
     String contact = jsonMap['contact'];
     String acc = jsonMap['acc'];
+    double ratio = log((reviews * 1.0 * rating));
 
     String userId = UserAuth.auth.currentUser.uid;
     List<num> usrate = await DatabaseService().getUserRating(id, userId) as List<Object>;
@@ -40,10 +41,10 @@ Future<List<Place>> getAllPlaces(int filter_val) async {
       comments: comments.toString(),
       id: id,
       description: desc,
-      rating: rating.toString(),
+      rating: rating.toStringAsFixed(2),
       location: address,
       contact: contact,
-      ratio: ratio.toString(),
+      ratio: ratio.toStringAsFixed(2),
       acc: acc,
       num_reviews: reviews.toString(),
       user_rate: r.toString(),
