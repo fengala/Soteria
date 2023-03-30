@@ -190,9 +190,15 @@ class _eventDetailsPageState extends State<eventdetails> {
                                                   )),
                                             ])));
                               } else {
-                                var eve = await DatabaseService()
-                                    .addReplyToAEvent(widget.eid, user['name'],
-                                        myController2.text);
+                                if (user['anon']) {
+                                  var eve = await DatabaseService()
+                                      .addReplyToAEvent(widget.eid, "Anonymous",
+                                          myController2.text);
+                                } else {
+                                  var eve = await DatabaseService()
+                                      .addReplyToAEvent(widget.eid,
+                                          user['name'], myController2.text);
+                                }
                                 Navigator.pop(context);
                                 if (_mounted) {
                                   setState(() {

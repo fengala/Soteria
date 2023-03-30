@@ -32,7 +32,7 @@ class UserModel {
     this.RSVPEvents = [];
     this.loggedIn = false;
     this.verified = false;
-    this.anon = false;
+    this.anon = anon;
   }
   void setVerified(bool value) {
     this.verified = value;
