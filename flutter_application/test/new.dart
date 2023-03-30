@@ -182,7 +182,7 @@ Future<void> main() async {
     });
 
     group('Invalid Inputs to Emergency Contacts', () {
-      test("Null input to Emergency Contacts Check", () async {
+      test("1. Null input to Emergency Contacts Check", () async {
         var instance = FakeFirebaseFirestore();
         var uid = "OUSN107";
         //Check for null value
@@ -262,13 +262,13 @@ Future<void> main() async {
         expect(data['emergency_contacts'][2], contact3);
 
         for (int i = 1; i < data['emergency_contacts'].length + 1; i++) {
-          print("Current emergency contanct number $i: " +
+          print("Fetched emergency contanct number $i from database: " +
               data['emergency_contacts'][i - 1]);
         }
         print("Test Passed");
       });
 
-      test("Non-numeric input to Emergency Contacts Check", () async {
+      test("2. Non-numeric input to Emergency Contacts Check", () async {
         var instance = FakeFirebaseFirestore();
         var uid = "OUSN107";
         // Check for non-numerical value
@@ -348,13 +348,13 @@ Future<void> main() async {
         expect(data['emergency_contacts'][2], contact3);
 
         for (int i = 1; i < data['emergency_contacts'].length + 1; i++) {
-          print("Current emergency contanct number $i: " +
+          print("Fetched emergency contanct number $i from database: " +
               data['emergency_contacts'][i - 1]);
         }
         print("Test Passed");
       });
 
-      test("Exactly 10 digit numeric input to Emergency Contacts Check",
+      test("3. Exactly 10 digit numeric input to Emergency Contacts Check",
           () async {
         var instance = FakeFirebaseFirestore();
         var uid = "OUSN107";
@@ -435,11 +435,130 @@ Future<void> main() async {
         expect(data['emergency_contacts'][2], contact3);
 
         for (int i = 1; i < data['emergency_contacts'].length + 1; i++) {
-          print("Current emergency contanct number $i: " +
+          print("Fetched emergency contanct number $i from database: " +
               data['emergency_contacts'][i - 1]);
         }
         print("Test Passed");
       });
+    });
+  });
+
+  // print("#########################");
+  // print("#  User Story #5 Tests  #");
+  // print("#########################");
+  // print("");
+  group('User Story #5 tests', () {
+    test("View Social Venue's Star Based Rating", () async {
+      var instance = FakeFirebaseFirestore();
+      var vid = "OUSN107";
+      var rating = "3.0";
+      print("Rating of a Social Venue with ID OUSN107: " + rating);
+      instance.collection("SocialHouse").doc(vid).set({
+        'contact': "president@kdrpurdue.com",
+        'description':
+            "Average Cumulative GPA: 3.24/Events without alcohol: 5/Conduct Reporting: Level 2/*the higher the level, the worse the compliance",
+        'location': "1134 Northwestern Ave, West Lafayette, IN 47906",
+        'num_comments': "1",
+        'num_rating': rating,
+        'num_reviews': "5",
+        'title': "Kappa Delta Rho",
+      });
+
+      var snapshot = await instance.collection("SocialHouse").doc(vid).get();
+      Map<String, dynamic> data = await snapshot.data();
+      print("Rating fetched by database of the Social Venue with ID OUSN107: " +
+          data['num_rating']);
+      expect(data['num_rating'], rating);
+      print("Test Passed");
+    });
+
+    test("1 decimal precision of Social Venue's Star Based Rating", () async {
+      var instance = FakeFirebaseFirestore();
+      var vid = "OUSN107";
+      var rating = "2.6777777777777777777";
+      var rounded_val = double.parse(rating).toStringAsFixed(1);
+      print("Rating of a Social Venue with ID OUSN107: " + rating);
+      instance.collection("SocialHouse").doc(vid).set({
+        'contact': "president@kdrpurdue.com",
+        'description':
+            "Average Cumulative GPA: 3.24/Events without alcohol: 5/Conduct Reporting: Level 2/*the higher the level, the worse the compliance",
+        'location': "1134 Northwestern Ave, West Lafayette, IN 47906",
+        'num_comments': "1",
+        'num_rating': rounded_val,
+        'num_reviews': "5",
+        'title': "Kappa Delta Rho",
+      });
+
+      var snapshot = await instance.collection("SocialHouse").doc(vid).get();
+      Map<String, dynamic> data = await snapshot.data();
+      print("Rating fetched by database of the Social Venue with ID OUSN107: " +
+          data['num_rating']);
+      expect(data['num_rating'], rounded_val);
+      print("Test Passed");
+    });
+  });
+
+  // print("#########################");
+  // print("#  User Story #6 Tests  #");
+  // print("#########################");
+  // print("");
+  group('User Story #6 tests', () {
+    test("View Social Venue's Accredited Information", () async {
+      var instance = FakeFirebaseFirestore();
+      var vid = "OUSN107";
+      var contact = "president@kdrpurdue.com";
+      var desc =
+          "Average Cumulative GPA: 3.24/Events without alcohol: 5/Conduct Reporting: Level 2/*the higher the level, the worse the compliance";
+      var loc = "1134 Northwestern Ave, West Lafayette, IN 47906";
+      var comments = "1";
+      var rating = "4.1";
+      var reviews = "5";
+      var title = "Kappa Delta Rho";
+      instance.collection("SocialHouse").doc(vid).set({
+        'contact': contact,
+        'description': desc,
+        'location': loc,
+        'num_comments': comments,
+        'num_rating': rating,
+        'num_reviews': reviews,
+        'title': title,
+      });
+
+      var snapshot = await instance.collection("SocialHouse").doc(vid).get();
+      Map<String, dynamic> data = await snapshot.data();
+      expect(data['contact'], contact);
+      expect(data['description'], desc);
+      expect(data['location'], loc);
+      expect(data['num_comments'], comments);
+      expect(data['num_rating'], rating);
+      expect(data['num_reviews'], reviews);
+      expect(data['title'], title);
+      print("Test Passed");
+    });
+
+    test("1 decimal precision of Social Venue's Star Based Rating", () async {
+      var instance = FakeFirebaseFirestore();
+      var vid = "OUSN107";
+      var rating = "2.6777777777777777777";
+      var rounded_val = double.parse(rating).toStringAsFixed(1);
+      print("Rating of a Social Venue with ID OUSN107: " + rating);
+      instance.collection("SocialHouse").doc(vid).set({
+        'contact': "president@kdrpurdue.com",
+        'description':
+            "Average Cumulative GPA: 3.24/Events without alcohol: 5/Conduct Reporting: Level 2/*the higher the level, the worse the compliance",
+        'location': "1134 Northwestern Ave, West Lafayette, IN 47906",
+        'num_comments': "1",
+        'num_rating': rounded_val,
+        'num_reviews': "5",
+        'title': "Kappa Delta Rho",
+      });
+
+      var snapshot = await instance.collection("SocialHouse").doc(vid).get();
+      Map<String, dynamic> data = await snapshot.data();
+      print("Rating fetched by database of the Social Venue with ID OUSN107: " +
+          data['num_rating']);
+      expect(data['num_rating'], rounded_val);
+      print("Test Passed");
     });
   });
 }
