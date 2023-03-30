@@ -190,9 +190,18 @@ class _eventDetailsPageState extends State<reviewdetails> {
                                                   )),
                                             ])));
                               } else {
-                                var eve = await DatabaseService()
-                                    .addReplyToAReview(widget.eid, user['name'],
-                                        myController2.text);
+                                // var eve = await DatabaseService()
+                                //     .addReplyToAReview(widget.eid, user['name'],
+                                //         myController2.text);
+                                if (user['anon']) {
+                                  var eve = await DatabaseService()
+                                      .addReplyToAReview(widget.eid,
+                                          "Anonymous", myController2.text);
+                                } else {
+                                  var eve = await DatabaseService()
+                                      .addReplyToAReview(widget.eid,
+                                          user['name'], myController2.text);
+                                }
                                 Navigator.pop(context);
                                 if (_mounted) {
                                   setState(() {

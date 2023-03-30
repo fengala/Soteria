@@ -234,7 +234,7 @@ class _UpdatePageState extends State<UpdatePage> {
     final phoneNumber = TextField(
       controller: phoneNumberController4,
       onChanged: (text) {
-         String digits = text.replaceAll(RegExp(r'\D+'), '');
+        String digits = text.replaceAll(RegExp(r'\D+'), '');
         // format the phone number
         String formatted = _formatPhoneNumber(digits);
         // update the controller with the formatted phone number
@@ -459,6 +459,10 @@ class _UpdatePageState extends State<UpdatePage> {
               if (phone_number.length != 13) {
                 prompt = false;
                 test1 = false;
+                print("This case section 5");
+                print(phone_number.length);
+                print(" This is the length: $phone_number");
+
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     behavior: SnackBarBehavior.floating,
                     backgroundColor: Colors.transparent,
@@ -476,6 +480,7 @@ class _UpdatePageState extends State<UpdatePage> {
               if (!emergency_contact1.isEmpty && emergency_contact1 != null) {
                 if (emergency_contact1.length != 13 &&
                     (emergency_contact1.contains("("))) {
+                  print("This case section 2");
                   print("hello");
                   prompt = false;
                   test2 = false;
@@ -497,6 +502,8 @@ class _UpdatePageState extends State<UpdatePage> {
               if (!emergency_contact2.isEmpty && emergency_contact2 != null) {
                 if (emergency_contact2.length != 13 &&
                     (emergency_contact2.contains("("))) {
+                  print("This case section 3");
+
                   prompt = false;
                   test3 = false;
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -518,6 +525,8 @@ class _UpdatePageState extends State<UpdatePage> {
               if (!emergency_contact3.isEmpty && emergency_contact3 != null) {
                 if (emergency_contact3.length != 13 &&
                     (emergency_contact3.contains("("))) {
+                  print("This case section 4");
+
                   prompt = false;
                   test4 = false;
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(

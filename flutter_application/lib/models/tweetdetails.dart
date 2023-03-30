@@ -181,9 +181,18 @@ class _TweetDetailsPageState extends State<tweetdetails> {
                                                   )),
                                             ])));
                               } else {
-                                var pet = await DatabaseService()
-                                    .addReplyToAPetition(widget.pid,
-                                        user['name'], myController2.text);
+                                // var pet = await DatabaseService()
+                                //     .addReplyToAPetition(widget.pid,
+                                //         user['name'], myController2.text);
+                                if (user['anon']) {
+                                  var eve = await DatabaseService()
+                                      .addReplyToAPetition(widget.pid,
+                                          "Anonymous", myController2.text);
+                                } else {
+                                  var eve = await DatabaseService()
+                                      .addReplyToAPetition(widget.pid,
+                                          user['name'], myController2.text);
+                                }
                                 Navigator.pop(context);
                                 if (_mounted) {
                                   setState(() {
