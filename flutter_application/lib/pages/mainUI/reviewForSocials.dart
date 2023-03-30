@@ -17,6 +17,7 @@ import '../../models/reviewdetails.dart';
 Future _eventsFuture;
 int filter_val = 0;
 int filter_val2 = 5;
+
 class reviewForSocials extends StatelessWidget {
   final String id;
 
@@ -172,7 +173,8 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                 await DatabaseService().updateVerification(user.uid);
               }
               setState(() {
-                _eventsFuture = getSpecificReviews(filter_val, filter_val2, widget.id);
+                _eventsFuture =
+                    getSpecificReviews(filter_val, filter_val2, widget.id);
               });
             },
           ),
@@ -182,7 +184,8 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
         onRefresh: () async {
           if (this.mounted) {
             setState(() {
-              _eventsFuture = getSpecificReviews(filter_val, filter_val2, widget.id);
+              _eventsFuture =
+                  getSpecificReviews(filter_val, filter_val2, widget.id);
             });
           }
         },
@@ -236,9 +239,9 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                         ),
                         onRatingUpdate: (rating) {
                           setState(() {
-                             //print(rating);
-                             _rating = rating;
-                             print(_rating);
+                            //print(rating);
+                            _rating = rating;
+                            print(_rating);
                           });
                         },
                         updateOnDrag: true,
@@ -318,7 +321,8 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
   Widget eventList() {
     //print("turky");
     Future load() async {
-      var myFuture = await getSpecificReviews(filter_val, filter_val2, widget.id) as List;
+      var myFuture =
+          await getSpecificReviews(filter_val, filter_val2, widget.id) as List;
       return myFuture;
     }
 
@@ -406,59 +410,58 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
     });
   }
 
+  void showFilterMenu2(BuildContext context) {
+    final List<String> filters = [
+      'Ratings 1-2',
+      'Ratings 2-3',
+      'Ratings 3-4',
+      'Ratings 4-5',
+      'Default',
+    ];
 
-void showFilterMenu2(BuildContext context) {
-  final List<String> filters = [
-    'Ratings 1-2',
-    'Ratings 2-3',
-    'Ratings 3-4',
-    'Ratings 4-5',
-    'Default',
-  ];
-
-  showMenu(
-    context: context,
-    position: RelativeRect.fromLTRB(0, 50, 0, 0),
-    items: filters.asMap().entries.map((entry) {
-      int index = entry.key;
-      String filter = entry.value;
-      return PopupMenuItem<String>(
-        value: filter,
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(filter),
-            ),
-            if (index == filter_val2)
-              Icon(
-                  Icons.check), // Show a checkmark icon for the selected item
-          ],
-        ),
-      );
-    }).toList(),
-  ).then((value) {
-    if (value != null) {
-      setState(() {
-        if (value == 'Ratings 1-2') {
-          filter_val2 = 0;
-          filter_val = 6;
-        } else if (value == 'Ratings 2-3') {
-          filter_val2 = 1;
-          filter_val = 6;
-        } else if (value == 'Ratings 3-4') {
-          filter_val2 = 2;
-          filter_val = 6;
-        } else if (value == 'Ratings 4-5') {
-          filter_val2 = 3;
-          filter_val = 6;
-        } else if (value == 'Default') {
-          filter_val2 = 4;
-          filter_val = 6;
-        }
-      });
-    }
-  });
-}
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(0, 50, 0, 0),
+      items: filters.asMap().entries.map((entry) {
+        int index = entry.key;
+        String filter = entry.value;
+        return PopupMenuItem<String>(
+          value: filter,
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(filter),
+              ),
+              if (index == filter_val2)
+                Icon(
+                    Icons.check), // Show a checkmark icon for the selected item
+            ],
+          ),
+        );
+      }).toList(),
+    ).then((value) {
+      if (value != null) {
+        setState(() {
+          if (value == 'Ratings 1-2') {
+            filter_val2 = 0;
+            filter_val = 6;
+          } else if (value == 'Ratings 2-3') {
+            filter_val2 = 1;
+            filter_val = 6;
+          } else if (value == 'Ratings 3-4') {
+            filter_val2 = 2;
+            filter_val = 6;
+          } else if (value == 'Ratings 4-5') {
+            filter_val2 = 3;
+            filter_val = 6;
+          } else if (value == 'Default') {
+            filter_val2 = 4;
+            filter_val = 6;
+          }
+        });
+      }
+    });
+  }
 }
 
 class Review extends StatefulWidget {
@@ -711,7 +714,8 @@ class _EventState extends State<Review> {
               icon = FontAwesomeIcons.solidHeart;
             }
             setState(() {
-              _eventsFuture = getSpecificReviews(filter_val, filter_val2, widget.id);
+              _eventsFuture =
+                  getSpecificReviews(filter_val, filter_val2, widget.id);
             });
           },
           icon: Icon(icon),
@@ -744,7 +748,8 @@ class _EventState extends State<Review> {
               icon = FontAwesomeIcons.solidHeart;
             }
             setState(() {
-              _eventsFuture = getSpecificReviews(filter_val, filter_val2, widget.id);
+              _eventsFuture =
+                  getSpecificReviews(filter_val, filter_val2, widget.id);
             });
           },
           icon: Icon(icon),
