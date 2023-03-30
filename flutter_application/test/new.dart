@@ -6,6 +6,7 @@ import 'package:flutter_login_ui/services/auth.dart';
 import 'package:flutter_login_ui/services/database.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 
 class MockUser extends Mock implements User {}
 
@@ -73,4 +74,14 @@ Future<void> main() async {
     //final DatabaseService database = MockPetRef();
     expect(pid, "your-petition-id-here");
   });
+  
+    test("getting petitions", () async {
+    var instance = FakeFirebaseFirestore();
+    var uid = '12';
+    instance.collection("petitions").add({'title': "Ejjj", 'num_upvotes': 34});
+
+    var snapshot = await instance.collection("petitions").get();
+    expect(snapshot.docs.first.get("title"), "Ejjj");
+  });
+}
 }
