@@ -456,7 +456,8 @@ class _UpdatePageState extends State<UpdatePage> {
                       ),
                       child: Text("There are a few fields missing\n"))));
             } else {
-              if (phone_number.length != 13) {
+               phone_number = await revertPhoneNumber(phone_number);
+              if (phone_number.length != 10) {
                 prompt = false;
                 test1 = false;
                 print("This case section 5");
@@ -568,7 +569,7 @@ class _UpdatePageState extends State<UpdatePage> {
                 } else {
                   emergency_contact3 = "";
                 }
-                phone_number = await revertPhoneNumber(phone_number);
+                
                 List list = [
                   emergency_contact1,
                   emergency_contact2,
