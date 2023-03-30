@@ -127,6 +127,7 @@ class _HomePageState extends State<HomePage> {
                 String temp2 = val[1];
                 String temp3 = val[2];
                 */
+                String police = "9112";
 
                 bool value = false;
                 count++;
@@ -144,7 +145,10 @@ class _HomePageState extends State<HomePage> {
                                 onPressed: () async {
                                   value =
                                       await FlutterPhoneDirectCaller.callNumber(
-                                          "9112");
+                                          police);
+                                  print("This is teh value after calling\n");
+                                  print(value);
+                                  //print(val);
 
                                   // Close the dialog
                                   Navigator.of(context).pop();
@@ -164,6 +168,9 @@ class _HomePageState extends State<HomePage> {
                     String first;
                     int j;
                     first = val[0];
+                    if (first.isEmpty || first == "" || first == " ") {
+                      first = val[1];
+                    }
 
                     value = await FlutterPhoneDirectCaller.callNumber(first);
                     if (!value) {

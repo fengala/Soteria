@@ -42,17 +42,19 @@ class DatabaseService {
       'upvotedEvents': [],
       'RSVPEvents': [],
       'verified': false,
+      'anon': false,
     });
   }
 
   Future updateUser(String username, String password, String name,
-      emergency_contacts, String phone_number) async {
+      emergency_contacts, String phone_number, bool anon) async {
     return await userRef.doc(uid).update({
       'username': username,
       'password': password,
       'name': name,
       'emergency_contacts': emergency_contacts,
       'phone_number': phone_number,
+      'anon': anon,
     });
   }
 
@@ -339,17 +341,17 @@ class DatabaseService {
     x++;
     QuerySnapshot querySnapshot = null;
     if (x != 4) {
-      querySnapshot =
-      await revRef.where("ownerSocialHouse", isEqualTo: str).where(
-          "rating", isGreaterThanOrEqualTo: x).where(
-          "rating", isLessThan: x + 1)
+      querySnapshot = await revRef
+          .where("ownerSocialHouse", isEqualTo: str)
+          .where("rating", isGreaterThanOrEqualTo: x)
+          .where("rating", isLessThan: x + 1)
           .orderBy("rating", descending: true)
           .get();
     } else {
-      querySnapshot =
-      await revRef.where("ownerSocialHouse", isEqualTo: str).where(
-          "rating", isGreaterThanOrEqualTo: x).where(
-          "rating", isLessThanOrEqualTo: x + 1)
+      querySnapshot = await revRef
+          .where("ownerSocialHouse", isEqualTo: str)
+          .where("rating", isGreaterThanOrEqualTo: x)
+          .where("rating", isLessThanOrEqualTo: x + 1)
           .orderBy("rating", descending: true)
           .get();
     }
@@ -361,13 +363,12 @@ class DatabaseService {
     return Data;
   }
 
-
-
-
   Future addReviewToVenue(String social_venue_id, String username,
       String review, bool anonymous, String uid, double rating) async {
     if (review.length != 0) {
-      await venRef.doc(social_venue_id).update({'num_comments': FieldValue.increment(1)});
+      await venRef
+          .doc(social_venue_id)
+          .update({'num_comments': FieldValue.increment(1)});
     }
 
     DocumentSnapshot snapshot = await venRef.doc(social_venue_id).get();
@@ -376,8 +377,12 @@ class DatabaseService {
     num ppl = data['num_reviews'];
     num x = (((rate * ppl) + rating) / (ppl + 1)) - rate;
 
-    await venRef.doc(social_venue_id).update({'num_rating': FieldValue.increment(x)});
-    await venRef.doc(social_venue_id).update({'num_reviews': FieldValue.increment(1)});
+    await venRef
+        .doc(social_venue_id)
+        .update({'num_rating': FieldValue.increment(x)});
+    await venRef
+        .doc(social_venue_id)
+        .update({'num_reviews': FieldValue.increment(1)});
 
     return await FirebaseFirestore.instance.collection("reviews").doc().set({
       'username': username,
@@ -451,12 +456,14 @@ class DatabaseService {
   }
 
   Future getUserRating(String placeId, String userId) async {
-    revRef.where("ownerSocialHouse", isEqualTo: placeId)
-          .where("userId", isEqualTo: userId);
+    revRef
+        .where("ownerSocialHouse", isEqualTo: placeId)
+        .where("userId", isEqualTo: userId);
 
-    QuerySnapshot querySnapshot =
-    await revRef.where("ownerSocialHouse", isEqualTo: placeId)
-        .where("userId", isEqualTo: userId).get();
+    QuerySnapshot querySnapshot = await revRef
+        .where("ownerSocialHouse", isEqualTo: placeId)
+        .where("userId", isEqualTo: userId)
+        .get();
 
     final Data = querySnapshot.docs.map((doc) {
       final data = doc.data() as Map<String, dynamic>;

@@ -200,7 +200,8 @@ class _LoginPageState extends State<LoginPage> {
                     user_detail['emergency_contacts'],
                     user_detail['phone_number'],
                     user_detail['remember'],
-                    user_detail['verified']);
+                    user_detail['verified'],
+                    user_detail['anon']);
                 print(userAuth.user1);
                 userAuth.user1.loggedIn = remember;
 

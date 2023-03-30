@@ -15,6 +15,7 @@ import '../authentication/resetPassword.dart';
 class UpdatePage extends StatefulWidget {
   var myUser;
   var userAuth;
+
   UpdatePage({Key key, this.title, this.myUser, this.userAuth})
       : super(key: key);
 
@@ -56,6 +57,9 @@ class _UpdatePageState extends State<UpdatePage> {
   String emergency_contact1 = "";
   String emergency_contact2 = "";
   String emergency_contact3 = "";
+
+  bool _isAnonymous = false;
+
   TextEditingController phoneNumberController;
   TextEditingController phoneNumberController2;
   TextEditingController phoneNumberController3;
@@ -74,6 +78,7 @@ class _UpdatePageState extends State<UpdatePage> {
         TextEditingController(text: _formatPhoneNumber(emergency_contact2));
     phoneNumberController3 =
         TextEditingController(text: _formatPhoneNumber(emergency_contact3));
+    _isAnonymous = myUser.anon;
   }
   TextEditingController text_widgets = TextEditingController();
 
@@ -561,6 +566,7 @@ class _UpdatePageState extends State<UpdatePage> {
                 myUser.password = password;
                 myUser.username = username;
                 myUser.phone_number = phone_number;
+                myUser.anon = _isAnonymous;
                 //print(myUser.name);
                 //print("After changing");
                 //print(myUser.name);
@@ -576,6 +582,7 @@ class _UpdatePageState extends State<UpdatePage> {
                   name,
                   list,
                   phone_number,
+                  _isAnonymous,
                 );
               }
             }
@@ -702,7 +709,7 @@ class _UpdatePageState extends State<UpdatePage> {
                   SizedBox(height: 25.0),
                   phoneNumber,
                   SizedBox(
-                    height: 15.0,
+                    height: 25.0,
                   ),
                   emergencyContactText,
                   SizedBox(height: 25.0),
@@ -712,7 +719,34 @@ class _UpdatePageState extends State<UpdatePage> {
                   SizedBox(height: 25.0),
                   emergencyContact3,
                   SizedBox(
-                    height: 5.0,
+                    height: 15.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'Anonymous',
+                        style: style.copyWith(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                      ),
+                      Checkbox(
+                        value: _isAnonymous,
+                        activeColor: Colors.green,
+                        checkColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          side: BorderSide(color: Colors.grey),
+                        ),
+                        onChanged: (newValue) {
+                          setState(() {
+                            _isAnonymous = newValue;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 15.0,
                   ),
                   createAccount,
                   SizedBox(

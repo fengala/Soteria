@@ -17,8 +17,10 @@ class UserModel {
   bool loggedIn;
   bool verified;
 
+  bool anon;
+
   UserModel(uid, name, username, password, emergency_contacts, phone_number,
-      loggedIn, verified) {
+      loggedIn, verified, anon) {
     this.uid = uid;
     this.name = name;
     this.username = username;
@@ -30,8 +32,13 @@ class UserModel {
     this.RSVPEvents = [];
     this.loggedIn = false;
     this.verified = false;
+    this.anon = false;
   }
   void setVerified(bool value) {
     this.verified = value;
+  }
+
+  void setAnon(bool value) {
+    this.anon = anon;
   }
 }

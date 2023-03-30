@@ -92,15 +92,15 @@ class splashScreen extends State<flashScreen> {
               }
               userAuth.user = user_fir;
               userAuth.user1 = new UserModel(
-                user_fir.uid,
-                user_details['name'],
-                user_details['username'],
-                user_details['password'],
-                user_details['emergency_contacts'],
-                user_details['phone_number'],
-                user_details['remember'],
-                user_details['verified'],
-              );
+                  user_fir.uid,
+                  user_details['name'],
+                  user_details['username'],
+                  user_details['password'],
+                  user_details['emergency_contacts'],
+                  user_details['phone_number'],
+                  user_details['remember'],
+                  user_details['verified'],
+                  user_details['anon']);
               obj = HomeP(
                 myUser: userAuth.user1,
                 userAuth: userAuth,
