@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/services/auth.dart';
 import 'package:flutter_login_ui/services/database.dart';
@@ -559,6 +560,284 @@ Future<void> main() async {
           data['num_rating']);
       expect(data['num_rating'], rounded_val);
       print("Test Passed");
+    });
+  });
+
+  group('User story 7 Tests', () {
+    test("Getting the rating review ratio", () async {
+      var instance = FakeFirebaseFirestore();
+      var vid = "OUSN107";
+      var rating = "2.6777777777777777777";
+      var rounded_val = double.parse(rating).toStringAsFixed(1);
+      instance.collection("SocialHouse").doc(vid).set({
+        'contact': "president@kdrpurdue.com",
+        'description':
+            "Average Cumulative GPA: 3.24/Events without alcohol: 5/Conduct Reporting: Level 2/*the higher the level, the worse the compliance",
+        'location': "1134 Northwestern Ave, West Lafayette, IN 47906",
+        'num_comments': "1",
+        'num_rating': rounded_val,
+        'num_reviews': "5",
+        'title': "Kappa Delta Rho",
+      });
+
+      var snapshot = await instance.collection("SocialHouse").doc(vid).get();
+      Map<String, dynamic> data = await snapshot.data();
+      print("Rating fetched by database of the Social Venue with ID OUSN107: " +
+          data['num_rating']);
+
+      double needd = double.parse(data['num_reviews']);
+
+      double ratis = double.parse(rounded_val);
+      double val = (needd / ratis);
+
+      expect("1.9", val.toStringAsFixed(1));
+      print("Test Passed");
+    });
+  });
+
+  group("User Story 8 tests", () {
+    test("Getting a review", () async {
+      var instance = FakeFirebaseFirestore();
+      var vid = "OUSN107";
+
+      instance.collection("reviews").doc(vid).set({
+        'anonymous': false,
+        'description': "Great!!",
+        'num_comments': 1,
+        'num_upvotes': 1,
+        'Social House': "Alpha Ki",
+        'rating': 3,
+        'replies': []
+      });
+      var snapshot = await instance.collection("reviews").doc(vid).get();
+      Map<String, dynamic> data = await snapshot.data();
+
+      expect("Great!!", data['description']);
+      print("test passed!!");
+    });
+
+    test("2. having no replies", () async {
+      var instance = FakeFirebaseFirestore();
+      var vid = "OUSN107";
+
+      instance.collection("reviews").doc(vid).set({
+        'anonymous': false,
+        'description': "Great!!",
+        'num_comments': 1,
+        'num_upvotes': 1,
+        'Social House': "Alpha Ki",
+        'rating': 3,
+        'replies': []
+      });
+      var snapshot = await instance.collection("reviews").doc(vid).get();
+      Map<String, dynamic> data = await snapshot.data();
+
+      expect(0, data['replies'].length);
+      print("test passed!!");
+    });
+  });
+
+  group("User story 9 tests", () {
+    test("1. Testing upvote of a review", () async {
+      var instance = FakeFirebaseFirestore();
+      var vid = "OUSN107";
+
+      instance.collection("reviews").doc(vid).set({
+        'anonymous': false,
+        'description': "Great!!",
+        'num_comments': 1,
+        'num_upvotes': 1,
+        'Social House': "Alpha Ki",
+        'rating': 3,
+        'replies': []
+      });
+      print("Updating the upvtotes\n");
+
+      instance.collection("reviews").doc(vid).update({'num_upvotes': 2});
+      var snapshot = await instance.collection("reviews").doc(vid).get();
+      Map<String, dynamic> data = await snapshot.data();
+
+      expect(2, data['num_upvotes']);
+      print("Tests passed!!");
+    });
+    test("2. Testing upvote of a review twice, that is downvoting", () async {
+      var instance = FakeFirebaseFirestore();
+      var vid = "OUSN107";
+
+      instance.collection("reviews").doc(vid).set({
+        'anonymous': false,
+        'description': "Great!!",
+        'num_comments': 1,
+        'num_upvotes': 1,
+        'Social House': "Alpha Ki",
+        'rating': 3,
+        'replies': []
+      });
+      print("Updating the upvtotes\n");
+
+      instance.collection("reviews").doc(vid).update({'num_upvotes': 0});
+      var snapshot = await instance.collection("reviews").doc(vid).get();
+      Map<String, dynamic> data = await snapshot.data();
+
+      expect(0, data['num_upvotes']);
+      print("Tests passed!!");
+    });
+  });
+
+  group("Unit tests for User story 10", () {
+    test("1. tests adding a review", () async {
+      var instance = FakeFirebaseFirestore();
+      var vid = "OUSN107";
+      instance.collection("reviews").add({
+        'anonymous': false,
+        'description': "Great!!",
+        'num_comments': 1,
+        'num_upvotes': 1,
+        'Social House': "Alpha Ki",
+        'rating': 3,
+        'replies': []
+      });
+
+      var contact = "president@kdrpurdue.com";
+      var desc =
+          "Average Cumulative GPA: 3.24/Events without alcohol: 5/Conduct Reporting: Level 2/*the higher the level, the worse the compliance";
+      var loc = "1134 Northwestern Ave, West Lafayette, IN 47906";
+      var comments = "1";
+      var rating = "4.1";
+      var reviews = "5";
+      var title = "Alpha Ki";
+      instance.collection("SocialHouse").doc(vid).set({
+        'contact': contact,
+        'description': desc,
+        'location': loc,
+        'num_comments': comments,
+        'num_rating': rating,
+        'num_reviews': reviews,
+        'title': title,
+      });
+
+      instance.collection("SocialHouse").doc(vid).update({'num_reviews': 6});
+
+      var snapshot = await instance.collection("reviews").get();
+      expect(title, snapshot.docs.first.get("Social House"));
+      expect("Great!!", snapshot.docs.first.get("description"));
+      print("The title is correct\n");
+      var snapshot2 = await instance.collection("SocialHouse").doc(vid).get();
+      Map<String, dynamic> data = await snapshot2.data();
+
+      expect(6, data['num_reviews']);
+      print("Test passed");
+    });
+  });
+
+  group("Unit test cases for User story 11", () {
+    test("1. give a rating to a social house", () async {
+      var instance = FakeFirebaseFirestore();
+      var vid = "OUSN107";
+      instance.collection("reviews").add({
+        'anonymous': false,
+        'description': "Great!!",
+        'num_comments': 1,
+        'num_upvotes': 1,
+        'Social House': "Alpha Ki",
+        'rating': 3,
+        'replies': []
+      });
+
+      var contact = "president@kdrpurdue.com";
+      var desc =
+          "Average Cumulative GPA: 3.24/Events without alcohol: 5/Conduct Reporting: Level 2/*the higher the level, the worse the compliance";
+      var loc = "1134 Northwestern Ave, West Lafayette, IN 47906";
+      var comments = "1";
+      var rating = "4.1";
+      var reviews = "5";
+      var title = "Alpha Ki";
+      instance.collection("SocialHouse").doc(vid).set({
+        'contact': contact,
+        'description': desc,
+        'location': loc,
+        'num_comments': comments,
+        'num_rating': rating,
+        'num_reviews': reviews,
+        'title': title,
+      });
+
+      instance.collection("SocialHouse").doc(vid).update({'num_rating': 4.8});
+
+      var snapshot2 = await instance.collection("SocialHouse").doc(vid).get();
+      Map<String, dynamic> data = await snapshot2.data();
+
+      expect(4.8, data['num_rating']);
+      print("test passing");
+    });
+
+    test("2. reduce the rating of a social house", () async {
+      var instance = FakeFirebaseFirestore();
+      var vid = "OUSN107";
+      instance.collection("reviews").add({
+        'anonymous': false,
+        'description': "Great!!",
+        'num_comments': 1,
+        'num_upvotes': 1,
+        'Social House': "Alpha Ki",
+        'rating': 3,
+        'replies': []
+      });
+
+      var contact = "president@kdrpurdue.com";
+      var desc =
+          "Average Cumulative GPA: 3.24/Events without alcohol: 5/Conduct Reporting: Level 2/*the higher the level, the worse the compliance";
+      var loc = "1134 Northwestern Ave, West Lafayette, IN 47906";
+      var comments = "1";
+      var rating = "4.1";
+      var reviews = "5";
+      var title = "Alpha Ki";
+      instance.collection("SocialHouse").doc(vid).set({
+        'contact': contact,
+        'description': desc,
+        'location': loc,
+        'num_comments': comments,
+        'num_rating': rating,
+        'num_reviews': reviews,
+        'title': title,
+      });
+
+      instance.collection("SocialHouse").doc(vid).update({'num_rating': 3.5});
+
+      var snapshot2 = await instance.collection("SocialHouse").doc(vid).get();
+      Map<String, dynamic> data = await snapshot2.data();
+
+      expect(3.5, data['num_rating']);
+      print("test passing");
+    });
+  });
+
+  group("test cases for User story 12", () {
+    test("1. adding a reply to the rating", () async {
+      var instance = FakeFirebaseFirestore();
+      var vid = "OUSN107";
+      instance.collection("reviews").doc(vid).set({
+        'anonymous': false,
+        'description': "Great!!",
+        'num_comments': 1,
+        'num_upvotes': 1,
+        'Social House': "Alpha Ki",
+        'rating': 3,
+        'replies': []
+      });
+
+      print("adding a review");
+      instance.collection("reviews").doc(vid).update({
+        'replies': ["This is a review"]
+      });
+
+      var snapshot2 = await instance.collection("reviews").doc(vid).get();
+      Map<String, dynamic> data = await snapshot2.data();
+
+      print("checking length");
+      expect(1, data['replies'].length);
+      print("the output");
+      expect("This is a review", data['replies'][0]);
     });
   });
 }
