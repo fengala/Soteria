@@ -840,4 +840,82 @@ Future<void> main() async {
       expect("This is a review", data['replies'][0]);
     });
   });
+
+  group("User story 13", () {
+    test("1. testing if the user is set anonymous", () async {
+      var instance = FakeFirebaseFirestore();
+      var vid = "OUSN107";
+      instance
+          .collection("users")
+          .doc(vid)
+          .set({'name': "Tejas", 'anon': false});
+
+      print("setting the user as anonymous");
+
+      instance.collection("users").doc(vid).update({'anon': true});
+      var snapshot2 = await instance.collection("users").doc(vid).get();
+      Map<String, dynamic> data = await snapshot2.data();
+
+      expect(true, data['anon']);
+      print("Test passed\n");
+    });
+  });
+
+  // group("User story test 14", () {
+  //   test("sorting the petitions by newest/latest", () async {
+  //     var instance = FakeFirebaseFirestore();
+
+  //     var vid1 = "Zz2xGZb62QQ1yJkaeAim";
+  //     var time1 = "03/03/2023 12:02 PM";
+  //     var desc1 =
+  //         "A networking event where women can connect with other professionals in their industry, build relationships, and find mentors.";
+  //     var title1 = "Women's Networking Event";
+  //     instance
+  //         .collection("Events")
+  //         .doc(vid1)
+  //         .set({'title': title1, 'description': desc1, 'time': time1});
+
+  //     var vid2 = "aytcSoVjoj7VCkE0urNJ";
+  //     var time2 = "02/27/2023 1:17 AM";
+  //     var desc2 =
+  //         "A conference featuring keynote speakers, workshops, and panel discussions focused on empowering women, building confidence, and overcoming barriers.";
+  //     var title2 = "Women's Empowerment Conference";
+  //     instance
+  //         .collection("Events")
+  //         .doc(vid2)
+  //         .set({'title': title2, 'description': desc2, 'time': time2});
+  //     instance
+  //         .collection("Events")
+  //         .doc(vid1)
+  //         .set({'title': title1, 'description': desc1, 'time': time1});
+
+  //     var vid3 = "xVIMunu6cgVZDgQNLpuc";
+  //     var time3 = "03/04/2021 12:17 AM";
+  //     var desc3 =
+  //         "A leadership summit aimed at helping women develop leadership skills and connect with other women in leadership positions.";
+  //     var title3 = "Women's Leadership Summit";
+  //     instance
+  //         .collection("Events")
+  //         .doc(vid3)
+  //         .set({'title': title3, 'description': desc3, 'time': time3});
+
+  //     var snapshot1 = await instance.collection("SocialHouse").doc(vid1).get();
+  //     Map<String, dynamic> data1 = await snapshot1.data();
+  //     var snapshot2 = await instance.collection("SocialHouse").doc(vid2).get();
+  //     Map<String, dynamic> data2 = await snapshot2.data();
+  //     var snapshot3 = await instance.collection("SocialHouse").doc(vid3).get();
+  //     Map<String, dynamic> data3 = await snapshot3.data();
+  //     expect(data1['title'], title1);
+  //     expect(data1['description'], desc1);
+  //     expect(data1['time'], time1);
+  //     expect(data2['title'], title2);
+  //     expect(data2['description'], desc1);
+  //     expect(data1['time'], time1);
+  //     expect(data1['title'], title1);
+  //     expect(data1['description'], desc1);
+  //     expect(data1['time'], time1);
+
+  //     print("Test Passed");
+  //   });
+  // });
 }
