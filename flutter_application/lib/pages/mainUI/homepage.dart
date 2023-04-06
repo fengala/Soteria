@@ -6,6 +6,7 @@ import '../authentication/update.dart';
 import '../mainUI/placesPage.dart';
 import '../../models/user.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 class TP extends StatelessWidget {
   var myUser;
@@ -48,6 +49,31 @@ class TPage extends StatefulWidget {
 }
 
 class TePage extends State<TPage> {
+  Location _location = Location();
+  LatLng _currentLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserLocation();
+  }
+
+  Future<void> _getUserLocation() async {
+    try {
+      var userLocation = await _location.getLocation();
+      setState(() {
+        _currentLocation =
+            LatLng(userLocation.latitude, userLocation.longitude);
+      });
+    } catch (e) {
+      print('Could not get the user\'s location: $e');
+      // show a snackbar or dialog to inform the user about the error
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Could not get the user\'s location: $e'),
+      ));
+    }
+  }
+
   UserModel myUser;
   var userAuth;
   TePage({this.myUser, this.userAuth});
@@ -138,10 +164,11 @@ class TePage extends State<TPage> {
             padding: EdgeInsets.only(bottom: 70.0),
             child: GoogleMap(
               initialCameraPosition: CameraPosition(
-                target: LatLng(40.424, -86.929), // Chicago
+                target: LatLng(40.424, -86.929),
                 zoom: 13,
               ),
               zoomControlsEnabled: true,
+              myLocationEnabled: true, // enable my location button
               markers: Set<Marker>.of([
                 Marker(
                   markerId: MarkerId('marker_1'),
@@ -191,6 +218,18 @@ class TePage extends State<TPage> {
                     snippet: 'Fraternity',
                   ),
                 ),
+                if (_currentLocation != null)
+                  Marker(
+                    markerId: MarkerId('marker_5'),
+                    position: LatLng(
+                        _currentLocation.latitude, _currentLocation.longitude),
+                    icon: BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueAzure),
+                    infoWindow: InfoWindow(
+                      title: 'Your Location',
+                      snippet: 'You are here',
+                    ),
+                  ),
               ]),
             )));
   }
