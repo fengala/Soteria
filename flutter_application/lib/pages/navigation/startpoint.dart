@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
     TP(),
     PetitionP(),
     BulletinBoardP(),
-    ResourceP(),
+    ResourcesPage(),
     //TP()
   ];
 
@@ -131,7 +131,7 @@ class _HomePageState extends State<HomePage> {
 
                 bool value = false;
                 count++;
-                if ((count % (val.length + 1) == 0 && count != 0) || no) {
+                if ((count % (val.length) == 0 && count != 0) || no) {
                   print("This is emergency call\n");
                   showDialog(
                       context: context,
