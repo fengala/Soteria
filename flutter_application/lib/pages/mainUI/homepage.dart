@@ -2,11 +2,20 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/pages/authentication/login.dart';
+import 'package:google_maps_webservice/places.dart' as lund;
+
+//import 'package:google_maps_webservice/directions.dart';
+//import 'package:google_maps_webservice/places.dart';
+
 import '../authentication/update.dart';
 import '../mainUI/placesPage.dart';
 import '../../models/user.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+
+import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
+import 'package:google_api_headers/google_api_headers.dart';
+
 
 class TP extends StatelessWidget {
   var myUser;
@@ -50,7 +59,10 @@ class TPage extends StatefulWidget {
 
 class TePage extends State<TPage> {
   Location _location = Location();
+  GoogleMapController mapController;
   LatLng _currentLocation;
+  String location = "Search Location";
+  String googleApikey = "AIzaSyA6cWdgxqlc6-esOxU_ihLS1mb5nSjgXwE";
 
   @override
   void initState() {
@@ -96,7 +108,7 @@ class TePage extends State<TPage> {
           ),
           actions: <Widget>[
             Padding(
-                padding: EdgeInsets.only(right: 40.0),
+                padding: EdgeInsets.only(left: 10.0),
                 child: GestureDetector(
                   onTap: () {
                     try {
@@ -117,7 +129,7 @@ class TePage extends State<TPage> {
                   ),
                 )),
             Padding(
-                padding: EdgeInsets.only(right: 20.0),
+                padding: EdgeInsets.only(left: 20.0),
                 child: GestureDetector(
                   onTap: () {
                     try {
@@ -138,7 +150,7 @@ class TePage extends State<TPage> {
                   ),
                 )),
             Padding(
-                padding: EdgeInsets.only(right: 10.0),
+                padding: EdgeInsets.only(left: 10.0),
                 child: IconButton(
                   onPressed: () {
                     try {
@@ -158,13 +170,75 @@ class TePage extends State<TPage> {
                   },
                   icon: const Icon(Icons.search),
                 )),
+            InkWell(
+                onTap: () async {
+                  var place = await PlacesAutocomplete.show(
+                      context: context,
+                      apiKey: googleApikey,
+                      mode: Mode.overlay,
+                      types: [],
+                      strictbounds: false,
+                      components: [lund.Component(lund.Component.country, 'us')],
+                      //google_map_webservice package
+                      onError: (err){
+                        print(err);
+                      }
+                  );
+
+                  if(place != null){
+                    setState(() {
+                      location = place.description.toString();
+                    });
+
+                    //form google_maps_webservice package
+                    final plist = lund.GoogleMapsPlaces(apiKey:googleApikey,
+                      apiHeaders: await GoogleApiHeaders().getHeaders(),
+                      //from google_api_headers package
+                    );
+                    String placeid = place.placeId ?? "0";
+                    final detail = await plist.getDetailsByPlaceId(placeid);
+                    final geometry = detail.result.geometry;
+                    final lat = geometry.location.lat;
+                    final lang = geometry.location.lng;
+                    print("gaandu\n\n\n\n\n\n");
+                    var temp = LatLng(lat, lang);
+
+
+                    //move map camera to selected place with animation
+                    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: temp, zoom: 17)));
+
+                  }
+                },
+                child:Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Card(
+                    child: Center ( child:Container(
+                        padding: EdgeInsets.only(right: 10),
+                        width: 210,
+                        child: ListTile(
+                          title:Text(location, style: TextStyle(fontSize: 18),),
+                          trailing: Icon(Icons.search),
+                          dense: true,
+                        )
+                    ),
+                    ),
+                  ),
+                )
+            ),
+
           ],
         ),
         body: Padding(
             padding: EdgeInsets.only(bottom: 70.0),
             child: GoogleMap(
+              onMapCreated: (controller) {
+                setState(() {
+                  mapController = controller;
+                });
+              },
               initialCameraPosition: CameraPosition(
-                target: LatLng(40.424, -86.929),
+                target: LatLng(
+                    _currentLocation.latitude, _currentLocation.longitude),
                 zoom: 13,
               ),
               zoomControlsEnabled: true,
@@ -230,7 +304,10 @@ class TePage extends State<TPage> {
                       snippet: 'You are here',
                     ),
                   ),
+
               ]),
-            )));
+            ),
+        ),
+    );
   }
 }
