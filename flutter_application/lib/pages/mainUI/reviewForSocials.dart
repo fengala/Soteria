@@ -366,6 +366,8 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
       'Low Replies',
       'High Rating',
       'Low Rating',
+      'Verified',
+      'Unverified',
     ];
 
     showMenu(
@@ -407,6 +409,10 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
             filter_val = 6;
           } else if (value == 'Low Rating') {
             filter_val = 7;
+          } else if (value == 'Verified') {
+            filter_val = 8;
+          } else if (value == 'Unverified') {
+            filter_val = 9;
           }
         });
       }
