@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 var events;
 
 Future<List<Review>> getSpecificReviews(
-    int filter_val, int filter_val2, String socialHouseId) async {
+    int filter_val, int filter_val2, int ver_filter, String socialHouseId) async {
 
   List<Object> events =
   await DatabaseService().getReviews(socialHouseId) as List<Object>;
@@ -91,11 +91,11 @@ Future<List<Review>> getSpecificReviews(
         rating: rating.toString(),
       );
 
-      if (filter_val == 8 && ver == 1) {
+      if (ver_filter == 0 && ver == 1) {
         revs.add(rev);
-      } else if (filter_val == 9 && ver == 0) {
+      } else if (ver_filter == 1 && ver == 0) {
         revs.add(rev);
-      } else if (filter_val != 8 && filter_val != 9) {
+      } else if (ver_filter != 0 && ver_filter != 1) {
         revs.add(rev);
       }
     }
