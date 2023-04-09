@@ -17,6 +17,7 @@ import '../../models/reviewdetails.dart';
 Future _eventsFuture;
 int filter_val = 0;
 int filter_val2 = 5;
+int ver_filter = 2;
 
 class reviewForSocials extends StatelessWidget {
   final String id;
@@ -105,7 +106,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
   @override
   void initState() {
     super.initState();
-    _eventsFuture = getSpecificReviews(filter_val, filter_val2, widget.id);
+    _eventsFuture = getSpecificReviews(filter_val, filter_val2, ver_filter, widget.id);
     reviewForSocialsStream()
         .listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
       initEventsFuture();
@@ -115,7 +116,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
   void initEventsFuture() {
     if (this.mounted) {
       setState(() {
-        _eventsFuture = getSpecificReviews(filter_val, filter_val2, widget.id);
+        _eventsFuture = getSpecificReviews(filter_val, filter_val2, ver_filter, widget.id);
       });
     }
   }
@@ -166,6 +167,12 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
             },
           ),
           IconButton(
+            icon: Icon(Icons.check),
+            onPressed: () {
+              showFilterMenu3(context);
+            },
+          ),
+          IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () async {
               var user = FirebaseAuth.instance.currentUser;
@@ -174,7 +181,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
               }
               setState(() {
                 _eventsFuture =
-                    getSpecificReviews(filter_val, filter_val2, widget.id);
+                    getSpecificReviews(filter_val, filter_val2, ver_filter, widget.id);
               });
             },
           ),
@@ -185,7 +192,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
           if (this.mounted) {
             setState(() {
               _eventsFuture =
-                  getSpecificReviews(filter_val, filter_val2, widget.id);
+                  getSpecificReviews(filter_val, filter_val2, ver_filter, widget.id);
             });
           }
         },
@@ -322,15 +329,14 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
   }
 
   Widget eventList() {
-    //print("turky");
     Future load() async {
       var myFuture =
-          await getSpecificReviews(filter_val, filter_val2, widget.id) as List;
+          await getSpecificReviews(filter_val, filter_val2, ver_filter, widget.id) as List;
       return myFuture;
     }
 
     return FutureBuilder(
-      future: getSpecificReviews(filter_val, filter_val2, widget.id),
+      future: getSpecificReviews(filter_val, filter_val2, ver_filter, widget.id),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<dynamic> events = snapshot.data;
@@ -465,6 +471,49 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
       }
     });
   }
+
+
+  void showFilterMenu3(BuildContext context) {
+    final List<String> filters = [
+      'Verified',
+      'Unverified',
+      'All',
+    ];
+
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(0, 50, 0, 0),
+      items: filters.asMap().entries.map((entry) {
+        int index = entry.key;
+        String filter = entry.value;
+        return PopupMenuItem<String>(
+          value: filter,
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(filter),
+              ),
+              if (index == ver_filter)
+                Icon(
+                    Icons.check), // Show a checkmark icon for the selected item
+            ],
+          ),
+        );
+      }).toList(),
+    ).then((value) {
+      if (value != null) {
+        setState(() {
+          if (value == 'Verified') {
+            ver_filter = 0;
+          } else if (value == 'Unverified') {
+            ver_filter = 1;
+          } else if (value == 'All') {
+            ver_filter = 2;
+          }
+        });
+      }
+    });
+  }
 }
 
 class Review extends StatefulWidget {
@@ -593,7 +642,7 @@ class _EventState extends State<Review> {
   Widget eventText() {
     return Text(
       widget
-          .description, //////////////////////////////////////////////////////////
+          .description,
       overflow: TextOverflow.clip,
       style: const TextStyle(fontWeight: FontWeight.bold),
     );
@@ -607,8 +656,6 @@ class _EventState extends State<Review> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           this.widget.ver == 1
-
-              /// change this
               ? tweetIconButton0(FontAwesomeIcons.checkToSlot)
               : tweetIconButton0_1(FontAwesomeIcons.checkDouble),
           eventIconButton1_1(FontAwesomeIcons.star, this.widget.rating),
@@ -718,7 +765,7 @@ class _EventState extends State<Review> {
             }
             setState(() {
               _eventsFuture =
-                  getSpecificReviews(filter_val, filter_val2, widget.id);
+                  getSpecificReviews(filter_val, filter_val2, ver_filter, widget.id);
             });
           },
           icon: Icon(icon),
@@ -752,7 +799,7 @@ class _EventState extends State<Review> {
             }
             setState(() {
               _eventsFuture =
-                  getSpecificReviews(filter_val, filter_val2, widget.id);
+                  getSpecificReviews(filter_val, filter_val2, ver_filter, widget.id);
             });
           },
           icon: Icon(icon),

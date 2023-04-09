@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 var events;
 
 Future<List<Review>> getSpecificReviews(
-    int filter_val, int filter_val2, String socialHouseId) async {
+    int filter_val, int filter_val2, int ver_filter, String socialHouseId) async {
 
   List<Object> events =
   await DatabaseService().getReviews(socialHouseId) as List<Object>;
@@ -75,9 +75,10 @@ Future<List<Review>> getSpecificReviews(
       //print(ver);
       ver = 1;
     }
+
     //comment the if if you want to display even empty ratings
     if (desc != "") {
-      revs.add(Review(
+      Review rev = new Review(
         name: name,
         comments: comments.toString(),
         upvotes: upvotes.toString(),
@@ -88,7 +89,15 @@ Future<List<Review>> getSpecificReviews(
         ver: ver,
         anonymous: anonymous,
         rating: rating.toString(),
-      ));
+      );
+
+      if (ver_filter == 0 && ver == 1) {
+        revs.add(rev);
+      } else if (ver_filter == 1 && ver == 0) {
+        revs.add(rev);
+      } else if (ver_filter != 0 && ver_filter != 1) {
+        revs.add(rev);
+      }
     }
   }
 
@@ -116,6 +125,10 @@ Future<List<Review>> getSpecificReviews(
     revs.sort((a, b) => b.rating.compareTo(a.rating));
   } else if (filter_val == 7) {
     revs.sort((a, b) => a.rating.compareTo(b.rating));
+  } else if (filter_val == 8) {
+    revs.sort((b, a) => a.ver.compareTo(b.ver));
+  } else if (filter_val == 9) {
+    revs.sort((b, a) => b.ver.compareTo(a.ver));
   }
 
   return revs;

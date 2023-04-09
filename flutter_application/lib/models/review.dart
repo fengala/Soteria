@@ -1,47 +1,46 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/models/replies.dart';
-import 'package:flutter_login_ui/models/tweetdetails.dart';
-import 'package:flutter_login_ui/services/auth.dart';
-import 'package:flutter_login_ui/services/database.dart';
+import 'package:flutter_login_ui/models/reply.dart';
+import 'package:flutter_login_ui/models/reviewdetails.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'reply.dart';
+import '../services/auth.dart';
+import '../services/database.dart';
 
-class Tweet extends StatefulWidget {
-  final String avatar;
-  final String username;
+class Review extends StatefulWidget {
   final String name;
-  final String text;
   String comments;
-  String favorites;
+  String upvotes;
   final String time;
   final String id;
   final String description;
-  final int i;
+  final int hasUpvote;
   final String userId;
   final int ver;
+  final bool anonymous;
+  final String rating;
 
-  Tweet({
+  Review({
     Key key,
-    @required this.avatar,
-    @required this.username,
     @required this.name,
-    @required this.text,
     @required this.comments,
     @required this.time,
-    @required this.favorites,
+    @required this.upvotes,
     @required this.id,
     @required this.description,
-    @required this.i,
+    @required this.hasUpvote,
     @required this.userId,
     @required this.ver,
+    @required this.anonymous,
+    @required this.rating,
   }) : super(key: key);
 
   @override
-  _TweetState createState() => _TweetState();
+  _EventState createState() => _EventState();
 }
 
-class _TweetState extends State<Tweet> {
+class _EventState extends State<Review> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,37 +48,38 @@ class _TweetState extends State<Tweet> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          tweetAvatar(),
-          tweetBody(context),
+          eventAvatar(),
+          eventBody(context),
         ],
       ),
     );
   }
 
-  Widget tweetAvatar() {
+  Widget eventAvatar() {
     return Container(
       margin: const EdgeInsets.all(10.0),
     );
   }
 
-  Widget tweetBody(BuildContext context) {
+  Widget eventBody(BuildContext context) {
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          tweetHeader(context),
-          tweetText(),
-          tweetButtons(),
+          eventHeader(context),
+          eventText(),
+          eventButtons(),
         ],
       ),
     );
   }
 
-  Widget tweetHeader(BuildContext context) {
+  Widget eventHeader(BuildContext context) {
     return FutureBuilder<List<Reply>>(
-      future: getAllRepliesPet(widget.id),
+      future: getAllRepliesRev(widget.id),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
+          //print(widget.id);
           return Text('Error loading replies');
         } else if (!snapshot.hasData) {
           return Text('Loading...');
@@ -91,7 +91,13 @@ class _TweetState extends State<Tweet> {
                 margin: const EdgeInsets.only(right: 5.0),
               ),
               Text(
-                '@${widget.name} · ${widget.time}',
+                widget.anonymous ? 'Anonymous' : widget.name,
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
+              Text(
+                ' · ${widget.time}',
                 style: TextStyle(
                   color: Colors.grey,
                 ),
@@ -102,10 +108,9 @@ class _TweetState extends State<Tweet> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => tweetdetails(
-                        title: widget.text,
+                      builder: (context) => reviewdetails(
                         description: widget.description,
-                        pid: widget.id,
+                        eid: widget.id,
                         replies: replies,
                       ),
                     ),
@@ -126,14 +131,16 @@ class _TweetState extends State<Tweet> {
     );
   }
 
-  Widget tweetText() {
+  Widget eventText() {
     return Text(
-      widget.text,
+      widget
+          .description,
       overflow: TextOverflow.clip,
+      style: const TextStyle(fontWeight: FontWeight.bold),
     );
   }
 
-  Widget tweetButtons() {
+  Widget eventButtons() {
     //print("Yo $i");
     return Container(
       margin: const EdgeInsets.only(top: 10.0, right: 20.0),
@@ -143,12 +150,12 @@ class _TweetState extends State<Tweet> {
           this.widget.ver == 1
               ? tweetIconButton0(FontAwesomeIcons.checkToSlot)
               : tweetIconButton0_1(FontAwesomeIcons.checkDouble),
-          tweetIconButton1(FontAwesomeIcons.comment, this.widget.comments),
-          this.widget.i == 1
-              ? tweetIconButton2_1(
-                  FontAwesomeIcons.heart, this.widget.favorites)
-              : tweetIconButton2(
-                  FontAwesomeIcons.solidHeart, this.widget.favorites),
+          eventIconButton1_1(FontAwesomeIcons.star, this.widget.rating),
+          eventIconButton1(FontAwesomeIcons.comments, this.widget.comments),
+          this.widget.hasUpvote == 1
+              ? eventIconButton2_1(FontAwesomeIcons.heart, this.widget.upvotes)
+              : eventIconButton2(
+              FontAwesomeIcons.solidHeart, this.widget.upvotes),
         ],
       ),
     );
@@ -190,7 +197,30 @@ class _TweetState extends State<Tweet> {
     );
   }
 
-  Widget tweetIconButton1(IconData icon, String text) {
+  Widget eventIconButton1_1(IconData icon, String text) {
+    return Row(
+      children: [
+        IconButton(
+          icon: const Icon(FontAwesomeIcons.solidStar),
+          onPressed: () {
+            print("Pressed Rating");
+          },
+          iconSize: 16.0,
+          color: Colors.amber,
+        ),
+        Container(
+          margin: const EdgeInsets.all(6.0),
+          child: Text(text,
+              style: TextStyle(
+                color: Colors.black45,
+                fontSize: 14.0,
+              )),
+        ),
+      ],
+    );
+  }
+
+  Widget eventIconButton1(IconData icon, String text) {
     return Row(
       children: [
         IconButton(
@@ -203,28 +233,26 @@ class _TweetState extends State<Tweet> {
         ),
         Container(
           margin: const EdgeInsets.all(6.0),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: Colors.black45,
-              fontSize: 14.0,
-            ),
-          ),
+          child: Text(text,
+              style: TextStyle(
+                color: Colors.black45,
+                fontSize: 14.0,
+              )),
         ),
       ],
     );
   }
 
-  Widget tweetIconButton2(IconData icon, String text) {
+  Widget eventIconButton2(IconData icon, String text) {
     return Row(
       children: [
         IconButton(
           onPressed: () async {
             print("Pressed Undo Upvote");
-            Future x = DatabaseService().userUpvoteCheckPet(
+            Future x = DatabaseService().userUpvoteCheckReview(
                 widget.id, UserAuth.auth.currentUser.uid, 1);
             if (x == true) {
-              print(this.widget.favorites);
+              print(this.widget.upvotes);
               icon = FontAwesomeIcons.solidHeart;
             }
           },
@@ -246,16 +274,15 @@ class _TweetState extends State<Tweet> {
     );
   }
 
-  Widget tweetIconButton2_1(IconData icon, String text) {
+  Widget eventIconButton2_1(IconData icon, String text) {
     return Row(
       children: [
         IconButton(
           onPressed: () {
             print("Pressed Upvote");
-            Future x = DatabaseService().userUpvoteCheckPet(
+            Future x = DatabaseService().userUpvoteCheckReview(
                 widget.id, UserAuth.auth.currentUser.uid, 1);
             if (x == true) {
-              print(this.widget.favorites);
               icon = FontAwesomeIcons.solidHeart;
             }
           },
