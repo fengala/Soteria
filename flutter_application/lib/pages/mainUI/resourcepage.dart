@@ -47,84 +47,193 @@ class _ResourcesPageState extends State<ResourcesPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Purdue Safety Resources:',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
+            Container(
+              child: Center(
+                child: Text(
+                  'Purdue Safety Resources',
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
+            Container(
+              padding: EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 10.0),
+                  InkWell(
+                    child: Row(
+                      children: [
+                        Text(
+                          '\nPurdue University Police Department',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        Spacer(),
+                      ],
+                    ),
+                    onTap: () => launch('https://www.purdue.edu/police/'),
+                  ),
+                  SizedBox(height: 5.0),
+                  InkWell(
+                    child: Row(
+                      children: [
+                        //SizedBox(width: 20.0),
+                        TextButton(
+                          onPressed: () => launch('tel:${'765-494-8221'}'),
+                          child: Text(
+                            '765-494-8221',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 16.0,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    onTap: () => launch('tel:${'765-494-8221'}'),
+                  ),
+                ],
+              ),
+            ),
+
+            // Text(
+            //   'Purdue Safety Resources:',
+            //   style: TextStyle(
+            //     fontSize: 20.0,
+            //     fontWeight: FontWeight.bold,
+            //   ),
+            // ),
+            // SizedBox(height: 10.0),
+            // InkWell(
+            //   child: Row(
+            //     children: [
+            //       Text(
+            //         '\nPurdue University Police Department',
+            //         style: TextStyle(
+            //           color: Colors.blue,
+            //           fontSize: 16.0,
+            //         ),
+            //       ),
+            //       Spacer(),
+            //     ],
+            //   ),
+            //   onTap: () => launch('https://www.purdue.edu/police/'),
+            // ),
+            // SizedBox(height: 5.0),
+            // InkWell(
+            //   child: Row(
+            //     children: [
+            //       //SizedBox(width: 20.0),
+            //       TextButton(
+            //         onPressed: () => launch('tel:${'765-494-8221'}'),
+            //         child: Text(
+            //           '765-494-8221',
+            //           style: TextStyle(
+            //             color: Colors.blue,
+            //             fontSize: 16.0,
+            //             decoration: TextDecoration.underline,
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            //   onTap: () => launch('tel:${'765-494-8221'}'),
+            // ),
             SizedBox(height: 10.0),
-            InkWell(
-              child: Row(
+            // InkWell(
+            //   child: Row(
+            //     children: [
+            //       Text(
+            //         'Counseling and Psychological Services',
+            //         style: TextStyle(
+            //           color: Colors.blue,
+            //           fontSize: 16.0,
+            //         ),
+            //       ),
+            //       Spacer(),
+            //     ],
+            //   ),
+            //   onTap: () => launch('https://www.purdue.edu/caps/index.html'),
+            // ),
+            // SizedBox(height: 5.0),
+            // InkWell(
+            //   child: Row(
+            //     children: [
+            //       //SizedBox(width: 20.0),
+            //       TextButton(
+            //         onPressed: () => launch('tel:${'765-494-6995'}'),
+            //         child: Text(
+            //           '765-494-6995',
+            //           style: TextStyle(
+            //             color: Colors.blue,
+            //             fontSize: 16.0,
+            //             decoration: TextDecoration.underline,
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            //   onTap: () => launch('tel:${'765-494-6995'}'),
+            // ),
+            Container(
+              padding: EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '\nPurdue University Police Department',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 16.0,
+                  SizedBox(height: 10.0),
+                  InkWell(
+                    child: Row(
+                      children: [
+                        Text(
+                          '\nCounseling and Psychological Services',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        Spacer(),
+                      ],
                     ),
+                    onTap: () =>
+                        launch('https://www.purdue.edu/caps/index.html'),
                   ),
-                  Spacer(),
+                  SizedBox(height: 5.0),
+                  InkWell(
+                    child: Row(
+                      children: [
+                        //SizedBox(width: 20.0),
+                        TextButton(
+                          onPressed: () => launch('tel:${'765-494-6995'}'),
+                          child: Text(
+                            '765-494-6995',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 16.0,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    onTap: () => launch('tel:${'765-494-6995'}'),
+                  ),
                 ],
               ),
-              onTap: () => launch('https://www.purdue.edu/police/'),
-            ),
-            SizedBox(height: 5.0),
-            InkWell(
-              child: Row(
-                children: [
-                  //SizedBox(width: 20.0),
-                  TextButton(
-                    onPressed: () => launch('tel:${'765-494-8221'}'),
-                    child: Text(
-                      '765-494-8221',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 16.0,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              onTap: () => launch('tel:${'765-494-8221'}'),
-            ),
-            SizedBox(height: 10.0),
-            InkWell(
-              child: Row(
-                children: [
-                  Text(
-                    'Counseling and Psychological Services',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 16.0,
-                    ),
-                  ),
-                  Spacer(),
-                ],
-              ),
-              onTap: () => launch('https://www.purdue.edu/caps/index.html'),
-            ),
-            SizedBox(height: 5.0),
-            InkWell(
-              child: Row(
-                children: [
-                  //SizedBox(width: 20.0),
-                  TextButton(
-                    onPressed: () => launch('tel:${'765-494-6995'}'),
-                    child: Text(
-                      '765-494-6995',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 16.0,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              onTap: () => launch('tel:${'765-494-6995'}'),
             ),
             SizedBox(height: 10.0),
             InkWell(
