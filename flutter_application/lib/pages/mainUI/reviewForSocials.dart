@@ -287,12 +287,12 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                           ),
                         );
                       } else {
-                        var user = await DatabaseService()
-                            .getUser(UserAuth.auth.currentUser.uid);
+                        //var user = await DatabaseService()
+                        //.getUser(UserAuth.auth.currentUser.uid);
                         if (user['anon']) {
                           var eve = await DatabaseService().addReviewToVenue(
                             widget.id,
-                            user['username'],
+                            "Anonymous",
                             myController.text,
                             true,
                             UserAuth.auth.currentUser.uid,
