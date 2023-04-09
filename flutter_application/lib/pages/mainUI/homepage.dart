@@ -60,7 +60,7 @@ class TPage extends StatefulWidget {
 class TePage extends State<TPage> {
   Location _location = Location();
   GoogleMapController mapController;
-  LatLng _currentLocation;
+  LatLng _currentLocation = LatLng(40.425869, -86.908066);
   String location = "Search Location";
   String googleApikey = "AIzaSyA6cWdgxqlc6-esOxU_ihLS1mb5nSjgXwE";
 
@@ -78,7 +78,7 @@ class TePage extends State<TPage> {
             LatLng(userLocation.latitude, userLocation.longitude);
       });
     } catch (e) {
-      print('Could not get the user\'s location: $e');
+      //p('Could not get the user\'s location: $e');
       // show a snackbar or dialog to inform the user about the error
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Could not get the user\'s location: $e'),
@@ -200,7 +200,7 @@ class TePage extends State<TPage> {
                     final geometry = detail.result.geometry;
                     final lat = geometry.location.lat;
                     final lang = geometry.location.lng;
-                    print("gaandu\n\n\n\n\n\n");
+                    //print("gaandu\n\n\n\n\n\n");
                     var temp = LatLng(lat, lang);
 
 
