@@ -75,6 +75,7 @@ Future<List<Review>> getSpecificReviews(
       //print(ver);
       ver = 1;
     }
+
     //comment the if if you want to display even empty ratings
     if (desc != "") {
       revs.add(Review(

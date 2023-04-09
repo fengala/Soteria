@@ -593,7 +593,7 @@ class _EventState extends State<Review> {
   Widget eventText() {
     return Text(
       widget
-          .description, //////////////////////////////////////////////////////////
+          .description,
       overflow: TextOverflow.clip,
       style: const TextStyle(fontWeight: FontWeight.bold),
     );
@@ -607,8 +607,6 @@ class _EventState extends State<Review> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           this.widget.ver == 1
-
-              /// change this
               ? tweetIconButton0(FontAwesomeIcons.checkToSlot)
               : tweetIconButton0_1(FontAwesomeIcons.checkDouble),
           eventIconButton1_1(FontAwesomeIcons.star, this.widget.rating),
