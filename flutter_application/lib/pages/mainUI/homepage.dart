@@ -21,7 +21,9 @@ class TP extends StatelessWidget {
   var myUser;
   var userAuth;
   var safe_spots;
-  var safe_count
+  var safe_count;
+  var real_time_updating;
+  
   TP({Key key}) : super(key: key);
 
   void setUser(var User) {
