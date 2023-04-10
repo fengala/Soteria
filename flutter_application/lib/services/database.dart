@@ -11,6 +11,8 @@ class DatabaseService {
   final String pid;
   final String eid;
   final String vid;
+  var safe_counts;
+  var safe_places
   DatabaseService({this.uid, this.pid, this.eid, this.vid});
 
   final CollectionReference userRef =
