@@ -272,6 +272,198 @@ class _ResourcesPageState extends State<ResourcesPage> {
               ),
               onTap: () => launch('tel:${'765-494-7255'}'),
             ),
+            Container(
+              padding: EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 10.0),
+                  InkWell(
+                    child: Row(
+                      children: [
+                        Text(
+                          '\nGlobal Helpline Service',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        Spacer(),
+                      ],
+                    ),
+                    onTap: () => launch(''),
+                  ),
+                  SizedBox(height: 5.0),
+                  InkWell(
+                    child: Row(
+                      children: [
+                        //SizedBox(width: 20.0),
+                        TextButton(
+                          onPressed: () => launch('tel:${'123-456-7890'}'),
+                          child: Text(
+                            '123-456-7890',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 16.0,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    onTap: () => launch('tel:${'123-456-7890'}'),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 10.0),
+                  InkWell(
+                    child: Row(
+                      children: [
+                        Text(
+                          '\nGlobal Helpline Service 2',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        Spacer(),
+                      ],
+                    ),
+                    onTap: () => launch(''),
+                  ),
+                  SizedBox(height: 5.0),
+                  InkWell(
+                    child: Row(
+                      children: [
+                        //SizedBox(width: 20.0),
+                        TextButton(
+                          onPressed: () => launch('tel:${'123-456-7890'}'),
+                          child: Text(
+                            '123-456-7890',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 16.0,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    onTap: () => launch('tel:${'123-456-7890'}'),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 10.0),
+                  InkWell(
+                    child: Row(
+                      children: [
+                        Text(
+                          '\nGlobal Helpline Service 3',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        Spacer(),
+                      ],
+                    ),
+                    onTap: () => launch(''),
+                  ),
+                  SizedBox(height: 5.0),
+                  InkWell(
+                    child: Row(
+                      children: [
+                        //SizedBox(width: 20.0),
+                        TextButton(
+                          onPressed: () => launch('tel:${'123-456-7890'}'),
+                          child: Text(
+                            '123-456-7890',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 16.0,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    onTap: () => launch('tel:${'123-456-7890'}'),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 10.0),
+                  InkWell(
+                    child: Row(
+                      children: [
+                        Text(
+                          '\nGlobal Helpline Service 4',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        Spacer(),
+                      ],
+                    ),
+                    onTap: () => launch(''),
+                  ),
+                  SizedBox(height: 5.0),
+                  InkWell(
+                    child: Row(
+                      children: [
+                        //SizedBox(width: 20.0),
+                        TextButton(
+                          onPressed: () => launch('tel:${'123-456-7890'}'),
+                          child: Text(
+                            '123-456-7890',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 16.0,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    onTap: () => launch('tel:${'123-456-7890'}'),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
