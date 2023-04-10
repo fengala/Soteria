@@ -20,6 +20,8 @@ import 'package:google_api_headers/google_api_headers.dart';
 class TP extends StatelessWidget {
   var myUser;
   var userAuth;
+  var safe_spots;
+  var safe_count
   TP({Key key}) : super(key: key);
 
   void setUser(var User) {
