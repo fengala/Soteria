@@ -2,11 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/pages/authentication/login.dart';
+import 'package:flutter_login_ui/pages/mainUI/socialHouse.dart';
 import 'package:google_maps_webservice/places.dart' as lund;
 
 //import 'package:google_maps_webservice/directions.dart';
 //import 'package:google_maps_webservice/places.dart';
 
+import '../../models/places.dart';
+import '../../services/auth.dart';
+import '../../services/database.dart';
 import '../authentication/update.dart';
 import '../mainUI/placesPage.dart';
 import '../../models/user.dart';
@@ -101,7 +105,7 @@ class TePage extends State<TPage> {
         position: LatLng(40.424, -86.929),
         infoWindow: InfoWindow(
           title: 'Phi Kappa',
-          snippet: 'Fraternity',
+          snippet: 'PZGBqfzO0TQeP3n9oLPc',
         ),
       ),
       Marker(
@@ -109,7 +113,7 @@ class TePage extends State<TPage> {
         position: LatLng(40.427, -86.916),
         infoWindow: InfoWindow(
           title: 'Alpha Alpha Alpha',
-          snippet: 'Fraternity',
+          snippet: 'RyMwQOgO2lQBjIBCkvjI',
         ),
       ),
       Marker(
@@ -117,7 +121,7 @@ class TePage extends State<TPage> {
         position: LatLng(40.426, -86.914),
         infoWindow: InfoWindow(
           title: 'Omega Delta Kappa',
-          snippet: 'Fraternity',
+          snippet: 'vaUr8Utq4mEZR0GhqzVs',
         ),
       ),
       Marker(
@@ -125,7 +129,7 @@ class TePage extends State<TPage> {
         position: LatLng(40.4230716, -86.9199115),
         infoWindow: InfoWindow(
           title: 'Triangle frat',
-          snippet: 'Fraternity',
+          snippet: 'xUzgjY781qshdk1qQN3Z',
         ),
       ),
       Marker(
@@ -133,7 +137,7 @@ class TePage extends State<TPage> {
         position: LatLng(40.4284818, -86.9876795),
         infoWindow: InfoWindow(
           title: 'Chi Omega',
-          snippet: 'Fraternity',
+          snippet: 'xUzgjY781qshdk1qQN3Z',
         ),
       ),
       Marker(
@@ -141,7 +145,7 @@ class TePage extends State<TPage> {
         position: LatLng(40.4295616, -86.989587),
         infoWindow: InfoWindow(
           title: 'Alpha Tau Omega',
-          snippet: 'Fraternity',
+          snippet: 'xUzgjY781qshdk1qQN3Z',
         ),
       ),
       if (_currentLocation != null)
@@ -153,7 +157,7 @@ class TePage extends State<TPage> {
               BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
           infoWindow: InfoWindow(
             title: 'Your Location',
-            snippet: 'You are here',
+            snippet: 'xUzgjY781qshdk1qQN3Z',
           ),
         ),
     ]);
@@ -322,7 +326,7 @@ class TePage extends State<TPage> {
                 return Padding(
                     padding: EdgeInsets.all(8.0),
                     child: InkWell(
-                        onTap: () {
+                        onTap: () async {
                           mapController.animateCamera(
                               CameraUpdate.newCameraPosition(CameraPosition(
                             target: marker.position,
@@ -330,6 +334,31 @@ class TePage extends State<TPage> {
                             // bearing: 45.0,
                             // tilt: 45.0
                           )));
+                          var houseInfo = await DatabaseService()
+                              .getVenue("PZGBqfzO0TQeP3n9oLPc");
+                          String userId = UserAuth.auth.currentUser.uid;
+                          List<num> usrate = await DatabaseService()
+                                  .getUserRating("PZGBqfzO0TQeP3n9oLPc", userId)
+                              as List<Object>;
+                          num r;
+                          if (usrate.isEmpty) {
+                            r = 0.0;
+                          } else {
+                            r = usrate[0];
+                          }
+
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => socialHousePage(
+                                        title: houseInfo["title"],
+                                        id: "PZGBqfzO0TQeP3n9oLPc",
+                                        description: houseInfo["description"],
+                                        contact: houseInfo["contact"],
+                                        num_stars:
+                                            houseInfo["num_rating"].toString(),
+                                        user_rate: r.toString(),
+                                      )));
                         },
                         child: Stack(children: [
                           Center(
@@ -391,7 +420,7 @@ class TePage extends State<TPage> {
                                               Container(
                                                 width: 170.0,
                                                 child: Text(
-                                                  marker.infoWindow.snippet,
+                                                  "Click for more info",
                                                   style: TextStyle(
                                                       fontSize: 11.0,
                                                       fontWeight:
