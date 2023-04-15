@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/pages/authentication/login.dart';
 import 'package:flutter_login_ui/pages/mainUI/socialHouse.dart';
+import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 import 'package:google_maps_webservice/places.dart' as lund;
-
+import '';
 //import 'package:google_maps_webservice/directions.dart';
 //import 'package:google_maps_webservice/places.dart';
 
@@ -14,11 +15,12 @@ import '../../services/database.dart';
 import '../authentication/update.dart';
 import '../mainUI/placesPage.dart';
 import '../../models/user.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
 import 'package:google_api_headers/google_api_headers.dart';
+
+import 'heat.dart';
 
 class TP extends StatelessWidget {
   var myUser;
@@ -227,9 +229,13 @@ class TePage extends State<TPage> {
                     //     MaterialPageRoute(builder: (context) => LoginPage()));
                     // Navigator.of(context, rootNavigator: true).pushReplacement(
                     //     MaterialPageRoute(builder: (context) => PlacesPage()));
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => PlacesPage()),
+                    // );
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PlacesPage()),
+                      MaterialPageRoute(builder: (context) => MapSample()),
                     );
                   } catch (e, stacktrace) {
                     print(e);
@@ -308,7 +314,7 @@ class TePage extends State<TPage> {
                 target: LatLng(40.424, -86.929),
                 zoom: 13,
               ),
-              zoomControlsEnabled: true,
+              // zoomControlsEnabled: true,
               myLocationEnabled: true, // enable my location button
               markers: markers),
         ),
