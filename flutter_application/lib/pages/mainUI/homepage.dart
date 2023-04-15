@@ -411,22 +411,12 @@ class TePage extends State<TPage> {
                                                         FontWeight.bold),
                                               ),
                                               Text(
-                                                marker.infoWindow.snippet,
+                                                "Click for more info",
                                                 style: TextStyle(
                                                     fontSize: 12.0,
                                                     fontWeight:
                                                         FontWeight.w600),
                                               ),
-                                              Container(
-                                                width: 170.0,
-                                                child: Text(
-                                                  "Click for more info",
-                                                  style: TextStyle(
-                                                      fontSize: 11.0,
-                                                      fontWeight:
-                                                          FontWeight.w300),
-                                                ),
-                                              )
                                             ])
                                       ]))))
                         ]))
