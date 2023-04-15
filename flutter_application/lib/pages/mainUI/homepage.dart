@@ -72,6 +72,14 @@ class TePage extends State<TPage> {
   LatLng _currentLocation;
   String location = "Search Location";
   String googleApikey = "AIzaSyA6cWdgxqlc6-esOxU_ihLS1mb5nSjgXwE";
+  String selectedLocation;
+  MarkerId _selectedMarkerId;
+
+  void _onMarkerTapped(MarkerId markerId) {
+    setState(() {
+      _selectedMarkerId = markerId;
+    });
+  }
 
   @override
   void initState() {
@@ -316,133 +324,155 @@ class TePage extends State<TPage> {
               ),
               // zoomControlsEnabled: true,
               myLocationEnabled: true, // enable my location button
-              markers: markers),
+              markers: Set.from(markers.map((Marker marker) {
+                return Marker(
+                  markerId: marker.markerId,
+                  position: marker.position,
+                  onTap: () => _onMarkerTapped(marker.markerId),
+                );
+              }))),
         ),
         Positioned(
-          bottom: 70.0,
-          left: 0.0,
-          right: 0.0,
-          child: Container(
-            height: 100.0,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: markers.length,
-              itemBuilder: (BuildContext context, int index) {
-                Marker marker = markers.elementAt(index);
-                return Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: InkWell(
-                        onTap: () async {
-                          mapController.animateCamera(
-                              CameraUpdate.newCameraPosition(CameraPosition(
-                            target: marker.position,
-                            zoom: 15.0,
-                            // bearing: 45.0,
-                            // tilt: 45.0
-                          )));
-                          var houseInfo = await DatabaseService()
-                              .getVenue("PZGBqfzO0TQeP3n9oLPc");
-                          String userId = UserAuth.auth.currentUser.uid;
-                          List<num> usrate = await DatabaseService()
-                                  .getUserRating("PZGBqfzO0TQeP3n9oLPc", userId)
-                              as List<Object>;
-                          num r;
-                          if (usrate.isEmpty) {
-                            r = 0.0;
-                          } else {
-                            r = usrate[0];
-                          }
+            bottom: 70.0,
+            left: -75.0,
+            right: 0.0,
+            child: Visibility(
+              visible: _selectedMarkerId != null,
+              child: Container(
+                height: 125.0,
+                child: ListView.builder(
+                  //...
+                  itemBuilder: (BuildContext context, int index) {
+                    Marker marker = markers.elementAt(index);
+                    return Visibility(
+                        visible: marker.markerId == _selectedMarkerId,
+                        child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: InkWell(
+                                onTap: () async {
+                                  mapController.animateCamera(
+                                      CameraUpdate.newCameraPosition(
+                                          CameraPosition(
+                                    target: marker.position,
+                                    // zoom: 15.0,
+                                    // bearing: 45.0,
+                                    // tilt: 45.0
+                                  )));
+                                  var houseInfo = await DatabaseService()
+                                      .getVenue("PZGBqfzO0TQeP3n9oLPc");
+                                  String userId = UserAuth.auth.currentUser.uid;
+                                  List<num> usrate = await DatabaseService()
+                                          .getUserRating(
+                                              "PZGBqfzO0TQeP3n9oLPc", userId)
+                                      as List<Object>;
+                                  num r;
+                                  if (usrate.isEmpty) {
+                                    r = 0.0;
+                                  } else {
+                                    r = usrate[0];
+                                  }
 
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => socialHousePage(
-                                        title: houseInfo["title"],
-                                        id: "PZGBqfzO0TQeP3n9oLPc",
-                                        description: houseInfo["description"],
-                                        contact: houseInfo["contact"],
-                                        num_stars:
-                                            houseInfo["num_rating"].toString(),
-                                        user_rate: r.toString(),
-                                      )));
-                        },
-                        child: Stack(children: [
-                          Center(
-                              child: Container(
-                                  margin: EdgeInsets.symmetric(
-                                    horizontal: 10.0,
-                                    vertical: 20.0,
-                                  ),
-                                  height: 125.0,
-                                  width: 275.0,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black54,
-                                          offset: Offset(0.0, 4.0),
-                                          blurRadius: 10.0,
-                                        ),
-                                      ]),
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          color: Colors.white),
-                                      child: Row(children: [
-                                        Container(
-                                            height: 90.0,
-                                            width: 90.0,
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.only(
-                                                    bottomLeft:
-                                                        Radius.circular(10.0),
-                                                    topLeft:
-                                                        Radius.circular(10.0)),
-                                                image: DecorationImage(
-                                                    image: AssetImage(
-                                                        'assets/Phi Delta Theta.png')))),
-                                        SizedBox(width: 5.0),
-                                        Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                marker.infoWindow.title,
-                                                style: TextStyle(
-                                                    fontSize: 12.5,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Text(
-                                                "Click for more info",
-                                                style: TextStyle(
-                                                    fontSize: 12.0,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                            ])
-                                      ]))))
-                        ]))
-                    // child: Card(
-                    //   child: Padding(
-                    //     padding: EdgeInsets.all(8.0),
-                    //     child: Text(
-                    //       marker.infoWindow.title,
-                    //       style: TextStyle(
-                    //         fontSize: 18.0,
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    );
-              },
-            ),
-          ),
-        ),
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => socialHousePage(
+                                                title: houseInfo["title"],
+                                                id: "PZGBqfzO0TQeP3n9oLPc",
+                                                description:
+                                                    houseInfo["description"],
+                                                contact: houseInfo["contact"],
+                                                num_stars:
+                                                    houseInfo["num_rating"]
+                                                        .toString(),
+                                                user_rate: r.toString(),
+                                              )));
+                                },
+                                child: Stack(children: [
+                                  Center(
+                                      child: Container(
+                                          margin: EdgeInsets.symmetric(
+                                            horizontal: 10.0,
+                                            vertical: 20.0,
+                                          ),
+                                          height: 70.0,
+                                          width: 275.0,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.black54,
+                                                  offset: Offset(0.0, 4.0),
+                                                  blurRadius: 10.0,
+                                                ),
+                                              ]),
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                  color: Colors.white),
+                                              child: Row(children: [
+                                                Container(
+                                                    height: 90.0,
+                                                    width: 90.0,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                                bottomLeft: Radius
+                                                                    .circular(
+                                                                        10.0),
+                                                                topLeft: Radius
+                                                                    .circular(
+                                                                        10.0)),
+                                                        image: DecorationImage(
+                                                            image: AssetImage(
+                                                                'assets/Phi Delta Theta.png')))),
+                                                SizedBox(width: 5.0),
+                                                Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        marker.infoWindow.title,
+                                                        style: TextStyle(
+                                                            fontSize: 12.5,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      Text(
+                                                        "Click for more info",
+                                                        style: TextStyle(
+                                                            fontSize: 12.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
+                                                    ])
+                                              ]))))
+                                ]))
+                            // child: Card(
+                            //   child: Padding(
+                            //     padding: EdgeInsets.all(8.0),
+                            //     child: Text(
+                            //       marker.infoWindow.title,
+                            //       style: TextStyle(
+                            //         fontSize: 18.0,
+                            //         fontWeight: FontWeight.bold,
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
+                            ));
+                  },
+                ),
+              ),
+            )),
       ]),
     );
   }
