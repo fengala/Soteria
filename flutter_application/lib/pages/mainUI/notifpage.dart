@@ -208,22 +208,14 @@ class _NotifState extends State<Notif> {
         ),
         Spacer(),
         GestureDetector(
-          onTap: () {
-            print("Pressed Xmark");
+          onTap: () async {
             print("Pressed Cancel");
+
+            Future x = DatabaseService().removeNotif(widget.id);
+
             setState(() {
               _notifsFuture = getAllNotifs(widget.uid);
             });
-            // Navigator.push(context, MaterialPageRoute(
-            //     builder: (context) =>
-            //         tweetdetails(
-            //           title: widget.text,
-            //           description: widget.description,
-            //           pid: widget.id,
-            //           replies: replies,
-            //         ),
-            //   ),
-            // );
           },
           child: IconButton(
             icon: Icon(

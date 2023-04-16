@@ -513,8 +513,10 @@ class DatabaseService {
       'text': message,
       'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now()),
     });
-
   }
 
+  Future removeNotif(String nid) async {
+    return await notRef.doc(nid).delete();
+  }
 
 }
