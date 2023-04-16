@@ -2,9 +2,26 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_login_ui/services/auth.dart';
 import 'package:flutter_login_ui/services/database.dart';
 import 'place.dart';
+
+
+// Future<List<Place>> searchPlaces(int filterVal, String searchText) async {
+//   var query = await getAllPlaces(filterVal)
+//       .where('filter_val', isEqualTo: filterVal)
+//       .where('title', isGreaterThanOrEqualTo: searchText)
+//       .where('title', isLessThanOrEqualTo: searchText + '\uf8ff')
+//       .get();
+//
+//   var places = <Place>[];
+//   for (var doc in query.docs) {
+//     places.add(Place.fromMap(doc.data()));
+//   }
+//   return places;
+// }
+
 
 Future<List<Place>> getAllPlaces(int filter_val) async {
   List<Object> places = await DatabaseService().getPlaces() as List<Object>;

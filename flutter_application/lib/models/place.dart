@@ -15,6 +15,19 @@ class Place extends StatelessWidget {
   final String contact;
   final String acc;
 
+  // factory Place.fromMap(Map<String, dynamic> map) {
+  //   return Place(
+  //     id: map['id'],
+  //     title: map['title'],
+  //     description: map['description'],
+  //     contact: map["contact"],
+  //     rating: map["rating"],
+  //     user_rate: map["user_rate"],
+  //     // Other fields...
+  //   );
+  // }
+
+
   Place({
     Key key,
     @required this.name,
@@ -27,8 +40,9 @@ class Place extends StatelessWidget {
     @required this.ratio,
     @required this.acc,
     @required this.num_reviews,
-    @required this.user_rate,
+    @required this.user_rate, title,
   }) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {

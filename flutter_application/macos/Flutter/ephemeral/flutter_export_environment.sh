@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/maas/Downloads/flutter"
-export "FLUTTER_APPLICATION_PATH=/Users/maas/VSCodeProjects/Soteria/flutter_application"
+export "FLUTTER_ROOT=C:\Users\anike\Downloads\flutter_windows_3.3.10-stable\flutter"
+export "FLUTTER_APPLICATION_PATH=C:\Users\anike\AndroidStudioProjects\Soteria\flutter_application"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.0.0"
