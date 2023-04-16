@@ -494,8 +494,7 @@ class _BulletinBoardState extends State<BulletinBoardPage> {
                 child: Text(filter),
               ),
               if (index == ver_filter)
-                Icon(
-                    Icons.check), // Show a checkmark icon for the selected item
+                Icon(Icons.check), // Show a checkmark icon for the selected item
             ],
           ),
         );

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/pages/authentication/login.dart';
+import 'package:flutter_login_ui/pages/mainUI/petitionpage.dart';
 import 'package:flutter_login_ui/pages/mainUI/socialHouse.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 import 'package:google_maps_webservice/places.dart' as lund;
@@ -14,6 +15,7 @@ import '../../services/auth.dart';
 import '../../services/database.dart';
 import '../authentication/update.dart';
 import '../mainUI/placesPage.dart';
+import '../mainUI/notifpage.dart';
 import '../../models/user.dart';
 import 'package:location/location.dart';
 
@@ -212,6 +214,24 @@ class TePage extends State<TPage> {
               child: GestureDetector(
                 onTap: () {
                   try {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushReplacement(MaterialPageRoute(
+                        builder: (context) => NotifsPage()));
+                  } catch (e, stacktrace) {
+                    print(e);
+                    print(stacktrace);
+                  }
+                },
+                child: Icon(
+                  Icons.notifications,
+                  size: 26.0,
+                ),
+              )),
+          Padding(
+              padding: EdgeInsets.only(left: 30.0),
+              child: GestureDetector(
+                onTap: () {
+                  try {
                     this.userAuth.SignOut();
                     // Navigator.push(context,
                     //     MaterialPageRoute(builder: (context) => LoginPage()));
@@ -228,7 +248,7 @@ class TePage extends State<TPage> {
                 ),
               )),
           Padding(
-              padding: EdgeInsets.only(left: 10.0),
+              padding: EdgeInsets.only(left: 40.0),
               child: IconButton(
                 onPressed: () {
                   try {

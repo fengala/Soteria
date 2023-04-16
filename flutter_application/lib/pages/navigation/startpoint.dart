@@ -246,9 +246,9 @@ class _HomePageState extends State<HomePage> {
 
               if (status.isGranted) {
                 String val = await sendSMS(
-                        message: "This is an SOS message from your relation" +
+                        message: "This is an SOS message from your relation " +
                             myUser.name +
-                            " please respond",
+                            ". Please respond.",
                         recipients: emer,
                         sendDirect: true)
                     .catchError((onError) {
@@ -274,9 +274,9 @@ class _HomePageState extends State<HomePage> {
                   status = await Permission.contacts.request();
 
                   String val = await sendSMS(
-                          message: "This is an SOS message from your relation" +
+                          message: "This is an SOS message from your relation " +
                               myUser.name +
-                              " please respond",
+                              ". Please respond.",
                           recipients: emer,
                           sendDirect: true)
                       .catchError((onError) {
