@@ -191,6 +191,7 @@ class TePage extends State<TPage> {
               child: GestureDetector(
                 onTap: () {
                   try {
+                    Navigator.pop(this.context);
                     Navigator.of(context, rootNavigator: true)
                         .pushReplacement(MaterialPageRoute(
                             builder: (context) => UpdatePage(
@@ -215,6 +216,8 @@ class TePage extends State<TPage> {
                     this.userAuth.SignOut();
                     // Navigator.push(context,
                     //     MaterialPageRoute(builder: (context) => LoginPage()));
+                    Navigator.pop(this.context);
+
                     Navigator.of(context, rootNavigator: true).pushReplacement(
                         MaterialPageRoute(builder: (context) => LoginPage()));
                   } catch (e, stacktrace) {
@@ -241,6 +244,8 @@ class TePage extends State<TPage> {
                     //   context,
                     //   MaterialPageRoute(builder: (context) => PlacesPage()),
                     // );
+                    Navigator.pop(this.context);
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MapSample()),
@@ -371,6 +376,7 @@ class TePage extends State<TPage> {
                                   } else {
                                     r = usrate[0];
                                   }
+                                  Navigator.pop(this.context);
 
                                   Navigator.push(
                                       context,

@@ -67,6 +67,7 @@ class _HomePageState extends State<HomePage> {
     List val = List.from(list);
     int count = 0;
     bool no = false;
+    bool flag = true;
 
     int len = val.length;
     int num = 0;
