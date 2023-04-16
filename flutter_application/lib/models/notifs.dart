@@ -4,10 +4,10 @@ import 'package:flutter_login_ui/services/database.dart';
 import '../services/auth.dart';
 import '../pages/mainUI/notifpage.dart';
 
-var notifs = getAllNotifs();
+//var notifs = getAllNotifs(String uid);
 
-Future<List<Notif>> getAllNotifs() async {
-  List<Object> notifs = await DatabaseService().getNotifs() as List<Object>;
+Future<List<Notif>> getAllNotifs(String uid) async {
+  List<Object> notifs = await DatabaseService().getNotifs(uid) as List<Object>;
   var length = notifs.length;
   List<Notif> noti = [];
 

@@ -485,8 +485,9 @@ class DatabaseService {
    * NOTIFICATIONS
    */
 
-  Future getNotifs() async {
-    QuerySnapshot querySnapshot = await notRef.get();
+  Future getNotifs(String uid) async {
+    QuerySnapshot querySnapshot = await
+                        notRef.where("uid", isEqualTo: uid).get();
     final Data = querySnapshot.docs.map((doc) {
       final data = doc.data() as Map<String, dynamic>;
       final id = doc.id;
@@ -494,8 +495,6 @@ class DatabaseService {
     }).toList();
     return Data;
   }
-
-
 
 
 

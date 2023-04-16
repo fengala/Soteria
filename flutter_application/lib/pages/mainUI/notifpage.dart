@@ -38,6 +38,10 @@ class NotifsPage extends StatefulWidget {
 class _NotifPageState extends State<NotifsPage> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
+
+  var user_id = FirebaseAuth.instance.currentUser.uid;
+  //var user_details = await DatabaseService().getUser(user_fir.uid);
+
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   Stream<QuerySnapshot<Map<String, dynamic>>> notifsStream() {
     return firestore.collection('Notifications').snapshots();
@@ -46,7 +50,8 @@ class _NotifPageState extends State<NotifsPage> {
   @override
   void initState() {
     super.initState();
-    _notifsFuture = getAllNotifs();
+    print(user_id);
+    _notifsFuture = getAllNotifs(user_id);
     notifsStream().listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
       // Trigger an automatic update
       initNotifsFuture();
@@ -55,7 +60,7 @@ class _NotifPageState extends State<NotifsPage> {
 
   void initNotifsFuture() {
     setState(() {
-      _notifsFuture = getAllNotifs();
+      _notifsFuture = getAllNotifs(user_id);
     });
   }
 
@@ -90,7 +95,7 @@ class _NotifPageState extends State<NotifsPage> {
             icon: Icon(Icons.refresh),
             onPressed: () async {
               setState(() {
-                _notifsFuture = getAllNotifs();
+                _notifsFuture = getAllNotifs(user_id);
               });
             },
           ),
@@ -99,7 +104,7 @@ class _NotifPageState extends State<NotifsPage> {
       body: RefreshIndicator(
         onRefresh: () async {
           setState(() {
-            _notifsFuture = getAllNotifs();
+            _notifsFuture = getAllNotifs(user_id);
           });
         },
         child: notificationsList(),
@@ -109,7 +114,7 @@ class _NotifPageState extends State<NotifsPage> {
 
   Widget notificationsList() {
     return FutureBuilder(
-      future: getAllNotifs(),
+      future: getAllNotifs(user_id),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<dynamic> notifs = snapshot.data;
@@ -207,7 +212,7 @@ class _NotifState extends State<Notif> {
             print("Pressed Xmark");
             print("Pressed Cancel");
             setState(() {
-              _notifsFuture = getAllNotifs();
+              _notifsFuture = getAllNotifs(widget.username);
             });
             // Navigator.push(context, MaterialPageRoute(
             //     builder: (context) =>
@@ -268,7 +273,7 @@ class _NotifState extends State<Notif> {
           onPressed: () {
             print("Pressed Cancel");
             setState(() {
-              _notifsFuture = getAllNotifs();
+              _notifsFuture = getAllNotifs(widget.username);
             });
           },
           iconSize: 16.0,
