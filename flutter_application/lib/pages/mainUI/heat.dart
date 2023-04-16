@@ -106,80 +106,6 @@ class MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: _kGooglePlex,
-        heatmaps: _heatmaps,
-        markers: _buildMarkers(), // Added
-        onTap: _addPin,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),
-    int page = 1;
-    var markers = Set<Marker>.of([
-      Marker(
-        markerId: MarkerId('marker_1'),
-        position: LatLng(40.424, -86.929),
-        infoWindow: InfoWindow(
-          title: 'Phi Kappa',
-          snippet: 'PZGBqfzO0TQeP3n9oLPc',
-        ),
-      ),
-      Marker(
-        markerId: MarkerId('marker_2'),
-        position: LatLng(40.427, -86.916),
-        infoWindow: InfoWindow(
-          title: 'Alpha Alpha Alpha',
-          snippet: 'RyMwQOgO2lQBjIBCkvjI',
-        ),
-      ),
-      Marker(
-        markerId: MarkerId('marker_3'),
-        position: LatLng(40.426, -86.914),
-        infoWindow: InfoWindow(
-          title: 'Omega Delta Kappa',
-          snippet: 'vaUr8Utq4mEZR0GhqzVs',
-        ),
-      ),
-      Marker(
-        markerId: MarkerId('marker_4'),
-        position: LatLng(40.4230716, -86.9199115),
-        infoWindow: InfoWindow(
-          title: 'Triangle frat',
-          snippet: 'xUzgjY781qshdk1qQN3Z',
-        ),
-      ),
-      Marker(
-        markerId: MarkerId('marker_4'),
-        position: LatLng(40.4284818, -86.9876795),
-        infoWindow: InfoWindow(
-          title: 'Chi Omega',
-          snippet: 'xUzgjY781qshdk1qQN3Z',
-        ),
-      ),
-      Marker(
-        markerId: MarkerId('marker_4'),
-        position: LatLng(40.4295616, -86.989587),
-        infoWindow: InfoWindow(
-          title: 'Alpha Tau Omega',
-          snippet: 'xUzgjY781qshdk1qQN3Z',
-        ),
-      ),
-      if (_currentLocation != null)
-        Marker(
-          markerId: MarkerId('marker_5'),
-          position:
-              LatLng(_currentLocation.latitude, _currentLocation.longitude),
-          icon:
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-          infoWindow: InfoWindow(
-            title: 'Your Location',
-            snippet: 'xUzgjY781qshdk1qQN3Z',
-          ),
-        ),
-    ]);
     return new Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -323,15 +249,18 @@ class MapSampleState extends State<MapSample> {
         Padding(
           padding: EdgeInsets.only(bottom: 0.0),
           child: GoogleMap(
-            mapType: MapType.hybrid,
+            mapType: MapType.normal,
             initialCameraPosition: CameraPosition(
               target: LatLng(40.424, -86.929),
               zoom: 13,
             ),
             heatmaps: _heatmaps,
+            markers: _buildMarkers(),
+            onTap: _addPin,
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
             },
+            myLocationEnabled: true,
           ),
         ),
         Align(
