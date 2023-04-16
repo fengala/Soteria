@@ -11,9 +11,11 @@ class DatabaseService {
   final String pid;
   final String eid;
   final String vid;
+  final String nid;
+
   var safe_counts;
   // var safe_places
-  DatabaseService({this.uid, this.pid, this.eid, this.vid});
+  DatabaseService({this.uid, this.pid, this.eid, this.vid, this.nid});
 
   final CollectionReference userRef =
       FirebaseFirestore.instance.collection("users");
@@ -25,6 +27,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection("SocialHouse");
   final CollectionReference revRef =
       FirebaseFirestore.instance.collection("reviews");
+  final CollectionReference notRef =
+    FirebaseFirestore.instance.collection("notifications");
 
   /**
    * USER
@@ -476,4 +480,22 @@ class DatabaseService {
 
     return Data;
   }
+
+  /**
+   * NOTIFICATIONS
+   */
+
+  Future getNotifs(String uid) async {
+    QuerySnapshot querySnapshot = await
+                        notRef.where("uid", isEqualTo: uid).get();
+    final Data = querySnapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      final id = doc.id;
+      return {...data, 'id': id};
+    }).toList();
+    return Data;
+  }
+
+
+
 }

@@ -35,7 +35,7 @@ class _ResourcesPageState extends State<ResourcesPage> {
           margin: const EdgeInsets.all(10.0),
         ),
         title: Text(
-          'Resources Page',
+          'Additional Resources',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,

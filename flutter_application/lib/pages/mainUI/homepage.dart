@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/pages/authentication/login.dart';
+import 'package:flutter_login_ui/pages/mainUI/petitionpage.dart';
 import 'package:flutter_login_ui/pages/mainUI/socialHouse.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 import 'package:google_maps_webservice/places.dart' as lund;
@@ -14,6 +15,7 @@ import '../../services/auth.dart';
 import '../../services/database.dart';
 import '../authentication/update.dart';
 import '../mainUI/placesPage.dart';
+import '../mainUI/notifpage.dart';
 import '../../models/user.dart';
 import 'package:location/location.dart';
 
@@ -213,6 +215,23 @@ class TePage extends State<TPage> {
               child: GestureDetector(
                 onTap: () {
                   try {
+                    Navigator.of(context, rootNavigator: true).pushReplacement(
+                        MaterialPageRoute(builder: (context) => NotifsPage()));
+                  } catch (e, stacktrace) {
+                    print(e);
+                    print(stacktrace);
+                  }
+                },
+                child: Icon(
+                  Icons.notifications,
+                  size: 26.0,
+                ),
+              )),
+          Padding(
+              padding: EdgeInsets.only(left: 30.0),
+              child: GestureDetector(
+                onTap: () {
+                  try {
                     this.userAuth.SignOut();
                     // Navigator.push(context,
                     //     MaterialPageRoute(builder: (context) => LoginPage()));
@@ -231,7 +250,7 @@ class TePage extends State<TPage> {
                 ),
               )),
           Padding(
-              padding: EdgeInsets.only(left: 10.0),
+              padding: EdgeInsets.only(left: 40.0),
               child: IconButton(
                 onPressed: () {
                   try {
@@ -248,8 +267,13 @@ class TePage extends State<TPage> {
 
                     Navigator.push(
                       context,
+                      MaterialPageRoute(builder: (context) => PlacesPage()),
+                    );
+                    /*Navigator.push(
+                      context,
                       MaterialPageRoute(builder: (context) => MapSample()),
                     );
+                        */
                   } catch (e, stacktrace) {
                     print(e);
                     print(stacktrace);
@@ -316,7 +340,7 @@ class TePage extends State<TPage> {
       ),
       body: Stack(children: [
         Padding(
-          padding: EdgeInsets.only(bottom: 70.0),
+          padding: EdgeInsets.only(bottom: 0.0),
           child: GoogleMap(
               onMapCreated: (controller) {
                 setState(() {
@@ -336,6 +360,21 @@ class TePage extends State<TPage> {
                   onTap: () => _onMarkerTapped(marker.markerId),
                 );
               }))),
+        ),
+        Align(
+          alignment:
+              Alignment.lerp(Alignment.topLeft, Alignment.centerLeft, 0.05),
+          child: FloatingActionButton.extended(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MapSample()),
+              );
+            },
+            label: Text('HeatMap'),
+            icon: Icon(Icons.map),
+            backgroundColor: Colors.amber,
+          ),
         ),
         Positioned(
             bottom: 70.0,
