@@ -496,6 +496,25 @@ class DatabaseService {
     return Data;
   }
 
+  Future addNotif(String rid) async {
+    final value = await revRef.doc(rid).get();
+    final data = value.data() as Map<String, dynamic>;
+    String usid = data["userId"];
+    String socialHouseId = data["ownerSocialHouse"];
+
+    final valueven = await venRef.doc(socialHouseId).get();
+    final dataven = valueven.data() as Map<String, dynamic>;
+    String name = dataven["title"];
+
+    String message = "You have a new reply to your review of the venue $name";
+
+    return await FirebaseFirestore.instance.collection("notifications").doc().set({
+      'uid': usid,
+      'text': message,
+      'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now()),
+    });
+
+  }
 
 
 }

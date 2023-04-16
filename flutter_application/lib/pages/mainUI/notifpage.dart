@@ -142,14 +142,14 @@ class _NotifPageState extends State<NotifsPage> {
 }
 
 class Notif extends StatefulWidget {
-  final String username;
+  final String uid;
   final String text;
   final String time;
   final String id;
 
   Notif({
     Key key,
-    @required this.username,
+    @required this.uid,
     @required this.text,
     @required this.time,
     @required this.id,
@@ -212,7 +212,7 @@ class _NotifState extends State<Notif> {
             print("Pressed Xmark");
             print("Pressed Cancel");
             setState(() {
-              _notifsFuture = getAllNotifs(widget.username);
+              _notifsFuture = getAllNotifs(widget.uid);
             });
             // Navigator.push(context, MaterialPageRoute(
             //     builder: (context) =>
@@ -273,7 +273,7 @@ class _NotifState extends State<Notif> {
           onPressed: () {
             print("Pressed Cancel");
             setState(() {
-              _notifsFuture = getAllNotifs(widget.username);
+              _notifsFuture = getAllNotifs(widget.uid);
             });
           },
           iconSize: 16.0,

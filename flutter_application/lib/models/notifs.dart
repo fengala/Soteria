@@ -14,13 +14,13 @@ Future<List<Notif>> getAllNotifs(String uid) async {
   for (var i = 0; i < length; i++) {
     String jsonString = jsonEncode(notifs[i]);
     Map<String, dynamic> jsonMap = jsonDecode(jsonString);
-    String name = jsonMap['username'];
+    String usid = jsonMap['uid'];
     String text = jsonMap['text'];
     String time = jsonMap['time'];
     String id = jsonMap['id'];
 
     noti.add(Notif(
-      username: name,
+      uid: usid,
       text: text,
       time: time,
       id: id,

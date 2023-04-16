@@ -193,6 +193,9 @@ class _eventDetailsPageState extends State<reviewdetails> {
                                 // var eve = await DatabaseService()
                                 //     .addReplyToAReview(widget.eid, user['name'],
                                 //         myController2.text);
+                                var not = await DatabaseService().addNotif(
+                                          widget.eid);
+
                                 if (user['anon']) {
                                   var eve = await DatabaseService()
                                       .addReplyToAReview(widget.eid,
@@ -217,51 +220,6 @@ class _eventDetailsPageState extends State<reviewdetails> {
       ),
     );
   }
-
-  // Widget replyList() {
-  //   return FutureBuilder(
-  //     future: getAllRepliesRev(widget.eid),
-  //     builder: (context, snapshot) {
-  //       if (snapshot.hasData) {
-  //         List<dynamic> replies = snapshot.data;
-  //         return Container(
-  //           height: 300, // set a fixed height for the container
-  //           color: Colors.white,
-  //           child: ListView.separated(
-  //             shrinkWrap: true, // set shrinkWrap to true
-  //             // padding: EdgeInsets.only(top: 10, bottom: 10),
-  //             padding: const EdgeInsets.only(bottom: 150.0),
-  //             itemBuilder: (BuildContext context, int index) {
-  //               return Container(
-  //                 padding:
-  //                     EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
-  //                 child: Align(
-  //                   alignment: Alignment.topRight,
-  //                   child: Container(
-  //                     decoration: BoxDecoration(
-  //                       borderRadius: BorderRadius.circular(20),
-  //                       color: Colors.amber[200],
-  //                     ),
-  //                     padding: EdgeInsets.all(16),
-  //                     child: replies[index],
-  //                   ),
-  //                 ),
-  //               );
-  //             },
-  //             separatorBuilder: (BuildContext context, int index) => Divider(
-  //               height: 0,
-  //             ),
-  //             itemCount: replies.length,
-  //           ),
-  //         );
-  //       } else if (snapshot.hasError) {
-  //         return Center(child: Text('Error fetching replies'));
-  //       } else {
-  //         return Center(child: CircularProgressIndicator());
-  //       }
-  //     },
-  //   );
-  // }
 
   Widget replyList() {
     return FutureBuilder(
