@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
   var safe_spots;
   var safe_count;
   var real_time_updating;
+  var real_time_;
   void setUser(var User) {
     this.myUser = User;
   }
