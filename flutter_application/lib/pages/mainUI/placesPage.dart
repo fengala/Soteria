@@ -88,83 +88,73 @@ class _PlacesPageState extends State<PlacesPage> {
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          setState(() {
-            _placessFuture = getAllPlaces(filter_val);
-          });
-        },
-        child: placesList(),
-      ),
-    );
-  }
-
-  Widget placesList() {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            controller: _searchController,
-            decoration: InputDecoration(
-              labelText: "Search",
-              hintText: "Search",
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(25.0),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                labelText: "Search",
+                hintText: "Search",
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(25.0),
+                  ),
                 ),
               ),
-            ),
-            onChanged: (value) {
-              setState(() {
-                _searchText = value;
-              });
-            },
-          ),
-        ),
-        Expanded(
-          child: Container(
-            color: Colors.white,
-            child: FutureBuilder(
-              future: getAllPlaces(filter_val),
-              builder: (context, snapshot) {
-    if (snapshot.hasData) {
-      List<dynamic> places = snapshot.data;
-      List<dynamic> filteredPlaces = [];
-      if (places.isNotEmpty) { // check if the list is not empty
-        for (int i = 0; i < places.length; i++) {
-          print(places[i].name);
-          if (places[i].name.toString().toLowerCase().contains(_searchText.toLowerCase())) {
-            filteredPlaces.add(places[i]);
-          }
-        }
-      }
-      // use filteredPlaces instead of places
-
-    return ListView.separated(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index) {
-                      return filteredPlaces[index];
-                    },
-                    separatorBuilder:
-                        (BuildContext context, int index) => Divider(
-                      height: 40,
-                    ),
-                    itemCount: filteredPlaces.length,
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                      child: Text('Error fetching places'));
-                } else {
-                  return Center(child: CircularProgressIndicator());
-                }
+              onChanged: (value) {
+                setState(() {
+                  _searchText = value;
+                });
               },
             ),
           ),
-        ),
-      ],
+          Flexible(
+            child: Container(
+              color: Colors.white,
+              child: FutureBuilder(
+                future: getAllPlaces(filter_val),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<dynamic> places = snapshot.data;
+                    List<dynamic> filteredPlaces = [];
+                    if (places.isNotEmpty) { // check if the list is not empty
+                      for (int i = 0; i < places.length; i++) {
+                        print(places[i].name);
+                        if (places[i].name.toString().toLowerCase().contains(_searchText.toLowerCase())) {
+                          filteredPlaces.add(places[i]);
+                        }
+                      }
+                    }
+                    // use filteredPlaces instead of places
+
+                    return ListView.separated(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, int index) {
+                        return filteredPlaces[index];
+                      },
+                      separatorBuilder:
+                          (BuildContext context, int index) => Divider(
+                        height: 40,
+                      ),
+                      itemCount: filteredPlaces.length,
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                        child: Text('Error fetching places'));
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+      resizeToAvoidBottomInset: true,
     );
   }
 

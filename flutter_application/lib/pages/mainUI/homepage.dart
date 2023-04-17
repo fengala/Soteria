@@ -5,7 +5,7 @@ import 'package:flutter_login_ui/pages/authentication/login.dart';
 import 'package:flutter_login_ui/pages/mainUI/petitionpage.dart';
 import 'package:flutter_login_ui/pages/mainUI/socialHouse.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
-import 'package:google_maps_webservice/places.dart' as lund;
+import 'package:google_maps_webservice/places.dart' as refVar;
 import '';
 //import 'package:google_maps_webservice/directions.dart';
 //import 'package:google_maps_webservice/places.dart';
@@ -289,7 +289,7 @@ class TePage extends State<TPage> {
                     mode: Mode.overlay,
                     types: [],
                     strictbounds: false,
-                    components: [lund.Component(lund.Component.country, 'us')],
+                    components: [refVar.Component(refVar.Component.country, 'us')],
                     //google_map_webservice package
                     onError: (err) {
                       print(err);
@@ -301,7 +301,7 @@ class TePage extends State<TPage> {
                   });
 
                   //form google_maps_webservice package
-                  final plist = lund.GoogleMapsPlaces(
+                  final plist = refVar.GoogleMapsPlaces(
                     apiKey: googleApikey,
                     apiHeaders: await GoogleApiHeaders().getHeaders(),
                     //from google_api_headers package
