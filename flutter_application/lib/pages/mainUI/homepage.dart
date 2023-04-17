@@ -263,7 +263,7 @@ class TePage extends State<TPage> {
                     //   context,
                     //   MaterialPageRoute(builder: (context) => PlacesPage()),
                     // );
-                    Navigator.pop(this.context);
+                    // Navigator.pop(this.context);
 
                     Navigator.push(
                       context,

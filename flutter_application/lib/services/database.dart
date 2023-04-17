@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_login_ui/models/user.dart';
 import 'package:flutter_login_ui/services/auth.dart';
+import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 
 import 'package:intl/intl.dart';
 
@@ -27,8 +28,10 @@ class DatabaseService {
       FirebaseFirestore.instance.collection("SocialHouse");
   final CollectionReference revRef =
       FirebaseFirestore.instance.collection("reviews");
+  final CollectionReference heat =
+      FirebaseFirestore.instance.collection("heatMap");
   final CollectionReference notRef =
-    FirebaseFirestore.instance.collection("notifications");
+      FirebaseFirestore.instance.collection("notifications");
 
   /**
    * USER
@@ -482,12 +485,44 @@ class DatabaseService {
   }
 
   /**
+   *  HEAT MAP DATA
+   */
+
+  Future getHeatMapData() async {
+    final value = await heat
+        .orderBy(FieldPath.documentId)
+        .limit(1)
+        .get()
+        .then((querySnapshot) => querySnapshot.docs.first);
+
+    final data = value.data() as Map<String, dynamic>;
+    return data;
+  }
+
+  Future addHeatMapData(LatLng location) async {
+    final value1 = await heat
+        .orderBy(FieldPath.documentId)
+        .limit(1)
+        .get()
+        .then((querySnapshot) => querySnapshot.docs.first);
+
+    String id = value1.id;
+    final value = value1.data() as Map<String, dynamic>;
+    final list = List<GeoPoint>.from(value['Locations']);
+
+    GeoPoint map = new GeoPoint(location.latitude, location.longitude);
+    list.add(map);
+
+    await heat.doc(id).update({'Locations': list});
+  }
+
+  /**
    * NOTIFICATIONS
    */
 
   Future getNotifs(String uid) async {
-    QuerySnapshot querySnapshot = await
-                        notRef.where("uid", isEqualTo: uid).get();
+    QuerySnapshot querySnapshot =
+        await notRef.where("uid", isEqualTo: uid).get();
     final Data = querySnapshot.docs.map((doc) {
       final data = doc.data() as Map<String, dynamic>;
       final id = doc.id;
@@ -508,7 +543,10 @@ class DatabaseService {
 
     String message = "You have a new reply to your review of the venue $name";
 
-    return await FirebaseFirestore.instance.collection("notifications").doc().set({
+    return await FirebaseFirestore.instance
+        .collection("notifications")
+        .doc()
+        .set({
       'uid': usid,
       'text': message,
       'time': DateFormat('MM/dd/yyyy hh:mm a').format(DateTime.now()),
@@ -518,5 +556,4 @@ class DatabaseService {
   Future removeNotif(String nid) async {
     return await notRef.doc(nid).delete();
   }
-
 }

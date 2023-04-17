@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/pages/mainUI/bulletinboard.dart';
 import 'package:pandabar/pandabar.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 import '../authentication/login.dart';
 import '../mainUI/homepage.dart';
 import '../mainUI/petitionpage.dart';
 import '../mainUI/resourcepage.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:permission_handler/permission_handler.dart' as perm;
+//import 'package:google_maps_webservice/places.dart' as lund;
+import 'package:location/location.dart';
+import '../../services/database.dart';
+
 import 'package:flutter_sms/flutter_sms.dart';
 
 class HomeP extends StatelessWidget {
@@ -45,6 +49,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
+  Location _location = Location();
+  LatLng _currentLocation;
   int page = 0;
   int _currentIndex = 0;
   var myUser;
@@ -57,6 +63,22 @@ class _HomePageState extends State<HomePage> {
     ResourcesPage(),
     //TP()
   ];
+
+  Future<void> _getUserLocation() async {
+    try {
+      var userLocation = await _location.getLocation();
+      setState(() {
+        _currentLocation =
+            LatLng(userLocation.latitude, userLocation.longitude);
+      });
+    } catch (e) {
+      print('Could not get the user\'s location: $e');
+      // show a snackbar or dialog to inform the user about the error
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Could not get the user\'s location: $e'),
+      ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -234,6 +256,9 @@ class _HomePageState extends State<HomePage> {
             ),
             onPressed: () async {
               final map = Map<String, dynamic>();
+              await _getUserLocation();
+
+              await DatabaseService().addHeatMapData(_currentLocation);
 
               map['emergency'] = list;
 
@@ -241,7 +266,7 @@ class _HomePageState extends State<HomePage> {
                   ?.map((item) => item as String)
                   ?.toList();
 
-              PermissionStatus status;
+              perm.PermissionStatus status;
 
               status = await Permission.sms.request();
 
@@ -270,14 +295,15 @@ class _HomePageState extends State<HomePage> {
                         child: Text("Successfully sent message!"))));
               } else if (status.isPermanentlyDenied) {
                 if (Platform.isIOS) {
-                  PermissionStatus status;
+                  perm.PermissionStatus status;
 
                   status = await Permission.contacts.request();
 
                   String val = await sendSMS(
-                          message: "This is an SOS message from your relation " +
-                              myUser.name +
-                              ". Please respond.",
+                          message:
+                              "This is an SOS message from your relation " +
+                                  myUser.name +
+                                  ". Please respond.",
                           recipients: emer,
                           sendDirect: true)
                       .catchError((onError) {

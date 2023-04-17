@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/pages/mainUI/homepage.dart';
@@ -10,7 +11,9 @@ import 'package:flutter_login_ui/pages/authentication/login.dart';
 import 'package:flutter_login_ui/pages/mainUI/socialHouse.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 import 'package:google_maps_webservice/places.dart' as lund;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '';
+import '../../services/database.dart';
 //import 'package:google_maps_webservice/directions.dart';
 //import 'package:google_maps_webservice/places.dart';
 
@@ -90,6 +93,13 @@ class MapSampleState extends State<MapSample> {
   var userAuth;
   MapSampleState({this.myUser, this.userAuth});
 
+  Future<List<dynamic>> pins_future;
+
+  Future<List<dynamic>> getAllpoints() async {
+    var value = await DatabaseService().getHeatMapData();
+    return value['Locations'];
+  }
+
   Future<void> _getUserLocation() async {
     try {
       var userLocation = await _location.getLocation();
@@ -104,6 +114,39 @@ class MapSampleState extends State<MapSample> {
         content: Text('Could not get the user\'s location: $e'),
       ));
     }
+  }
+
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  Stream<QuerySnapshot<Map<String, dynamic>>> petitionsStream() {
+    return firestore.collection('heatMap').snapshots();
+  }
+
+  @override
+  void initPetitions() {
+    print(_pins.length);
+
+    setState(() {
+      pins_future.then((list) {
+        for (int i = 0; i < list.length; i++) {
+          _pins.add(
+              _createWeightedLatLng(list[i].latitude, list[i].longitude, 1));
+
+          print(_pins.length);
+        }
+        _heatmaps.clear();
+        _heatmaps.add(_createHeatmap());
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    pins_future = getAllpoints();
+    petitionsStream().listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
+      // Trigger an automatic update
+      initPetitions();
+    });
   }
 
   @override
@@ -270,7 +313,7 @@ class MapSampleState extends State<MapSample> {
               Alignment.lerp(Alignment.topLeft, Alignment.centerLeft, 0.05),
           child: FloatingActionButton.extended(
             onPressed: () {
-              Navigator.pop(this.context);
+              //  Navigator.pop(this.context);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => TPage()),
@@ -379,13 +422,14 @@ class MapSampleState extends State<MapSample> {
             ),
             TextButton(
               child: Text("Drop Pin"),
-              onPressed: () {
+              onPressed: () async {
                 setState(() {
                   _pins.add(_createWeightedLatLng(
                       latLng.latitude, latLng.longitude, 1));
                   _heatmaps.clear();
                   _heatmaps.add(_createHeatmap());
                 });
+                await DatabaseService().addHeatMapData(latLng);
                 Navigator.of(context).pop();
               },
             ),
