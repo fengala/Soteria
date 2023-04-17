@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
   var safe_count;
   var real_time_updating;
   var real_time_;
+  var search_UI;
   void setUser(var User) {
     this.myUser = User;
   }
