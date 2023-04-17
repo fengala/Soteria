@@ -56,6 +56,7 @@ class _PlacesPageState extends State<PlacesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 1,
         backgroundColor: Colors.amber,
@@ -154,7 +155,7 @@ class _PlacesPageState extends State<PlacesPage> {
           ),
         ],
       ),
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
     );
   }
 
