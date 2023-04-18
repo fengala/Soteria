@@ -123,17 +123,16 @@ class MapSampleState extends State<MapSample> {
 
   @override
   void initPetitions() {
-    print(_pins.length);
+    pins_future = getAllpoints();
 
     setState(() {
       pins_future.then((list) {
         for (int i = 0; i < list.length; i++) {
           _pins.add(
               _createWeightedLatLng(list[i].latitude, list[i].longitude, 1));
-
-          print(_pins.length);
         }
         _heatmaps.clear();
+
         _heatmaps.add(_createHeatmap());
       });
     });
@@ -143,14 +142,25 @@ class MapSampleState extends State<MapSample> {
   void initState() {
     super.initState();
     pins_future = getAllpoints();
-    petitionsStream().listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
-      // Trigger an automatic update
-      initPetitions();
-    });
+    // print(pins_future.then((list) {
+    //   print("This is the initial length");
+    //   print(list.length);
+    // }));
+
+    //   _heatmaps.add(_createHeatmap());
+
+    // petitionsStream().listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
+    //   // Trigger an automatic update
+    //   initPetitions();
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
+    petitionsStream().listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
+      // Trigger an automatic update
+      initPetitions();
+    });
     return new Scaffold(
       appBar: AppBar(
         elevation: 1,
