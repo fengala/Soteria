@@ -123,18 +123,20 @@ class MapSampleState extends State<MapSample> {
 
   @override
   void initPetitions() {
-    pins_future = getAllpoints();
+    pins_future.then((list) {
+      for (int i = 0; i < list.length; i++) {
+        _pins
+            .add(_createWeightedLatLng(list[i].latitude, list[i].longitude, 1));
+      }
+      _heatmaps.clear();
 
+      _heatmaps.add(_createHeatmap());
+    });
+  }
+
+  void initPetitions2() {
     setState(() {
-      pins_future.then((list) {
-        for (int i = 0; i < list.length; i++) {
-          _pins.add(
-              _createWeightedLatLng(list[i].latitude, list[i].longitude, 1));
-        }
-        _heatmaps.clear();
-
-        _heatmaps.add(_createHeatmap());
-      });
+      pins_future = getAllpoints();
     });
   }
 
@@ -149,18 +151,19 @@ class MapSampleState extends State<MapSample> {
 
     //   _heatmaps.add(_createHeatmap());
 
-    // petitionsStream().listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
-    //   // Trigger an automatic update
-    //   initPetitions();
-    // });
+    petitionsStream().listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
+      // Trigger an automatic update
+      initPetitions2();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    petitionsStream().listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
-      // Trigger an automatic update
-      initPetitions();
-    });
+    // petitionsStream().listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
+    //   // Trigger an automatic update
+    //   initPetitions();
+    // });
+    initPetitions();
     return new Scaffold(
       appBar: AppBar(
         elevation: 1,
