@@ -149,25 +149,25 @@ class TePage extends State<TPage> {
         ),
       ),
       Marker(
-        markerId: MarkerId('marker_4'),
+        markerId: MarkerId('marker_5'),
         position: LatLng(40.42300892698927, -86.91172201817966),
         infoWindow: InfoWindow(
           title: 'Compliance Frat',
-          snippet: 'xUzgjY781qshdk1qQN3Z',
+          snippet: 'Rxh4I3iQ8d67AvRzyRmq',
         ),
       ),
-      if (_currentLocation != null)
-        Marker(
-          markerId: MarkerId('marker_5'),
-          position:
-          LatLng(_currentLocation.latitude, _currentLocation.longitude),
-          icon:
-          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-          infoWindow: InfoWindow(
-            title: 'Your Location',
-            snippet: 'xUzgjY781qshdk1qQN3Z',
-          ),
-        ),
+      // if (_currentLocation != null)
+      //   Marker(
+      //     markerId: MarkerId('marker_5'),
+      //     position:
+      //     LatLng(_currentLocation.latitude, _currentLocation.longitude),
+      //     icon:
+      //     BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+      //     infoWindow: InfoWindow(
+      //       title: 'Your Location',
+      //       snippet: 'xUzgjY781qshdk1qQN3Z',
+      //     ),
+      //   ),
     ]);
     return Scaffold(
       appBar: AppBar(
@@ -192,10 +192,10 @@ class TePage extends State<TPage> {
                     Navigator.pop(this.context);
                     Navigator.of(context, rootNavigator: true)
                         .pushReplacement(MaterialPageRoute(
-                        builder: (context) => UpdatePage(
-                          myUser: this.myUser,
-                          userAuth: this.userAuth,
-                        )));
+                            builder: (context) => UpdatePage(
+                                  myUser: this.myUser,
+                                  userAuth: this.userAuth,
+                                )));
                   } catch (e, stacktrace) {
                     print(e);
                     print(stacktrace);
@@ -211,11 +211,12 @@ class TePage extends State<TPage> {
               child: GestureDetector(
                 onTap: () {
                   try {
-                    Navigator.of(context, rootNavigator: true).pushReplacement(
-                        MaterialPageRoute(builder: (context) => NotifsPage(
-                          myUser: this.myUser,
-                          userAuth: this.userAuth,
-                        )));
+                    Navigator.of(context, rootNavigator: true)
+                        .pushReplacement(MaterialPageRoute(
+                            builder: (context) => NotifsPage(
+                                  myUser: this.myUser,
+                                  userAuth: this.userAuth,
+                                )));
                   } catch (e, stacktrace) {
                     print(e);
                     print(stacktrace);
@@ -288,7 +289,9 @@ class TePage extends State<TPage> {
                     mode: Mode.overlay,
                     types: [],
                     strictbounds: false,
-                    components: [refVar.Component(refVar.Component.country, 'us')],
+                    components: [
+                      refVar.Component(refVar.Component.country, 'us')
+                    ],
                     //google_map_webservice package
                     onError: (err) {
                       print(err);
@@ -362,13 +365,16 @@ class TePage extends State<TPage> {
         ),
         Align(
           alignment:
-          Alignment.lerp(Alignment.topLeft, Alignment.centerLeft, 0.05),
+              Alignment.lerp(Alignment.topLeft, Alignment.centerLeft, 0.05),
           child: FloatingActionButton.extended(
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MapSample(myUser: this.myUser,
-                                                                  userAuth: this.userAuth,)),
+                MaterialPageRoute(
+                    builder: (context) => MapSample(
+                          myUser: this.myUser,
+                          userAuth: this.userAuth,
+                        )),
               );
             },
             label: Text('HeatMap'),
@@ -382,142 +388,152 @@ class TePage extends State<TPage> {
             right: 0.0,
             child: Visibility(
               visible: _selectedMarkerId != null,
-              child: Container(
-                height: 125.0,
-                child: ListView.builder(
-                  //...
-                  itemBuilder: (BuildContext context, int index) {
-                    Marker marker = markers.elementAt(index);
-                    return Visibility(
-                        visible: marker.markerId == _selectedMarkerId,
-                        child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: InkWell(
-                                onTap: () async {
-                                  mapController.animateCamera(
-                                      CameraUpdate.newCameraPosition(
-                                          CameraPosition(
-                                            target: marker.position,
-                                            // zoom: 15.0,
-                                            // bearing: 45.0,
-                                            // tilt: 45.0
-                                          )));
-                                  var houseInfo = await DatabaseService()
-                                      .getVenue(marker.infoWindow.snippet);
-                                  String userId = UserAuth.auth.currentUser.uid;
-                                  List<num> usrate = await DatabaseService()
-                                      .getUserRating(
-                                      marker.infoWindow.snippet, userId)
-                                  as List<Object>;
-                                  num r;
-                                  if (usrate.isEmpty) {
-                                    r = 0.0;
-                                  } else {
-                                    r = usrate[0];
-                                  }
-                                  Navigator.pop(this.context);
-                                  print("im entering");
+              //...
+              // Marker marker = markers.elementAt(index);
 
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => socialHousePage(
-                                            title: houseInfo["title"],
-                                            id: marker.infoWindow.snippet,
-                                            description:
-                                            houseInfo["description"],
-                                            contact: houseInfo["contact"],
-                                            num_stars:
-                                            houseInfo["num_rating"]
-                                                .toString(),
-                                            user_rate: r.toString(),
-                                          )));
-                                },
-                                child: Stack(children: [
-                                  Center(
-                                      child: Container(
-                                          margin: EdgeInsets.symmetric(
-                                            horizontal: 10.0,
-                                            vertical: 20.0,
-                                          ),
-                                          height: 70.0,
-                                          width: 275.0,
+              child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: InkWell(
+                      onTap: () async {
+                        // Marker marker = markers.elementAt(index);
+                        Marker marker = markers.firstWhere(
+                            (marker) => marker.markerId == _selectedMarkerId);
+                        mapController.animateCamera(
+                            CameraUpdate.newCameraPosition(CameraPosition(
+                          target: marker.position,
+                          // zoom: 15.0,
+                          // bearing: 45.0,
+                          // tilt: 45.0
+                        )));
+                        var houseInfo = await DatabaseService().getVenue(markers
+                            .firstWhere((marker) =>
+                                marker.markerId == _selectedMarkerId)
+                            .infoWindow
+                            .snippet);
+                        String userId = UserAuth.auth.currentUser.uid;
+                        List<num> usrate = await DatabaseService()
+                            .getUserRating(
+                                markers
+                                    .firstWhere((marker) =>
+                                        marker.markerId == _selectedMarkerId)
+                                    .infoWindow
+                                    .snippet,
+                                userId) as List<Object>;
+                        num r;
+                        if (usrate.isEmpty) {
+                          r = 0.0;
+                        } else {
+                          r = usrate[0];
+                        }
+                        Navigator.pop(this.context);
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => socialHousePage(
+                                      title: houseInfo["title"],
+                                      id: markers
+                                          .firstWhere((marker) =>
+                                              marker.markerId ==
+                                              _selectedMarkerId)
+                                          .infoWindow
+                                          .snippet,
+                                      description: houseInfo["description"],
+                                      contact: houseInfo["contact"],
+                                      num_stars:
+                                          houseInfo["num_rating"].toString(),
+                                      user_rate: r.toString(),
+                                    )));
+                      },
+                      child: Stack(children: [
+                        Center(
+                            child: Container(
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 10.0,
+                                  vertical: 20.0,
+                                ),
+                                height: 70.0,
+                                width: 275.0,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black54,
+                                        offset: Offset(0.0, 4.0),
+                                        blurRadius: 10.0,
+                                      ),
+                                    ]),
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        color: Colors.white),
+                                    child: Row(children: [
+                                      Container(
+                                          height: 90.0,
+                                          width: 90.0,
                                           decoration: BoxDecoration(
-                                              borderRadius:
-                                              BorderRadius.circular(10.0),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.black54,
-                                                  offset: Offset(0.0, 4.0),
-                                                  blurRadius: 10.0,
-                                                ),
-                                              ]),
-                                          child: Container(
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.circular(
-                                                      10.0),
-                                                  color: Colors.white),
-                                              child: Row(children: [
-                                                Container(
-                                                    height: 90.0,
-                                                    width: 90.0,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                        BorderRadius.only(
-                                                            bottomLeft: Radius
-                                                                .circular(
-                                                                10.0),
-                                                            topLeft: Radius
-                                                                .circular(
-                                                                10.0)),
-                                                        image: DecorationImage(
-                                                            image: AssetImage(
-                                                                'assets/Phi Delta Theta.png')))),
-                                                SizedBox(width: 5.0),
-                                                Column(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .start,
-                                                    children: [
-                                                      Text(
-                                                        marker.infoWindow.title,
-                                                        style: TextStyle(
-                                                            fontSize: 12.5,
-                                                            fontWeight:
-                                                            FontWeight
-                                                                .bold),
-                                                      ),
-                                                      Text(
-                                                        "Click for more info",
-                                                        style: TextStyle(
-                                                            fontSize: 12.0,
-                                                            fontWeight:
-                                                            FontWeight
-                                                                .w600),
-                                                      ),
-                                                    ])
-                                              ]))))
-                                ]))
-                          // child: Card(
-                          //   child: Padding(
-                          //     padding: EdgeInsets.all(8.0),
-                          //     child: Text(
-                          //       marker.infoWindow.title,
-                          //       style: TextStyle(
-                          //         fontSize: 18.0,
-                          //         fontWeight: FontWeight.bold,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
-                        ));
-                  },
-                ),
-              ),
+                                              borderRadius: BorderRadius.only(
+                                                  bottomLeft:
+                                                      Radius.circular(10.0),
+                                                  topLeft:
+                                                      Radius.circular(10.0)),
+                                              image: DecorationImage(
+                                                  image: AssetImage(
+                                                      'assets/Phi Delta Theta.png')))),
+                                      SizedBox(width: 5.0),
+                                      Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              // markers.elementAt(_selectedMarkerId as int).infoWindow.title,
+                                              // markers
+                                              //     .firstWhere((marker) =>
+                                              //         marker.markerId ==
+                                              //         _selectedMarkerId)
+                                              //     .infoWindow
+                                              //     .title,
+                                              // style: TextStyle(
+                                              //     fontSize: 12.5,
+                                              //     fontWeight: FontWeight.bold),
+                                              _selectedMarkerId != null
+                                                  ? markers
+                                                      .firstWhere((marker) =>
+                                                          marker.markerId ==
+                                                          _selectedMarkerId)
+                                                      .infoWindow
+                                                      .title
+                                                  : '',
+                                              style: TextStyle(
+                                                fontSize: 12.5,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(
+                                              "Click for more info",
+                                              style: TextStyle(
+                                                  fontSize: 12.0,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                          ])
+                                    ]))))
+                      ]))
+                  // child: Card(
+                  //   child: Padding(
+                  //     padding: EdgeInsets.all(8.0),
+                  //     child: Text(
+                  //       marker.infoWindow.title,
+                  //       style: TextStyle(
+                  //         fontSize: 18.0,
+                  //         fontWeight: FontWeight.bold,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  ),
             )),
       ]),
     );
