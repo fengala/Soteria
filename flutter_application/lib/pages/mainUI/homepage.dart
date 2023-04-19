@@ -164,9 +164,9 @@ class TePage extends State<TPage> {
         Marker(
           markerId: MarkerId('marker_5'),
           position:
-              LatLng(_currentLocation.latitude, _currentLocation.longitude),
+          LatLng(_currentLocation.latitude, _currentLocation.longitude),
           icon:
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
           infoWindow: InfoWindow(
             title: 'Your Location',
             snippet: 'xUzgjY781qshdk1qQN3Z',
@@ -196,10 +196,10 @@ class TePage extends State<TPage> {
                     Navigator.pop(this.context);
                     Navigator.of(context, rootNavigator: true)
                         .pushReplacement(MaterialPageRoute(
-                            builder: (context) => UpdatePage(
-                                  myUser: this.myUser,
-                                  userAuth: this.userAuth,
-                                )));
+                        builder: (context) => UpdatePage(
+                          myUser: this.myUser,
+                          userAuth: this.userAuth,
+                        )));
                   } catch (e, stacktrace) {
                     print(e);
                     print(stacktrace);
@@ -272,12 +272,17 @@ class TePage extends State<TPage> {
                       context,
                       MaterialPageRoute(builder: (context) => PlacesPage()),
                     );
+                    /*Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MapSample()),
+                    );
+                        */
                   } catch (e, stacktrace) {
                     print(e);
                     print(stacktrace);
                   }
                 },
-                icon: const Icon(Icons.list_alt_outlined),
+                icon: const Icon(Icons.list_alt_sharp),
               )),
           InkWell(
               onTap: () async {
@@ -361,12 +366,13 @@ class TePage extends State<TPage> {
         ),
         Align(
           alignment:
-              Alignment.lerp(Alignment.topLeft, Alignment.centerLeft, 0.05),
+          Alignment.lerp(Alignment.topLeft, Alignment.centerLeft, 0.05),
           child: FloatingActionButton.extended(
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MapSample()),
+                MaterialPageRoute(builder: (context) => MapSample(myUser: this.myUser,
+                                                                  userAuth: this.userAuth,)),
               );
             },
             label: Text('HeatMap'),
@@ -395,18 +401,18 @@ class TePage extends State<TPage> {
                                   mapController.animateCamera(
                                       CameraUpdate.newCameraPosition(
                                           CameraPosition(
-                                    target: marker.position,
-                                    // zoom: 15.0,
-                                    // bearing: 45.0,
-                                    // tilt: 45.0
-                                  )));
+                                            target: marker.position,
+                                            // zoom: 15.0,
+                                            // bearing: 45.0,
+                                            // tilt: 45.0
+                                          )));
                                   var houseInfo = await DatabaseService()
                                       .getVenue("PZGBqfzO0TQeP3n9oLPc");
                                   String userId = UserAuth.auth.currentUser.uid;
                                   List<num> usrate = await DatabaseService()
-                                          .getUserRating(
-                                              "PZGBqfzO0TQeP3n9oLPc", userId)
-                                      as List<Object>;
+                                      .getUserRating(
+                                      "PZGBqfzO0TQeP3n9oLPc", userId)
+                                  as List<Object>;
                                   num r;
                                   if (usrate.isEmpty) {
                                     r = 0.0;
@@ -419,16 +425,16 @@ class TePage extends State<TPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => socialHousePage(
-                                                title: houseInfo["title"],
-                                                id: "PZGBqfzO0TQeP3n9oLPc",
-                                                description:
-                                                    houseInfo["description"],
-                                                contact: houseInfo["contact"],
-                                                num_stars:
-                                                    houseInfo["num_rating"]
-                                                        .toString(),
-                                                user_rate: r.toString(),
-                                              )));
+                                            title: houseInfo["title"],
+                                            id: "PZGBqfzO0TQeP3n9oLPc",
+                                            description:
+                                            houseInfo["description"],
+                                            contact: houseInfo["contact"],
+                                            num_stars:
+                                            houseInfo["num_rating"]
+                                                .toString(),
+                                            user_rate: r.toString(),
+                                          )));
                                 },
                                 child: Stack(children: [
                                   Center(
@@ -441,7 +447,7 @@ class TePage extends State<TPage> {
                                           width: 275.0,
                                           decoration: BoxDecoration(
                                               borderRadius:
-                                                  BorderRadius.circular(10.0),
+                                              BorderRadius.circular(10.0),
                                               boxShadow: [
                                                 BoxShadow(
                                                   color: Colors.black54,
@@ -452,8 +458,8 @@ class TePage extends State<TPage> {
                                           child: Container(
                                               decoration: BoxDecoration(
                                                   borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.0),
+                                                  BorderRadius.circular(
+                                                      10.0),
                                                   color: Colors.white),
                                               child: Row(children: [
                                                 Container(
@@ -461,57 +467,57 @@ class TePage extends State<TPage> {
                                                     width: 90.0,
                                                     decoration: BoxDecoration(
                                                         borderRadius:
-                                                            BorderRadius.only(
-                                                                bottomLeft: Radius
-                                                                    .circular(
-                                                                        10.0),
-                                                                topLeft: Radius
-                                                                    .circular(
-                                                                        10.0)),
+                                                        BorderRadius.only(
+                                                            bottomLeft: Radius
+                                                                .circular(
+                                                                10.0),
+                                                            topLeft: Radius
+                                                                .circular(
+                                                                10.0)),
                                                         image: DecorationImage(
                                                             image: AssetImage(
                                                                 'assets/Phi Delta Theta.png')))),
                                                 SizedBox(width: 5.0),
                                                 Column(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                    CrossAxisAlignment
+                                                        .start,
                                                     children: [
                                                       Text(
                                                         marker.infoWindow.title,
                                                         style: TextStyle(
                                                             fontSize: 12.5,
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .bold),
+                                                            FontWeight
+                                                                .bold),
                                                       ),
                                                       Text(
                                                         "Click for more info",
                                                         style: TextStyle(
                                                             fontSize: 12.0,
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .w600),
+                                                            FontWeight
+                                                                .w600),
                                                       ),
                                                     ])
                                               ]))))
                                 ]))
-                            // child: Card(
-                            //   child: Padding(
-                            //     padding: EdgeInsets.all(8.0),
-                            //     child: Text(
-                            //       marker.infoWindow.title,
-                            //       style: TextStyle(
-                            //         fontSize: 18.0,
-                            //         fontWeight: FontWeight.bold,
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
-                            ));
+                          // child: Card(
+                          //   child: Padding(
+                          //     padding: EdgeInsets.all(8.0),
+                          //     child: Text(
+                          //       marker.infoWindow.title,
+                          //       style: TextStyle(
+                          //         fontSize: 18.0,
+                          //         fontWeight: FontWeight.bold,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                        ));
                   },
                 ),
               ),

@@ -18,6 +18,8 @@ import 'package:location/location.dart';
 import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 
+import 'notifpage.dart';
+
 class MyApp extends StatelessWidget {
   var myUser;
   var userAuth;
@@ -26,6 +28,9 @@ class MyApp extends StatelessWidget {
   var real_time_updating;
   var real_time_;
   var search_UI;
+
+  MyApp({Key key}) : super(key: key);
+
   void setUser(var User) {
     this.myUser = User;
   }
@@ -38,7 +43,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Google Maps Demo',
-      home: MapSample(),
+      home: MapSample(myUser: this.myUser,
+        userAuth: this.userAuth,),
     );
   }
 }
@@ -48,13 +54,19 @@ class MapSample extends StatefulWidget {
   var userAuth;
 
   MapSample({Key key, this.myUser, this.userAuth}) : super(key: key);
+
   @override
-  State<MapSample> createState() => MapSampleState();
+  SampleState createState() => SampleState(
+                                        myUser: this.myUser,
+                                        userAuth: this.userAuth,);
 }
 
-class MapSampleState extends State<MapSample> {
+class SampleState extends State<MapSample> {
   Location _location = Location();
   LatLng _currentLocation;
+
+  GoogleMapController mapController;
+
   String location = "Search Location";
   String googleApikey = "AIzaSyA6cWdgxqlc6-esOxU_ihLS1mb5nSjgXwE";
 
@@ -81,7 +93,7 @@ class MapSampleState extends State<MapSample> {
 
   UserModel myUser;
   var userAuth;
-  MapSampleState({this.myUser, this.userAuth});
+  SampleState({this.myUser, this.userAuth});
 
   Future<List<dynamic>> pins_future;
 
@@ -154,7 +166,7 @@ class MapSampleState extends State<MapSample> {
     //   initPetitions();
     // });
     initPetitions();
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         elevation: 1,
         backgroundColor: Colors.amber,
@@ -174,12 +186,13 @@ class MapSampleState extends State<MapSample> {
               child: GestureDetector(
                 onTap: () {
                   try {
+                    Navigator.pop(this.context);
                     Navigator.of(context, rootNavigator: true)
                         .pushReplacement(MaterialPageRoute(
-                            builder: (context) => UpdatePage(
-                                  myUser: this.myUser,
-                                  userAuth: this.userAuth,
-                                )));
+                        builder: (context) => UpdatePage(
+                          myUser: this.myUser,
+                          userAuth: this.userAuth,
+                        )));
                   } catch (e, stacktrace) {
                     print(e);
                     print(stacktrace);
@@ -195,9 +208,31 @@ class MapSampleState extends State<MapSample> {
               child: GestureDetector(
                 onTap: () {
                   try {
+                    Navigator.of(context, rootNavigator: true).pushReplacement(
+                        MaterialPageRoute(builder: (context) => NotifsPage(
+                          myUser: this.myUser,
+                          userAuth: this.userAuth,
+                        )));
+                  } catch (e, stacktrace) {
+                    print(e);
+                    print(stacktrace);
+                  }
+                },
+                child: Icon(
+                  Icons.notifications,
+                  size: 26.0,
+                ),
+              )),
+          Padding(
+              padding: EdgeInsets.only(left: 30.0),
+              child: GestureDetector(
+                onTap: () {
+                  try {
                     this.userAuth.SignOut();
                     // Navigator.push(context,
                     //     MaterialPageRoute(builder: (context) => LoginPage()));
+                    Navigator.pop(this.context);
+
                     Navigator.of(context, rootNavigator: true).pushReplacement(
                         MaterialPageRoute(builder: (context) => LoginPage()));
                   } catch (e, stacktrace) {
@@ -211,30 +246,20 @@ class MapSampleState extends State<MapSample> {
                 ),
               )),
           Padding(
-              padding: EdgeInsets.only(left: 10.0),
+              padding: EdgeInsets.only(left: 40.0),
               child: IconButton(
                 onPressed: () {
                   try {
-                    this.userAuth.SignOut();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
-                    Navigator.of(context, rootNavigator: true).pushReplacement(
-                        MaterialPageRoute(builder: (context) => PlacesPage()));
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => PlacesPage()),
                     );
-                    /*Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MapSample()),
-                    );
-                        */
                   } catch (e, stacktrace) {
                     print(e);
                     print(stacktrace);
                   }
                 },
-                icon: const Icon(Icons.search),
+                icon: const Icon(Icons.list_alt_sharp),
               )),
           InkWell(
               onTap: () async {
@@ -267,7 +292,7 @@ class MapSampleState extends State<MapSample> {
                   final lat = geometry.location.lat;
                   final lang = geometry.location.lng;
                   var temp = LatLng(lat, lang);
-                  var mapController = await _controller.future;
+
                   //move map camera to selected place with animation
                   mapController.animateCamera(CameraUpdate.newCameraPosition(
                       CameraPosition(target: temp, zoom: 17)));
@@ -319,7 +344,7 @@ class MapSampleState extends State<MapSample> {
               //  Navigator.pop(this.context);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => TPage()),
+                MaterialPageRoute(builder: (context) => TPage(myUser: this.myUser, userAuth: this.userAuth,)),
               );
             },
             label: Text('Map'),

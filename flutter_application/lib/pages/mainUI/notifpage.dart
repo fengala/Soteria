@@ -229,6 +229,8 @@ class _NotifState extends State<Notif> {
 
             Future x = DatabaseService().removeNotif(widget.id);
 
+            //TODO autoupdate needs to be fixed
+
             setState(() {
               _notifsFuture = getAllNotifs(widget.uid);
             });
