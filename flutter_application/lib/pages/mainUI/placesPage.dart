@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/models/places.dart';
+import 'package:flutter_login_ui/pages/mainUI/homepage.dart';
 import 'package:flutter_login_ui/services/database.dart';
 
 int filter_val = 0;
@@ -34,7 +35,8 @@ class _PlacesPageState extends State<PlacesPage> {
   Future<List<dynamic>> _placessFuture;
   TextEditingController _searchController = TextEditingController();
   String _searchText = "";
-  final CollectionReference revRef = FirebaseFirestore.instance.collection("SocialHouse");
+  final CollectionReference revRef =
+      FirebaseFirestore.instance.collection("SocialHouse");
 
   @override
   void initState() {
@@ -60,8 +62,17 @@ class _PlacesPageState extends State<PlacesPage> {
       appBar: AppBar(
         elevation: 1,
         backgroundColor: Colors.amber,
-        leading: Container(
-          margin: const EdgeInsets.all(10.0),
+        // leading: Container(
+        //   margin: const EdgeInsets.all(10.0),
+        // ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => TPage()),
+            );
+          },
         ),
         title: Text(
           'Social Venues',
@@ -122,10 +133,15 @@ class _PlacesPageState extends State<PlacesPage> {
                   if (snapshot.hasData) {
                     List<dynamic> places = snapshot.data;
                     List<dynamic> filteredPlaces = [];
-                    if (places.isNotEmpty) { // check if the list is not empty
+                    if (places.isNotEmpty) {
+                      // check if the list is not empty
                       for (int i = 0; i < places.length; i++) {
                         print(places[i].name);
-                        if (places[i].name.toString().toLowerCase().contains(_searchText.toLowerCase())) {
+                        if (places[i]
+                            .name
+                            .toString()
+                            .toLowerCase()
+                            .contains(_searchText.toLowerCase())) {
                           filteredPlaces.add(places[i]);
                         }
                       }
@@ -138,15 +154,14 @@ class _PlacesPageState extends State<PlacesPage> {
                       itemBuilder: (BuildContext context, int index) {
                         return filteredPlaces[index];
                       },
-                      separatorBuilder:
-                          (BuildContext context, int index) => Divider(
+                      separatorBuilder: (BuildContext context, int index) =>
+                          Divider(
                         height: 40,
                       ),
                       itemCount: filteredPlaces.length,
                     );
                   } else if (snapshot.hasError) {
-                    return Center(
-                        child: Text('Error fetching places'));
+                    return Center(child: Text('Error fetching places'));
                   } else {
                     return Center(child: CircularProgressIndicator());
                   }
@@ -159,8 +174,6 @@ class _PlacesPageState extends State<PlacesPage> {
       resizeToAvoidBottomInset: false,
     );
   }
-
-
 
   void showFilterMenu(BuildContext context) {
     final List<String> filters = [
@@ -212,7 +225,6 @@ class _PlacesPageState extends State<PlacesPage> {
       }
     });
   }
-
 }
 
 // class CustomSearchDelegate extends SearchDelegate {
