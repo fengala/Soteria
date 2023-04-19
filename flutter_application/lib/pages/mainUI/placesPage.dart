@@ -114,6 +114,7 @@ class _PlacesPageState extends State<PlacesPage> {
           ),
           Flexible(
             child: Container(
+              padding: EdgeInsets.only(bottom: 100),
               color: Colors.white,
               child: FutureBuilder(
                 future: getAllPlaces(filter_val),

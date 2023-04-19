@@ -112,51 +112,47 @@ class TePage extends State<TPage> {
   Widget build(BuildContext context) {
     int page = 1;
     var markers = Set<Marker>.of([
+      //pi kappa phi page
       Marker(
         markerId: MarkerId('marker_1'),
-        position: LatLng(40.424, -86.929),
+        position: LatLng(40.42683167898305, -86.91004304711971),
         infoWindow: InfoWindow(
-          title: 'Phi Kappa',
+          title: 'Pi Kappa Phi',
           snippet: 'PZGBqfzO0TQeP3n9oLPc',
         ),
       ),
       Marker(
+        //pi kappa phi page
         markerId: MarkerId('marker_2'),
-        position: LatLng(40.427, -86.916),
+        position: LatLng(40.423816316813756, -86.91266646235619),
         infoWindow: InfoWindow(
-          title: 'Alpha Alpha Alpha',
+          title: 'Phi Delta Theta',
           snippet: 'RyMwQOgO2lQBjIBCkvjI',
         ),
       ),
       Marker(
+        // pi kappa phi page
         markerId: MarkerId('marker_3'),
-        position: LatLng(40.426, -86.914),
+        position: LatLng(40.42763867988644, -86.9176749065325),
         infoWindow: InfoWindow(
-          title: 'Omega Delta Kappa',
+          title: 'Phi Sigma Kappa',
           snippet: 'vaUr8Utq4mEZR0GhqzVs',
         ),
       ),
       Marker(
+        // pi kappa phi page
         markerId: MarkerId('marker_4'),
-        position: LatLng(40.4230716, -86.9199115),
+        position: LatLng(40.43676689062929, -86.91496347584936),
         infoWindow: InfoWindow(
-          title: 'Triangle frat',
+          title: 'Kappa Delta Rho',
           snippet: 'xUzgjY781qshdk1qQN3Z',
         ),
       ),
       Marker(
         markerId: MarkerId('marker_4'),
-        position: LatLng(40.4284818, -86.9876795),
+        position: LatLng(40.42300892698927, -86.91172201817966),
         infoWindow: InfoWindow(
-          title: 'Chi Omega',
-          snippet: 'xUzgjY781qshdk1qQN3Z',
-        ),
-      ),
-      Marker(
-        markerId: MarkerId('marker_4'),
-        position: LatLng(40.4295616, -86.989587),
-        infoWindow: InfoWindow(
-          title: 'Alpha Tau Omega',
+          title: 'Compliance Frat',
           snippet: 'xUzgjY781qshdk1qQN3Z',
         ),
       ),
@@ -420,6 +416,7 @@ class TePage extends State<TPage> {
                                     r = usrate[0];
                                   }
                                   Navigator.pop(this.context);
+                                  print("im entering");
 
                                   Navigator.push(
                                       context,
