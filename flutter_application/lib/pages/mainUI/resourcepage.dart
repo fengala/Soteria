@@ -42,430 +42,313 @@ class _ResourcesPageState extends State<ResourcesPage> {
           ),
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              child: Center(
-                child: Text(
-                  'Purdue Safety Resources',
-                  style: TextStyle(
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.only(left: 40, right: 40, top: 20, bottom: 100.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.only(bottom: 20),
+                child: Center(
+                  child: Text(
+                    'Purdue Safety Resources',
+                    style: TextStyle(
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.all(5.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10.0),
-                  InkWell(
-                    child: Row(
-                      children: [
-                        Text(
-                          '\nPurdue University Police Department',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontSize: 16.0,
-                          ),
-                        ),
-                        Spacer(),
-                      ],
-                    ),
-                    onTap: () => launch('https://www.purdue.edu/police/'),
-                  ),
-                  SizedBox(height: 5.0),
-                  InkWell(
-                    child: Row(
-                      children: [
-                        //SizedBox(width: 20.0),
-                        TextButton(
-                          onPressed: () => launch('tel:${'765-494-8221'}'),
+              Container(
+                padding: EdgeInsets.all(10.0),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 10.0),
+                      TextButton(
+                        onPressed: () =>
+                            launch('https://www.purdue.edu/police/'),
+                        child: Align(
+                          alignment: Alignment.center,
                           child: Text(
-                            '765-494-8221',
+                            'Purdue University Police Department',
                             style: TextStyle(
                               color: Colors.blue,
                               fontSize: 16.0,
-                              decoration: TextDecoration.underline,
                             ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                      ],
-                    ),
-                    onTap: () => launch('tel:${'765-494-8221'}'),
-                  ),
-                ],
-              ),
-            ),
-
-            // Text(
-            //   'Purdue Safety Resources:',
-            //   style: TextStyle(
-            //     fontSize: 20.0,
-            //     fontWeight: FontWeight.bold,
-            //   ),
-            // ),
-            // SizedBox(height: 10.0),
-            // InkWell(
-            //   child: Row(
-            //     children: [
-            //       Text(
-            //         '\nPurdue University Police Department',
-            //         style: TextStyle(
-            //           color: Colors.blue,
-            //           fontSize: 16.0,
-            //         ),
-            //       ),
-            //       Spacer(),
-            //     ],
-            //   ),
-            //   onTap: () => launch('https://www.purdue.edu/police/'),
-            // ),
-            // SizedBox(height: 5.0),
-            // InkWell(
-            //   child: Row(
-            //     children: [
-            //       //SizedBox(width: 20.0),
-            //       TextButton(
-            //         onPressed: () => launch('tel:${'765-494-8221'}'),
-            //         child: Text(
-            //           '765-494-8221',
-            //           style: TextStyle(
-            //             color: Colors.blue,
-            //             fontSize: 16.0,
-            //             decoration: TextDecoration.underline,
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            //   onTap: () => launch('tel:${'765-494-8221'}'),
-            // ),
-            SizedBox(height: 10.0),
-            // InkWell(
-            //   child: Row(
-            //     children: [
-            //       Text(
-            //         'Counseling and Psychological Services',
-            //         style: TextStyle(
-            //           color: Colors.blue,
-            //           fontSize: 16.0,
-            //         ),
-            //       ),
-            //       Spacer(),
-            //     ],
-            //   ),
-            //   onTap: () => launch('https://www.purdue.edu/caps/index.html'),
-            // ),
-            // SizedBox(height: 5.0),
-            // InkWell(
-            //   child: Row(
-            //     children: [
-            //       //SizedBox(width: 20.0),
-            //       TextButton(
-            //         onPressed: () => launch('tel:${'765-494-6995'}'),
-            //         child: Text(
-            //           '765-494-6995',
-            //           style: TextStyle(
-            //             color: Colors.blue,
-            //             fontSize: 16.0,
-            //             decoration: TextDecoration.underline,
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            //   onTap: () => launch('tel:${'765-494-6995'}'),
-            // ),
-            Container(
-              padding: EdgeInsets.all(5.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10.0),
-                  InkWell(
-                    child: Row(
-                      children: [
-                        Text(
-                          '\nCounseling and Psychological Services',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontSize: 16.0,
-                          ),
-                        ),
-                        Spacer(),
-                      ],
-                    ),
-                    onTap: () =>
-                        launch('https://www.purdue.edu/caps/index.html'),
-                  ),
-                  SizedBox(height: 5.0),
-                  InkWell(
-                    child: Row(
-                      children: [
-                        //SizedBox(width: 20.0),
-                        TextButton(
-                          onPressed: () => launch('tel:${'765-494-6995'}'),
-                          child: Text(
-                            '765-494-6995',
-                            style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 16.0,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    onTap: () => launch('tel:${'765-494-6995'}'),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 10.0),
-            InkWell(
-              child: Row(
-                children: [
-                  Text(
-                    'Title IX Office',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 16.0,
-                    ),
-                  ),
-                  Spacer(),
-                ],
-              ),
-              onTap: () => launch(
-                  'https://www.purdue.edu/titleix/what-is-title-ix/index.html'),
-            ),
-            SizedBox(height: 5.0),
-            InkWell(
-              child: Row(
-                children: [
-                  //SizedBox(width: 20.0),
-                  TextButton(
-                    onPressed: () => launch('tel:${'765-494-7255'}'),
-                    child: Text(
-                      '765-494-7255',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 16.0,
-                        decoration: TextDecoration.underline,
                       ),
-                    ),
-                  ),
-                ],
-              ),
-              onTap: () => launch('tel:${'765-494-7255'}'),
-            ),
-            Container(
-              padding: EdgeInsets.all(5.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10.0),
-                  InkWell(
-                    child: Row(
-                      children: [
-                        Text(
-                          '\nGlobal Helpline Service',
+                      SizedBox(height: 5.0),
+                      TextButton(
+                        onPressed: () => launch('tel:${'765-494-8221'}'),
+                        child: Text(
+                          '765-494-8221',
                           style: TextStyle(
                             color: Colors.blue,
                             fontSize: 16.0,
+                            decoration: TextDecoration.underline,
                           ),
                         ),
-                        Spacer(),
-                      ],
-                    ),
-                    onTap: () => launch(''),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 5.0),
-                  InkWell(
-                    child: Row(
-                      children: [
-                        //SizedBox(width: 20.0),
-                        TextButton(
-                          onPressed: () => launch('tel:${'123-456-7890'}'),
+                ),
+              ),
+              SizedBox(height: 10.0),
+
+
+
+
+              Container(
+                padding: EdgeInsets.all(10.0),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 10.0),
+                      TextButton(
+                        onPressed: () =>
+                            launch('https://www.purdue.edu/caps/index.html'),
+                        child: Align(
+                          alignment: Alignment.center,
                           child: Text(
-                            '123-456-7890',
+                            'Counseling and Psychological Services',
                             style: TextStyle(
                               color: Colors.blue,
                               fontSize: 16.0,
-                              decoration: TextDecoration.underline,
                             ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                      ],
-                    ),
-                    onTap: () => launch('tel:${'123-456-7890'}'),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(5.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10.0),
-                  InkWell(
-                    child: Row(
-                      children: [
-                        Text(
-                          '\nGlobal Helpline Service 2',
+                      ),
+                      SizedBox(height: 5.0),
+                      TextButton(
+                        onPressed: () => launch('tel:${'765-494-6995'}'),
+                        child: Text(
+                          '765-494-6995',
                           style: TextStyle(
                             color: Colors.blue,
                             fontSize: 16.0,
+                            decoration: TextDecoration.underline,
                           ),
                         ),
-                        Spacer(),
-                      ],
-                    ),
-                    onTap: () => launch(''),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 5.0),
-                  InkWell(
-                    child: Row(
-                      children: [
-                        //SizedBox(width: 20.0),
-                        TextButton(
-                          onPressed: () => launch('tel:${'123-456-7890'}'),
+                ),
+              ),
+            SizedBox(height: 10.0),
+
+////////////////////////
+
+
+              Container(
+                padding: EdgeInsets.all(10.0),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 10.0),
+                      TextButton(
+                        onPressed: () =>
+                            launch('https://www.purdue.edu/titleix/what-is-title-ix/index.html'),
+                        child: Align(
+                          alignment: Alignment.center,
                           child: Text(
-                            '123-456-7890',
+                            'Title IX Office',
                             style: TextStyle(
                               color: Colors.blue,
                               fontSize: 16.0,
-                              decoration: TextDecoration.underline,
                             ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                      ],
-                    ),
-                    onTap: () => launch('tel:${'123-456-7890'}'),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(5.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10.0),
-                  InkWell(
-                    child: Row(
-                      children: [
-                        Text(
-                          '\nGlobal Helpline Service 3',
+                      ),
+                      SizedBox(height: 5.0),
+                      TextButton(
+                        onPressed: () => launch('tel:${'765-494-7255'}'),
+                        child: Text(
+                          '765-494-7255',
                           style: TextStyle(
                             color: Colors.blue,
                             fontSize: 16.0,
+                            decoration: TextDecoration.underline,
                           ),
                         ),
-                        Spacer(),
-                      ],
-                    ),
-                    onTap: () => launch(''),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 5.0),
-                  InkWell(
-                    child: Row(
-                      children: [
-                        //SizedBox(width: 20.0),
-                        TextButton(
-                          onPressed: () => launch('tel:${'123-456-7890'}'),
+                ),
+              ),
+              SizedBox(height: 10.0),
+
+///////////////////////////
+
+//////////////////////////
+
+              Container(
+                padding: EdgeInsets.all(10.0),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 10.0),
+                      TextButton(
+                        onPressed: () =>
+                            launch('https://www.rainn.org/about-national-sexual-assault-telephone-hotline'),
+                        child: Align(
+                          alignment: Alignment.center,
                           child: Text(
-                            '123-456-7890',
+                            '\nNational Sexual Assault Helpline',
                             style: TextStyle(
                               color: Colors.blue,
                               fontSize: 16.0,
-                              decoration: TextDecoration.underline,
                             ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                      ],
-                    ),
-                    onTap: () => launch('tel:${'123-456-7890'}'),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(5.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10.0),
-                  InkWell(
-                    child: Row(
-                      children: [
-                        Text(
-                          '\nGlobal Helpline Service 4',
+                      ),
+                      SizedBox(height: 5.0),
+                      TextButton(
+                        onPressed: () => launch('tel:${'800-656-4673'}'),
+                        child: Text(
+                          '800-656-4673',
                           style: TextStyle(
                             color: Colors.blue,
                             fontSize: 16.0,
+                            decoration: TextDecoration.underline,
                           ),
                         ),
-                        Spacer(),
-                      ],
-                    ),
-                    onTap: () => launch(''),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 5.0),
-                  InkWell(
-                    child: Row(
-                      children: [
-                        //SizedBox(width: 20.0),
-                        TextButton(
-                          onPressed: () => launch('tel:${'123-456-7890'}'),
+                ),
+              ),
+              SizedBox(height: 10.0),
+//////////////////////////
+
+              Container(
+                padding: EdgeInsets.all(10.0),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 10.0),
+                      TextButton(
+                        onPressed: () =>
+                            launch('https://988lifeline.org/'),
+                        child: Align(
+                          alignment: Alignment.center,
                           child: Text(
-                            '123-456-7890',
+                            '\nNational Suicide Prevention Lifeline',
                             style: TextStyle(
                               color: Colors.blue,
                               fontSize: 16.0,
-                              decoration: TextDecoration.underline,
                             ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                      ],
-                    ),
-                    onTap: () => launch('tel:${'123-456-7890'}'),
+                      ),
+                      SizedBox(height: 5.0),
+                      TextButton(
+                        onPressed: () => launch('tel:${'988'}'),
+                        child: Text(
+                          '800-656-4673',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 16.0,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+              SizedBox(height: 10.0),
+
+/////////////////////////
+
+
+              Container(
+                padding: EdgeInsets.all(10.0),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 10.0),
+                      TextButton(
+                        onPressed: () =>
+                            launch('https://www.samhsa.gov/find-help/national-helpline'),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            '\nNational Mental Health Helpline',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 16.0,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 5.0),
+                      TextButton(
+                        onPressed: () => launch('tel:${'1-800-662-4357'}'),
+                        child: Text(
+                          '1-800-662-4357',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 16.0,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 10.0),
+
+ ////////////////////////
+
           ],
         ),
+      ),
       ),
     );
   }

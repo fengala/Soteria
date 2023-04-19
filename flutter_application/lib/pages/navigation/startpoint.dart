@@ -61,7 +61,6 @@ class _HomePageState extends State<HomePage> {
     PetitionP(),
     BulletinBoardP(),
     ResourcesPage(),
-    //TP()
   ];
 
   Future<void> _getUserLocation() async {
@@ -169,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                                   value =
                                       await FlutterPhoneDirectCaller.callNumber(
                                           police);
-                                  print("This is teh value after calling\n");
+                                  print("This is the value after calling\n");
                                   print(value);
                                   //print(val);
 
