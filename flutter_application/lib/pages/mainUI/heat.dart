@@ -57,8 +57,8 @@ class MapSample extends StatefulWidget {
 
   @override
   SampleState createState() => SampleState(
-                                        myUser: this.myUser,
-                                        userAuth: this.userAuth,);
+    myUser: this.myUser,
+    userAuth: this.userAuth,);
 }
 
 class SampleState extends State<MapSample> {
@@ -161,20 +161,17 @@ class SampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
-    // petitionsStream().listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
-    //   // Trigger an automatic update
-    //   initPetitions();
-    // });
     initPetitions();
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
+        centerTitle: true,
         backgroundColor: Colors.amber,
         leading: Container(
           margin: const EdgeInsets.all(10.0),
         ),
         title: Text(
-          'Home',
+          'Heat',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -182,7 +179,7 @@ class SampleState extends State<MapSample> {
         ),
         actions: <Widget>[
           Padding(
-              padding: EdgeInsets.only(left: 10.0),
+              padding: EdgeInsets.only(left: 0.0),
               child: GestureDetector(
                 onTap: () {
                   try {
@@ -224,29 +221,7 @@ class SampleState extends State<MapSample> {
                 ),
               )),
           Padding(
-              padding: EdgeInsets.only(left: 30.0),
-              child: GestureDetector(
-                onTap: () {
-                  try {
-                    this.userAuth.SignOut();
-                    // Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context) => LoginPage()));
-                    Navigator.pop(this.context);
-
-                    Navigator.of(context, rootNavigator: true).pushReplacement(
-                        MaterialPageRoute(builder: (context) => LoginPage()));
-                  } catch (e, stacktrace) {
-                    print(e);
-                    print(stacktrace);
-                  }
-                },
-                child: Icon(
-                  Icons.logout,
-                  size: 26.0,
-                ),
-              )),
-          Padding(
-              padding: EdgeInsets.only(left: 40.0),
+              padding: EdgeInsets.only(left: 10.0),
               child: IconButton(
                 onPressed: () {
                   try {
@@ -259,7 +234,7 @@ class SampleState extends State<MapSample> {
                     print(stacktrace);
                   }
                 },
-                icon: const Icon(Icons.list_alt_sharp),
+                icon: const Icon(Icons.list_alt_sharp, size: 26,),
               )),
           InkWell(
               onTap: () async {
@@ -299,12 +274,12 @@ class SampleState extends State<MapSample> {
                 }
               },
               child: Padding(
-                padding: EdgeInsets.only(left: 10),
+                padding: EdgeInsets.only(left: 0),
                 child: Card(
                   child: Center(
                     child: Container(
-                        padding: EdgeInsets.only(right: 10),
-                        width: 210,
+                        padding: EdgeInsets.only(right: 0),
+                        width: 200,
                         child: ListTile(
                           title: Text(
                             location,
@@ -314,6 +289,28 @@ class SampleState extends State<MapSample> {
                           dense: true,
                         )),
                   ),
+                ),
+              )),
+          Padding(
+              padding: EdgeInsets.only(left: 10.0),
+              child: GestureDetector(
+                onTap: () {
+                  try {
+                    this.userAuth.SignOut();
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context) => LoginPage()));
+                    Navigator.pop(this.context);
+
+                    Navigator.of(context, rootNavigator: true).pushReplacement(
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  } catch (e, stacktrace) {
+                    print(e);
+                    print(stacktrace);
+                  }
+                },
+                child: Icon(
+                  Icons.logout,
+                  size: 26.0,
                 ),
               )),
         ],
@@ -338,7 +335,7 @@ class SampleState extends State<MapSample> {
         ),
         Align(
           alignment:
-              Alignment.lerp(Alignment.topLeft, Alignment.centerLeft, 0.05),
+          Alignment.lerp(Alignment.topLeft, Alignment.centerLeft, 0.05),
           child: FloatingActionButton.extended(
             onPressed: () {
               //  Navigator.pop(this.context);
@@ -429,7 +426,7 @@ class SampleState extends State<MapSample> {
 
   Heatmap _createHeatmap() {
     return Heatmap(
-        heatmapId: HeatmapId('heatmap'), points: _pins.toList(), radius: 50);
+        heatmapId: HeatmapId('heatmap'), points: _pins.toList(), radius: 100);
   }
 
   void _showConfirmationDialog(LatLng latLng) {
