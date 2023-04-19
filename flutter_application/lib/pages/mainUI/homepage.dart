@@ -403,11 +403,11 @@ class TePage extends State<TPage> {
                                             // tilt: 45.0
                                           )));
                                   var houseInfo = await DatabaseService()
-                                      .getVenue("PZGBqfzO0TQeP3n9oLPc");
+                                      .getVenue(marker.infoWindow.snippet);
                                   String userId = UserAuth.auth.currentUser.uid;
                                   List<num> usrate = await DatabaseService()
                                       .getUserRating(
-                                      "PZGBqfzO0TQeP3n9oLPc", userId)
+                                      marker.infoWindow.snippet, userId)
                                   as List<Object>;
                                   num r;
                                   if (usrate.isEmpty) {
@@ -423,7 +423,7 @@ class TePage extends State<TPage> {
                                       MaterialPageRoute(
                                           builder: (context) => socialHousePage(
                                             title: houseInfo["title"],
-                                            id: "PZGBqfzO0TQeP3n9oLPc",
+                                            id: marker.infoWindow.snippet,
                                             description:
                                             houseInfo["description"],
                                             contact: houseInfo["contact"],
