@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/pages/mainUI/socialHouse.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 
 class Place extends StatelessWidget {
   final String name;
@@ -14,19 +16,7 @@ class Place extends StatelessWidget {
   final String location;
   final String contact;
   final String acc;
-
-  // factory Place.fromMap(Map<String, dynamic> map) {
-  //   return Place(
-  //     id: map['id'],
-  //     title: map['title'],
-  //     description: map['description'],
-  //     contact: map["contact"],
-  //     rating: map["rating"],
-  //     user_rate: map["user_rate"],
-  //     // Other fields...
-  //   );
-  // }
-
+  final GeoPoint geoLoc;
 
   Place({
     Key key,
@@ -40,9 +30,10 @@ class Place extends StatelessWidget {
     @required this.ratio,
     @required this.acc,
     @required this.num_reviews,
-    @required this.user_rate, title,
+    @required this.user_rate,
+    @required this.geoLoc,
+    title,
   }) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +43,7 @@ class Place extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           placeAvatar(),
-           placeBody(context),
+          placeBody(context),
         ],
       ),
     );
@@ -103,6 +94,7 @@ class Place extends StatelessWidget {
                           contact: contact,
                           num_stars: rating,
                           user_rate: user_rate,
+                          geoLoc: geoLoc,
                         )));
           },
           child: IconButton(
@@ -131,30 +123,8 @@ class Place extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           placeIconButton1(FontAwesomeIcons.comment, this.comments),
-          placeIconButton2(FontAwesomeIcons.solidStar, rating + "  ||  " + num_reviews + "  ratings"),
-          // IconButton(
-          //   icon: Icon(
-          //     Icons.info_outline,
-          //     size: 24.0,
-          //     color: Colors.grey,
-          //   ),
-          //   onPressed: () {
-          //     showDialog(
-          //       context: context,
-          //       builder: (BuildContext context) {
-          //         return SimpleDialog(
-          //           title: Text("Accredited Information"),
-          //           children: [
-          //             Padding(
-          //               padding: const EdgeInsets.all(16.0),
-          //               child: Text(acc),
-          //             ),
-          //           ],
-          //         );
-          //       },
-          //     );
-          //   },
-          // ),
+          placeIconButton2(FontAwesomeIcons.solidStar,
+              rating + "  ||  " + num_reviews + "  ratings"),
         ],
       ),
     );

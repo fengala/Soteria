@@ -5,23 +5,8 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_login_ui/services/auth.dart';
 import 'package:flutter_login_ui/services/database.dart';
+import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 import 'place.dart';
-
-
-// Future<List<Place>> searchPlaces(int filterVal, String searchText) async {
-//   var query = await getAllPlaces(filterVal)
-//       .where('filter_val', isEqualTo: filterVal)
-//       .where('title', isGreaterThanOrEqualTo: searchText)
-//       .where('title', isLessThanOrEqualTo: searchText + '\uf8ff')
-//       .get();
-//
-//   var places = <Place>[];
-//   for (var doc in query.docs) {
-//     places.add(Place.fromMap(doc.data()));
-//   }
-//   return places;
-// }
-
 
 Future<List<Place>> getAllPlaces(int filter_val) async {
   List<Object> places = await DatabaseService().getPlaces() as List<Object>;
@@ -41,17 +26,24 @@ Future<List<Place>> getAllPlaces(int filter_val) async {
     String address = jsonMap['location'];
     String contact = jsonMap['contact'];
     String acc = jsonMap['acc'];
+    print("sup man");
+    double latitude = jsonMap['latitude'];
+    double longitude = jsonMap['longitude'];
+    GeoPoint geoLoc = GeoPoint(latitude, longitude);
+    print("haha");
+    print(geoLoc.latitude);
+    print("hoho");
     double ratio = log((reviews * 1.0 * rating));
 
     String userId = UserAuth.auth.currentUser.uid;
-    List<num> usrate = await DatabaseService().getUserRating(id, userId) as List<Object>;
+    List<num> usrate =
+        await DatabaseService().getUserRating(id, userId) as List<Object>;
     num r;
     if (usrate.isEmpty) {
       r = 0.0;
     } else {
       r = usrate[0];
     }
-
 
     vens.add(Place(
       name: title,
@@ -65,6 +57,7 @@ Future<List<Place>> getAllPlaces(int filter_val) async {
       acc: acc,
       num_reviews: reviews.toString(),
       user_rate: r.toString(),
+      geoLoc: geoLoc,
     ));
   }
 

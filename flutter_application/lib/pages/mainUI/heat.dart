@@ -429,9 +429,7 @@ class SampleState extends State<MapSample> {
 
   Heatmap _createHeatmap() {
     return Heatmap(
-      heatmapId: HeatmapId('heatmap'),
-      points: _pins.toList(),
-    );
+        heatmapId: HeatmapId('heatmap'), points: _pins.toList(), radius: 50);
   }
 
   void _showConfirmationDialog(LatLng latLng) {
@@ -453,7 +451,7 @@ class SampleState extends State<MapSample> {
               onPressed: () async {
                 setState(() {
                   _pins.add(_createWeightedLatLng(
-                      latLng.latitude, latLng.longitude, 1));
+                      latLng.latitude, latLng.longitude, 100));
                   _heatmaps.clear();
                   _heatmaps.add(_createHeatmap());
                 });
