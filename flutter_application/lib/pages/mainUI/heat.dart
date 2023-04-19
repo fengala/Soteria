@@ -4,22 +4,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/pages/mainUI/homepage.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
-import 'package:google_maps_webservice/places.dart' as lund;
+import 'package:google_maps_webservice/places.dart' as heat;
 import '';
-import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/pages/authentication/login.dart';
-import 'package:flutter_login_ui/pages/mainUI/socialHouse.dart';
-import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
-import 'package:google_maps_webservice/places.dart' as lund;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '';
 import '../../services/database.dart';
-//import 'package:google_maps_webservice/directions.dart';
-//import 'package:google_maps_webservice/places.dart';
 
-import '../../models/places.dart';
-import '../../services/auth.dart';
-import '../../services/database.dart';
 import '../authentication/update.dart';
 import '../mainUI/placesPage.dart';
 import '../../models/user.dart';
@@ -254,7 +244,7 @@ class MapSampleState extends State<MapSample> {
                     mode: Mode.overlay,
                     types: [],
                     strictbounds: false,
-                    components: [lund.Component(lund.Component.country, 'us')],
+                    components: [heat.Component(heat.Component.country, 'us')],
                     //google_map_webservice package
                     onError: (err) {
                       print(err);
@@ -266,7 +256,7 @@ class MapSampleState extends State<MapSample> {
                   });
 
                   //form google_maps_webservice package
-                  final plist = lund.GoogleMapsPlaces(
+                  final plist = heat.GoogleMapsPlaces(
                     apiKey: googleApikey,
                     apiHeaders: await GoogleApiHeaders().getHeaders(),
                     //from google_api_headers package

@@ -29,18 +29,28 @@ class NotifsP extends StatelessWidget {
 }
 
 class NotifsPage extends StatefulWidget {
-  NotifsPage({Key key}) : super(key: key);
+
+  var myUser;
+  var userAuth;
+
+  NotifsPage({Key key, this.myUser, this.userAuth})
+      : super(key: key);
 
   @override
-  _NotifPageState createState() => _NotifPageState();
+  _NotifPageState createState() => _NotifPageState(myUser, userAuth);
 }
 
 class _NotifPageState extends State<NotifsPage> {
+  UserModel myUser;
+  UserAuth userAuth;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
 
   var user_id = FirebaseAuth.instance.currentUser.uid;
-  //var user_details = await DatabaseService().getUser(user_fir.uid);
+
+  _NotifPageState(this.myUser, this.userAuth) {
+    print("Hello");
+  }
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   Stream<QuerySnapshot<Map<String, dynamic>>> notifsStream() {
@@ -80,7 +90,13 @@ class _NotifPageState extends State<NotifsPage> {
         IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            //TODO
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => HomeP(
+                      myUser: this.myUser,
+                      userAuth: this.userAuth,
+                    )));
           },
         ),
         title: Text(

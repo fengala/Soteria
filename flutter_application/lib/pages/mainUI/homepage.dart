@@ -216,7 +216,10 @@ class TePage extends State<TPage> {
                 onTap: () {
                   try {
                     Navigator.of(context, rootNavigator: true).pushReplacement(
-                        MaterialPageRoute(builder: (context) => NotifsPage()));
+                        MaterialPageRoute(builder: (context) => NotifsPage(
+                          myUser: this.myUser,
+                          userAuth: this.userAuth,
+                        )));
                   } catch (e, stacktrace) {
                     print(e);
                     print(stacktrace);
@@ -269,17 +272,12 @@ class TePage extends State<TPage> {
                       context,
                       MaterialPageRoute(builder: (context) => PlacesPage()),
                     );
-                    /*Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MapSample()),
-                    );
-                        */
                   } catch (e, stacktrace) {
                     print(e);
                     print(stacktrace);
                   }
                 },
-                icon: const Icon(Icons.search),
+                icon: const Icon(Icons.list_alt_outlined),
               )),
           InkWell(
               onTap: () async {
