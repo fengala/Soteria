@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/pages/mainUI/homepage.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 import 'package:google_maps_webservice/places.dart' as heat;
+
 import '';
 import 'package:flutter_login_ui/pages/authentication/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -43,8 +44,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Google Maps Demo',
-      home: MapSample(myUser: this.myUser,
-        userAuth: this.userAuth,),
+      home: MapSample(
+        myUser: this.myUser,
+        userAuth: this.userAuth,
+      ),
     );
   }
 }
@@ -57,8 +60,9 @@ class MapSample extends StatefulWidget {
 
   @override
   SampleState createState() => SampleState(
-    myUser: this.myUser,
-    userAuth: this.userAuth,);
+        myUser: this.myUser,
+        userAuth: this.userAuth,
+      );
 }
 
 class SampleState extends State<MapSample> {
@@ -127,8 +131,8 @@ class SampleState extends State<MapSample> {
   void initPetitions() {
     pins_future.then((list) {
       for (int i = 0; i < list.length; i++) {
-        _pins
-            .add(_createWeightedLatLng(list[i].latitude, list[i].longitude, 1));
+        _pins.add(_createWeightedLatLng(
+            list[i].latitude, list[i].longitude, 90000000000000000));
       }
       _heatmaps.clear();
 
@@ -159,6 +163,24 @@ class SampleState extends State<MapSample> {
     });
   }
 
+  final List<Color> colors = [
+    Color(0xFF00FF00),
+    Color(0xFFFFFF00),
+    Color(0xFFFF0000)
+  ];
+  final List<double> stops = [
+    0.2,
+    0.5,
+    0.8,
+  ];
+
+  // final Gradient gradient = RadialGradient(
+  //     colors: [Colors.red, Colors.yellow, Colors.green],
+  //     stops: [0.2, 0.5, 0.8]);
+
+  final HeatmapGradient gradient = HeatmapGradient(
+      colors: [Colors.green, Colors.red], startPoints: [0.2, 0.8]);
+
   @override
   Widget build(BuildContext context) {
     initPetitions();
@@ -186,10 +208,10 @@ class SampleState extends State<MapSample> {
                     Navigator.pop(this.context);
                     Navigator.of(context, rootNavigator: true)
                         .pushReplacement(MaterialPageRoute(
-                        builder: (context) => UpdatePage(
-                          myUser: this.myUser,
-                          userAuth: this.userAuth,
-                        )));
+                            builder: (context) => UpdatePage(
+                                  myUser: this.myUser,
+                                  userAuth: this.userAuth,
+                                )));
                   } catch (e, stacktrace) {
                     print(e);
                     print(stacktrace);
@@ -205,11 +227,12 @@ class SampleState extends State<MapSample> {
               child: GestureDetector(
                 onTap: () {
                   try {
-                    Navigator.of(context, rootNavigator: true).pushReplacement(
-                        MaterialPageRoute(builder: (context) => NotifsPage(
-                          myUser: this.myUser,
-                          userAuth: this.userAuth,
-                        )));
+                    Navigator.of(context, rootNavigator: true)
+                        .pushReplacement(MaterialPageRoute(
+                            builder: (context) => NotifsPage(
+                                  myUser: this.myUser,
+                                  userAuth: this.userAuth,
+                                )));
                   } catch (e, stacktrace) {
                     print(e);
                     print(stacktrace);
@@ -234,7 +257,10 @@ class SampleState extends State<MapSample> {
                     print(stacktrace);
                   }
                 },
-                icon: const Icon(Icons.list_alt_sharp, size: 26,),
+                icon: const Icon(
+                  Icons.list_alt_sharp,
+                  size: 26,
+                ),
               )),
           InkWell(
               onTap: () async {
@@ -335,13 +361,17 @@ class SampleState extends State<MapSample> {
         ),
         Align(
           alignment:
-          Alignment.lerp(Alignment.topLeft, Alignment.centerLeft, 0.05),
+              Alignment.lerp(Alignment.topLeft, Alignment.centerLeft, 0.05),
           child: FloatingActionButton.extended(
             onPressed: () {
               //  Navigator.pop(this.context);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => TPage(myUser: this.myUser, userAuth: this.userAuth,)),
+                MaterialPageRoute(
+                    builder: (context) => TPage(
+                          myUser: this.myUser,
+                          userAuth: this.userAuth,
+                        )),
               );
             },
             label: Text('Map'),
@@ -426,7 +456,12 @@ class SampleState extends State<MapSample> {
 
   Heatmap _createHeatmap() {
     return Heatmap(
-        heatmapId: HeatmapId('heatmap'), points: _pins.toList(), radius: 100);
+      heatmapId: HeatmapId('heatmap'),
+      points: _pins.toList(),
+      gradient: gradient,
+      radius: 50,
+      opacity: 0.7,
+    );
   }
 
   void _showConfirmationDialog(LatLng latLng) {
@@ -448,7 +483,7 @@ class SampleState extends State<MapSample> {
               onPressed: () async {
                 setState(() {
                   _pins.add(_createWeightedLatLng(
-                      latLng.latitude, latLng.longitude, 100));
+                      latLng.latitude, latLng.longitude, 90000000000000000));
                   _heatmaps.clear();
                   _heatmaps.add(_createHeatmap());
                 });
