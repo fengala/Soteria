@@ -32,6 +32,100 @@ Future<void> main() async {
   tearDown(() => null);
 
   // print("#########################");
+  // print("#  User Story #1 Tests  #");
+  // print("#########################");
+  // print("");
+  group('User Story #1 tests', () {
+    test("Getting Organization Website URLs ", () async {
+      var instance = FakeFirebaseFirestore();
+      var id1 = "1";
+      var org_name1 = "Org X";
+      var url1 = "www.orgnamex.com";
+      instance
+          .collection("resources")
+          .doc(id1)
+          .set({'name': org_name1, 'url': url1});
+
+      var snapshot1 = await instance.collection("resources").doc(id1).get();
+      Map<String, dynamic> data1 = await snapshot1.data();
+
+      var id2 = "2";
+      var org_name2 = "Org Y";
+      var url2 = "www.orgnamey.com";
+      instance
+          .collection("resources")
+          .doc(id2)
+          .set({'name': org_name2, 'url': url2});
+
+      var snapshot2 = await instance.collection("resources").doc(id2).get();
+      Map<String, dynamic> data2 = await snapshot2.data();
+
+      var id3 = "3";
+      var org_name3 = "Org Z";
+      var url3 = "www.orgnamez.com";
+      instance
+          .collection("resources")
+          .doc(id3)
+          .set({'name': org_name3, 'url': url3});
+
+      var snapshot3 = await instance.collection("resources").doc(id3).get();
+      Map<String, dynamic> data3 = await snapshot3.data();
+
+      expect(data1['name'], org_name1);
+      expect(data1['url'], url1);
+      expect(data2['name'], org_name2);
+      expect(data2['url'], url2);
+      expect(data3['name'], org_name3);
+      expect(data3['url'], url3);
+      print("Test Passed");
+    });
+
+    test("Getting Organization Contacts ", () async {
+      var instance = FakeFirebaseFirestore();
+      var id1 = "1";
+      var org_name1 = "Org X";
+      var contact_info1 = "1234567890";
+      instance
+          .collection("resources")
+          .doc(id1)
+          .set({'name': org_name1, 'number': contact_info1});
+
+      var snapshot1 = await instance.collection("resources").doc(id1).get();
+      Map<String, dynamic> data1 = await snapshot1.data();
+
+      var id2 = "2";
+      var org_name2 = "Org Y";
+      var contact_info2 = "9876543210";
+      instance
+          .collection("resources")
+          .doc(id2)
+          .set({'name': org_name2, 'number': contact_info2});
+
+      var snapshot2 = await instance.collection("resources").doc(id2).get();
+      Map<String, dynamic> data2 = await snapshot2.data();
+
+      var id3 = "3";
+      var org_name3 = "Org Z";
+      var contact_info3 = "5432109876";
+      instance
+          .collection("resources")
+          .doc(id3)
+          .set({'name': org_name3, 'number': contact_info3});
+
+      var snapshot3 = await instance.collection("resources").doc(id3).get();
+      Map<String, dynamic> data3 = await snapshot3.data();
+
+      expect(data1['name'], org_name1);
+      expect(data1['number'], contact_info1);
+      expect(data2['name'], org_name2);
+      expect(data2['number'], contact_info2);
+      expect(data3['name'], org_name3);
+      expect(data3['number'], contact_info3);
+      print("Test Passed");
+    });
+  });
+
+  // print("#########################");
   // print("#  User Story #2 Tests  #");
   // print("#########################");
   // print("");
@@ -70,30 +164,6 @@ Future<void> main() async {
       expect(data['uid'], recipient_id);
       print("Test Passed");
     });
-
-    // test("Empty Emergency Contacts Checking", () async {
-    //   var instance = FakeFirebaseFirestore();
-    //   var uid = "OUSN107";
-    //   var contact1 = "3210213921";
-    //   var contact2 = "";
-    //   var contact3 = "5210232311";
-    //   instance.collection("users").doc(uid).set({
-    //     'username': "test_user@purdue.edu",
-    //     'password': "123456",
-    //     'name': "Test testing",
-    //     'emergency_contacts': [contact1, contact2, contact3],
-    //     'phone_number': "1232323132",
-    //     'verified': true,
-    //   });
-
-    //   var snapshot = await instance.collection("users").doc(uid).get();
-    //   Map<String, dynamic> data = await snapshot.data();
-    //   expect(data['emergency_contacts'].length, 3);
-    //   expect(data['emergency_contacts'][0], contact1);
-    //   expect(data['emergency_contacts'][1], contact2);
-    //   expect(data['emergency_contacts'][2], contact3);
-    //   print("Test Passed");
-    // });
   });
 
   // print("#########################");
@@ -209,95 +279,58 @@ Future<void> main() async {
   });
 
   // print("#########################");
-  // print("#  User Story #1 Tests  #");
+  // print("#  User Story #6 Tests  #");
   // print("#########################");
   // print("");
-  group('User Story #1 tests', () {
-    test("Getting Organization Website URLs ", () async {
+  group('User Story #6 tests', () {
+    test("Getting User Location ", () async {
       var instance = FakeFirebaseFirestore();
       var id1 = "1";
-      var org_name1 = "Org X";
-      var url1 = "www.orgnamex.com";
+      var username1 = "User1";
+      var location1 = [-40.32, 50.52];
       instance
-          .collection("resources")
+          .collection("users")
           .doc(id1)
-          .set({'name': org_name1, 'url': url1});
+          .set({'name': username1, 'location': location1});
 
-      var snapshot1 = await instance.collection("resources").doc(id1).get();
+      var snapshot1 = await instance.collection("users").doc(id1).get();
       Map<String, dynamic> data1 = await snapshot1.data();
 
-      var id2 = "2";
-      var org_name2 = "Org Y";
-      var url2 = "www.orgnamey.com";
-      instance
-          .collection("resources")
-          .doc(id2)
-          .set({'name': org_name2, 'url': url2});
+      expect(data1['name'], username1);
+      expect(data1['location'], location1);
 
-      var snapshot2 = await instance.collection("resources").doc(id2).get();
-      Map<String, dynamic> data2 = await snapshot2.data();
-
-      var id3 = "3";
-      var org_name3 = "Org Z";
-      var url3 = "www.orgnamez.com";
-      instance
-          .collection("resources")
-          .doc(id3)
-          .set({'name': org_name3, 'url': url3});
-
-      var snapshot3 = await instance.collection("resources").doc(id3).get();
-      Map<String, dynamic> data3 = await snapshot3.data();
-
-      expect(data1['name'], org_name1);
-      expect(data1['url'], url1);
-      expect(data2['name'], org_name2);
-      expect(data2['url'], url2);
-      expect(data3['name'], org_name3);
-      expect(data3['url'], url3);
       print("Test Passed");
     });
 
-    test("Getting Organization Contacts ", () async {
+    test("Updating and Fetching new User Location ", () async {
       var instance = FakeFirebaseFirestore();
       var id1 = "1";
-      var org_name1 = "Org X";
-      var contact_info1 = "1234567890";
+      var username1 = "User1";
+      var location1 = [-40.32, 50.52];
       instance
-          .collection("resources")
+          .collection("users")
           .doc(id1)
-          .set({'name': org_name1, 'number': contact_info1});
+          .set({'name': username1, 'location': location1});
 
-      var snapshot1 = await instance.collection("resources").doc(id1).get();
+      var snapshot1 = await instance.collection("users").doc(id1).get();
       Map<String, dynamic> data1 = await snapshot1.data();
 
-      var id2 = "2";
-      var org_name2 = "Org Y";
-      var contact_info2 = "9876543210";
+      expect(data1['name'], username1);
+      expect(data1['location'], location1);
+
+      location1 = [100.32, -5.73];
+
       instance
-          .collection("resources")
-          .doc(id2)
-          .set({'name': org_name2, 'number': contact_info2});
+          .collection("users")
+          .doc(id1)
+          .set({'name': username1, 'location': location1});
 
-      var snapshot2 = await instance.collection("resources").doc(id2).get();
-      Map<String, dynamic> data2 = await snapshot2.data();
+      snapshot1 = await instance.collection("users").doc(id1).get();
+      data1 = await snapshot1.data();
 
-      var id3 = "3";
-      var org_name3 = "Org Z";
-      var contact_info3 = "5432109876";
-      instance
-          .collection("resources")
-          .doc(id3)
-          .set({'name': org_name3, 'number': contact_info3});
+      expect(data1['name'], username1);
+      expect(data1['location'], location1);
 
-      var snapshot3 = await instance.collection("resources").doc(id3).get();
-      Map<String, dynamic> data3 = await snapshot3.data();
-
-      expect(data1['name'], org_name1);
-      expect(data1['number'], contact_info1);
-      expect(data2['name'], org_name2);
-      expect(data2['number'], contact_info2);
-      expect(data3['name'], org_name3);
-      expect(data3['number'], contact_info3);
       print("Test Passed");
     });
   });
