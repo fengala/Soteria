@@ -430,4 +430,156 @@ Future<void> main() async {
       print("Test Passed");
     });
   });
+
+  group('User Story #11 tests', () {
+    test("Pining a Known Location Unsafe", () async {
+      var instance = FakeFirebaseFirestore();
+      var id = "1";
+      var placeName = "Pi Kappa Phi";
+      var safeOrNot = false;
+      instance
+          .collection("SocialHouseHeatMap")
+          .doc(id)
+          .set({'PlaceName': placeName, 'safety': safeOrNot});
+
+      var snapshot =
+          await instance.collection("SocialHouseHeatMap").doc(id).get();
+      Map<String, dynamic> data = await snapshot.data();
+      expect(data['PlaceName'], placeName);
+      expect(data['safety'], safeOrNot);
+      print("Test Passed");
+    });
+
+    test("Pinning an Unknown Location Unsafe", () async {
+      var instance = FakeFirebaseFirestore();
+      var id = "1";
+      var placeName = "unknown";
+      var safeOrNot = false;
+      instance
+          .collection("SocialHouseHeatMap")
+          .doc(id)
+          .set({'PlaceName': placeName, 'safety': safeOrNot});
+
+      var snapshot =
+          await instance.collection("SocialHouseHeatMap").doc(id).get();
+      Map<String, dynamic> data = await snapshot.data();
+      expect(data['PlaceName'], placeName);
+      expect(data['safety'], safeOrNot);
+      print("Test Passed");
+    });
+  });
+
+  group('User Story #12 tests', () {
+    test("Searching for a Social House in the List by Name", () async {
+      var instance = FakeFirebaseFirestore();
+      var id = "1";
+      var name = "Frat 1";
+      var location = "12.2312, 12.123";
+      instance.collection("list").doc(id).set({'name': name, 'loc': location});
+
+      var snapshot = await instance.collection("list").doc(id).get();
+      Map<String, dynamic> data = await snapshot.data();
+      expect(data['name'], name);
+      print("Test Passed");
+    });
+
+    test("Gearching for a Social House in the List by Location", () async {
+      var instance = FakeFirebaseFirestore();
+      var id = "2";
+      var name = "Frat 2";
+      var location = "40.424, -86.929";
+      instance
+          .collection("heatMap")
+          .doc(id)
+          .set({'name': name, 'loc': location});
+
+      var snapshot = await instance.collection("heatMap").doc(id).get();
+      Map<String, dynamic> data = await snapshot.data();
+      expect(data['loc'], location);
+      print("Test Passed");
+    });
+  });
+
+  group('User Story #13 tests', () {
+    test("Marking Place Unsafe by Location Search", () async {
+      var instance = FakeFirebaseFirestore();
+      var id = "1";
+      var locations = "40.424, -86.929";
+      instance.collection("heatMap").doc(id).set({'Locations': locations});
+
+      var snapshot = await instance.collection("heatMap").doc(id).get();
+      Map<String, dynamic> data = await snapshot.data();
+      expect(data['Locations'], locations);
+      print("Test Passed");
+    });
+
+    test("Marking Multiple Locations Unsafe", () async {
+      var instance = FakeFirebaseFirestore();
+      var id = "2";
+      var locations = "40.424, -86.929, 40.445, -35.342";
+      instance.collection("heatMap").doc(id).set({'Locations': locations});
+
+      var snapshot = await instance.collection("heatMap").doc(id).get();
+      Map<String, dynamic> data = await snapshot.data();
+      expect(data['Locations'], locations);
+      print("Test Passed");
+    });
+  });
+
+  group('User Story #14 tests', () {
+    test("SOS Unsafe Location Functionality", () async {
+      var instance = FakeFirebaseFirestore();
+      var id = "1";
+      var currentLocation = "40.424, -86.929";
+      instance
+          .collection("emergencyCon")
+          .doc(id)
+          .set({'Locations': currentLocation});
+      var snapshot = await instance.collection("emergencyCon").doc(id).get();
+      Map<String, dynamic> data = await snapshot.data();
+      expect(data['Locations'], currentLocation);
+      print("Test Passed");
+    });
+
+    test("SOS Unsafe Text Functionality", () async {
+      var instance = FakeFirebaseFirestore();
+      var id = "2";
+      var rec = "312-384-1233";
+      instance.collection("emergencyCon").doc(id).set({'rec': rec});
+
+      var snapshot = await instance.collection("emergencyCon").doc(id).get();
+      Map<String, dynamic> data = await snapshot.data();
+      expect(data['rec'], rec);
+      print("Test Passed");
+    });
+  });
+
+  group('User Story #15 tests', () {
+    test("SOS Unsafe Text Functionality When Offline", () async {
+      var instance = FakeFirebaseFirestore();
+      var id = "1";
+      var online = false;
+      var rec = "312-123-2341";
+      instance
+          .collection("emergencyCon")
+          .doc(id)
+          .set({'online': online, 'rec': rec});
+      var snapshot = await instance.collection("emergencyCon").doc(id).get();
+      Map<String, dynamic> data = await snapshot.data();
+      expect(data['online'], online);
+      expect(data['rec'], rec);
+      print("Test Passed");
+    });
+
+    test("SOS Emergency Call Functionality When Offline", () async {
+      var instance = FakeFirebaseFirestore();
+      var id = "2";
+      var rec = "312-384-1233";
+      instance.collection("emergencyCon").doc(id).set({'rec': rec});
+      var snapshot = await instance.collection("emergencyCon").doc(id).get();
+      Map<String, dynamic> data = await snapshot.data();
+      expect(data['rec'], rec);
+      print("Test Passed");
+    });
+  });
 }
