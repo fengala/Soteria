@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/pages/authentication/login.dart';
 import 'package:flutter_login_ui/pages/mainUI/petitionpage.dart';
@@ -83,10 +84,17 @@ class TePage extends State<TPage> {
     });
   }
 
+  BitmapDescriptor customIcon;
   @override
   void initState() {
     super.initState();
     _getUserLocation();
+    setCustomIcon();
+  }
+
+  void setCustomIcon() async {
+    customIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5), "assets/blue_marker.png");
   }
 
   Future<void> _getUserLocation() async {
@@ -148,14 +156,7 @@ class TePage extends State<TPage> {
           snippet: 'xUzgjY781qshdk1qQN3Z',
         ),
       ),
-      Marker(
-        markerId: MarkerId('marker_5'),
-        position: LatLng(40.42300892698927, -86.91172201817966),
-        infoWindow: InfoWindow(
-          title: 'Compliance Frat',
-          snippet: 'Rxh4I3iQ8d67AvRzyRmq',
-        ),
-      ),
+
       Marker(
         markerId: MarkerId('marker_6'),
         position: LatLng(40.424251752591267, -86.90849323834374),
@@ -179,7 +180,8 @@ class TePage extends State<TPage> {
           title: 'Harrys Chocolate Shop',
           snippet: 'r58LiO7twsGLVGxf0KC0',
         ),
-      ),    ]);
+      ),
+    ]);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -253,7 +255,10 @@ class TePage extends State<TPage> {
                     print(stacktrace);
                   }
                 },
-                icon: const Icon(Icons.list_alt_sharp, size: 26,),
+                icon: const Icon(
+                  Icons.list_alt_sharp,
+                  size: 26,
+                ),
               )),
           InkWell(
               onTap: () async {
@@ -338,7 +343,7 @@ class TePage extends State<TPage> {
       ),
       body: Stack(children: [
         Padding(
-          padding: EdgeInsets.only(bottom: 0.0),
+          padding: EdgeInsets.only(bottom: 70.0),
           child: GoogleMap(
               onMapCreated: (controller) {
                 setState(() {
@@ -379,7 +384,7 @@ class TePage extends State<TPage> {
           ),
         ),
         Positioned(
-            bottom: 70.0,
+            bottom: 100.0,
             left: -75.0,
             right: 0.0,
             child: Visibility(
@@ -407,6 +412,9 @@ class TePage extends State<TPage> {
                             .infoWindow
                             .snippet);
                         String userId = UserAuth.auth.currentUser.uid;
+                        double latitude = houseInfo['latitude'];
+                        double longitude = houseInfo['longitude'];
+                        var geo = GeoPoint(latitude, longitude);
                         List<num> usrate = await DatabaseService()
                             .getUserRating(
                                 markers
@@ -439,6 +447,7 @@ class TePage extends State<TPage> {
                                       num_stars:
                                           houseInfo["num_rating"].toString(),
                                       user_rate: r.toString(),
+                                      geoLoc: geo,
                                     )));
                       },
                       child: Stack(children: [

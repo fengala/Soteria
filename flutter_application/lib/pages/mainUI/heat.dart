@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/pages/mainUI/homepage.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
@@ -15,6 +16,14 @@ import '../authentication/update.dart';
 import '../mainUI/placesPage.dart';
 import '../../models/user.dart';
 import 'package:location/location.dart';
+import '../../services/auth.dart';
+import '../../services/database.dart';
+import '../authentication/update.dart';
+import '../mainUI/placesPage.dart';
+import '../mainUI/notifpage.dart';
+import '../../models/user.dart';
+import '../mainUI/placesPage.dart';
+import 'package:flutter_login_ui/pages/mainUI/socialHouse.dart';
 
 import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
 import 'package:google_api_headers/google_api_headers.dart';
@@ -98,6 +107,7 @@ class SampleState extends State<MapSample> {
 
   UserModel myUser;
   var userAuth;
+  bool pin_add = false;
   SampleState({this.myUser, this.userAuth});
 
   Future<List<dynamic>> pins_future;
@@ -109,7 +119,9 @@ class SampleState extends State<MapSample> {
 
   void _onMarkerTapped(MarkerId markerId) {
     setState(() {
+      print("Hellooooo\n");
       _selectedMarkerId = markerId;
+      print(markerId);
     });
   }
 
@@ -135,11 +147,15 @@ class SampleState extends State<MapSample> {
   }
 
   @override
+  double hue1;
+  double hue2;
   void initPetitions() {
     pins_future.then((list) {
       for (int i = 0; i < list.length; i++) {
+        _pins.add(
+            WeightedLatLng(point: LatLng(list[i].latitude, list[i].longitude)));
         _pins.add(_createWeightedLatLng(
-            list[i].latitude, list[i].longitude, 90000000000000000));
+            list[i].latitude, list[i].longitude, 99999999999999999));
       }
       _heatmaps.clear();
 
@@ -148,15 +164,20 @@ class SampleState extends State<MapSample> {
   }
 
   void initPetitions2() {
-    setState(() {
-      pins_future = getAllpoints();
-    });
+    if (this.mounted) {
+      setState(() {
+        pins_future = getAllpoints();
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
     pins_future = getAllpoints();
+    _buildMarkers();
+    hue1 = BitmapDescriptor.hueCyan;
+    hue2 = BitmapDescriptor.hueGreen;
     // print(pins_future.then((list) {
     //   print("This is the initial length");
     //   print(list.length);
@@ -180,17 +201,97 @@ class SampleState extends State<MapSample> {
     0.5,
     0.8,
   ];
+  var markers;
 
   // final Gradient gradient = RadialGradient(
   //     colors: [Colors.red, Colors.yellow, Colors.green],
   //     stops: [0.2, 0.5, 0.8]);
 
   final HeatmapGradient gradient = HeatmapGradient(
-      colors: [Colors.green, Colors.red], startPoints: [0.2, 0.8]);
+      colors: [Colors.green, Colors.yellow, Colors.red],
+      startPoints: [0.2, 0.3, 0.8]);
 
   @override
   Widget build(BuildContext context) {
     initPetitions();
+    markers = _buildMarkers();
+
+/*
+    markers = Set<Marker>.of([
+      //pi kappa phi page
+      Marker(
+        markerId: MarkerId('marker_1'),
+        position: LatLng(40.42683167898305, -86.91004304711971),
+        infoWindow: InfoWindow(
+          title: 'Pi Kappa Phi',
+          snippet: 'PZGBqfzO0TQeP3n9oLPc',
+        ),
+      ),
+      Marker(
+        //pi kappa phi page
+        markerId: MarkerId('marker_2'),
+        position: LatLng(40.423816316813756, -86.91266646235619),
+        infoWindow: InfoWindow(
+          title: 'Phi Delta Theta',
+          snippet: 'RyMwQOgO2lQBjIBCkvjI',
+        ),
+      ),
+      Marker(
+        // pi kappa phi page
+        markerId: MarkerId('marker_3'),
+        position: LatLng(40.42763867988644, -86.9176749065325),
+        infoWindow: InfoWindow(
+          title: 'Phi Sigma Kappa',
+          snippet: 'vaUr8Utq4mEZR0GhqzVs',
+        ),
+      ),
+      Marker(
+        // pi kappa phi page
+        markerId: MarkerId('marker_4'),
+        position: LatLng(40.43676689062929, -86.91496347584936),
+        infoWindow: InfoWindow(
+          title: 'Kappa Delta Rho',
+          snippet: 'xUzgjY781qshdk1qQN3Z',
+        ),
+      ),
+      Marker(
+        markerId: MarkerId('marker_5'),
+        position: LatLng(40.42300892698927, -86.91172201817966),
+        infoWindow: InfoWindow(
+          title: 'Compliance Frat',
+          snippet: 'Rxh4I3iQ8d67AvRzyRmq',
+        ),
+      ),
+      // if (_currentLocation != null)
+      //   Marker(
+      //     markerId: MarkerId('marker_5'),
+      //     position:
+      //     LatLng(_currentLocation.latitude, _currentLocation.longitude),
+      //     icon:
+      //     BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+      //     infoWindow: InfoWindow(
+      //       title: 'Your Location',
+      //       snippet: 'xUzgjY781qshdk1qQN3Z',
+      //     ),
+      //   ),
+    ]);
+
+    if (_pinLocation != null) {
+      markers.add(Marker(
+        markerId: MarkerId('pin'),
+        position: _pinLocation,
+        draggable: true,
+        onDragEnd: (LatLng newPosition) {
+          setState(() {
+            _pinLocation = newPosition;
+          });
+        },
+        onTap: () {
+          _showConfirmationDialog(_pinLocation);
+        }, // Add this line
+      ));
+    }
+    */
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -315,7 +416,7 @@ class SampleState extends State<MapSample> {
                         width: 200,
                         child: ListTile(
                           title: Text(
-                            location,
+                            location != null ? location : 'helloowo',
                             style: TextStyle(fontSize: 18),
                           ),
                           trailing: Icon(Icons.search),
@@ -352,25 +453,37 @@ class SampleState extends State<MapSample> {
         Padding(
           padding: EdgeInsets.only(bottom: 0.0),
           child: GoogleMap(
-            mapType: MapType.normal,
-            initialCameraPosition: CameraPosition(
-              target: LatLng(40.424, -86.929),
-              zoom: 13,
-            ),
-            heatmaps: _heatmaps,
-            markers: Set.from(_buildMarkers().map((Marker marker) {
-              return Marker(
-                markerId: marker.markerId,
-                position: marker.position,
-                onTap: () => _onMarkerTapped(marker.markerId),
-              );
-            })),
-            onTap: _addPin,
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            },
-            myLocationEnabled: true,
-          ),
+              mapType: MapType.normal,
+              initialCameraPosition: CameraPosition(
+                target: LatLng(40.424, -86.929),
+                zoom: 13,
+              ),
+              heatmaps: _heatmaps,
+              onTap: _addPin,
+              onMapCreated: (GoogleMapController controller) async {
+                await _controller.complete(controller);
+
+                _controller.future.then((value) => mapController = value);
+              },
+              myLocationEnabled: true,
+              markers: Set.from(markers.map((Marker marker) {
+                return Marker(
+                    markerId: marker.markerId,
+                    position: marker.position,
+                    onTap: () {
+                      if (!pin_add) {
+                        print(
+                            "THis is reaching here and the value of pin_add is: \n");
+                        print(pin_add);
+                        _onMarkerTapped(marker.markerId);
+                      } else {
+                        _showConfirmationDialog(_pinLocation);
+
+                        _pinLocation = null;
+                        _selectedMarkerId = null;
+                      }
+                    });
+              }))),
         ),
         Align(
           alignment:
@@ -392,6 +505,171 @@ class SampleState extends State<MapSample> {
             backgroundColor: Colors.amber,
           ),
         ),
+        Positioned(
+            bottom: 70.0,
+            left: -75.0,
+            right: 0.0,
+            child: Visibility(
+              visible: _selectedMarkerId != null &&
+                  _selectedMarkerId.value != "pin" &&
+                  !pin_add,
+              //...
+              // Marker marker = markers.elementAt(index);
+
+              child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: InkWell(
+                      onTap: () async {
+                        if (!pin_add) {
+                          // Marker marker = markers.elementAt(index);
+
+                          Marker marker = markers.firstWhere(
+                              (marker) => marker.markerId == _selectedMarkerId);
+                          print(marker.position);
+                          mapController.animateCamera(
+                              CameraUpdate.newCameraPosition(CameraPosition(
+                            target: marker.position,
+                            // zoom: 15.0,
+                            // bearing: 45.0,
+                            // tilt: 45.0
+                          )));
+                          var houseInfo = await DatabaseService().getVenue(
+                              markers
+                                  .firstWhere((marker) =>
+                                      marker.markerId == _selectedMarkerId)
+                                  .infoWindow
+                                  .snippet);
+                          String userId = UserAuth.auth.currentUser.uid;
+                          double latitude = houseInfo['latitude'];
+                          double longitude = houseInfo['longitude'];
+                          var geo = GeoPoint(latitude, longitude);
+                          List<num> usrate = await DatabaseService()
+                              .getUserRating(
+                                  markers
+                                      .firstWhere((marker) =>
+                                          marker.markerId == _selectedMarkerId)
+                                      .infoWindow
+                                      .snippet,
+                                  userId) as List<Object>;
+                          num r;
+                          if (usrate.isEmpty) {
+                            r = 0.0;
+                          } else {
+                            r = usrate[0];
+                          }
+                          Navigator.pop(this.context);
+
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => socialHousePage(
+                                        title: houseInfo["title"],
+                                        id: markers
+                                            .firstWhere((marker) =>
+                                                marker.markerId ==
+                                                _selectedMarkerId)
+                                            .infoWindow
+                                            .snippet,
+                                        description: houseInfo["description"],
+                                        contact: houseInfo["contact"],
+                                        num_stars:
+                                            houseInfo["num_rating"].toString(),
+                                        user_rate: r.toString(),
+                                        geoLoc: geo,
+                                      )));
+                        }
+                      },
+                      child: Stack(children: [
+                        Center(
+                            child: Container(
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 10.0,
+                                  vertical: 20.0,
+                                ),
+                                height: 70.0,
+                                width: 275.0,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black54,
+                                        offset: Offset(0.0, 4.0),
+                                        blurRadius: 10.0,
+                                      ),
+                                    ]),
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        color: Colors.white),
+                                    child: Row(children: [
+                                      Container(
+                                          height: 90.0,
+                                          width: 90.0,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                  bottomLeft:
+                                                      Radius.circular(10.0),
+                                                  topLeft:
+                                                      Radius.circular(10.0)),
+                                              image: DecorationImage(
+                                                  image: AssetImage(
+                                                      'assets/Phi Delta Theta.png')))),
+                                      SizedBox(width: 5.0),
+                                      Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              // markers.elementAt(_selectedMarkerId as int).infoWindow.title,
+                                              // markers
+                                              //     .firstWhere((marker) =>
+                                              //         marker.markerId ==
+                                              //         _selectedMarkerId)
+                                              //     .infoWindow
+                                              //     .title,
+                                              // style: TextStyle(
+                                              //     fontSize: 12.5,
+                                              //     fontWeight: FontWeight.bold),
+                                              _selectedMarkerId != null &&
+                                                      !pin_add
+                                                  ? markers
+                                                      .firstWhere((marker) =>
+                                                          marker.markerId ==
+                                                          _selectedMarkerId)
+                                                      .infoWindow
+                                                      .title
+                                                  : '',
+                                              style: TextStyle(
+                                                fontSize: 12.5,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(
+                                              "Click for more info",
+                                              style: TextStyle(
+                                                  fontSize: 12.0,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                          ])
+                                    ]))))
+                      ]))
+                  // child: Card(
+                  //   child: Padding(
+                  //     padding: EdgeInsets.all(8.0),
+                  //     child: Text(
+                  //       marker.infoWindow.title,
+                  //       style: TextStyle(
+                  //         fontSize: 18.0,
+                  //         fontWeight: FontWeight.bold,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  ),
+            ))
       ]),
 
       // floatingActionButton: FloatingActionButton.extended(
@@ -437,28 +715,56 @@ class SampleState extends State<MapSample> {
   }
 
   void _addPin(LatLng latLng) {
-    setState(() {
-      _pinLocation = latLng;
-    });
+    if (this.mounted) {
+      setState(() {
+        _pinLocation = latLng;
+        pin_add = true;
+        //   markers.add(Marker(
+        //   markerId: MarkerId('pin'),
+        //   position: _pinLocation,
+        //   draggable: true,
+        //   onDragEnd: (LatLng newPosition) {
+        //     setState(() {
+        //       _pinLocation = newPosition;
+        //     });
+        //   },
+        //   onTap: () {
+        //     _showConfirmationDialog(_pinLocation);
+        //   }, // Add this line
+        // ));
+      });
+    }
+
+    // markers.add(Marker(
+    //   markerId: MarkerId('pin'),
+    //   position: _pinLocation,
+    //   draggable: true,
+    //   onDragEnd: (LatLng newPosition) {
+    //     setState(() {
+    //       _pinLocation = newPosition;
+    //     });
+    //   },
+    //   onTap: () {
+    //     _showConfirmationDialog(_pinLocation);
+    //   }, // Add this line
+    // ));
   }
 
   Set<Marker> _buildMarkers() {
-    if (_pinLocation == null) {
-      return {};
-    }
-    var markers = Set<Marker>.of([Marker(
-      markerId: MarkerId('pin'),
-      position: _pinLocation,
-      draggable: true,
-      onDragEnd: (LatLng newPosition) {
-        setState(() {
-          _pinLocation = newPosition;
-        });
-      },
-      onTap: () {
-        _showConfirmationDialog(_pinLocation);
-      }, // Add this line
-    ),
+    var markers = Set<Marker>.of([
+      // Marker(
+      //   markerId: MarkerId('pin'),
+      //   position: _pinLocation,
+      //   draggable: true,
+      //   onDragEnd: (LatLng newPosition) {
+      //     setState(() {
+      //       _pinLocation = newPosition;
+      //     });
+      //   },
+      //   onTap: () {
+      //     _showConfirmationDialog(_pinLocation);
+      //   }, // Add this line
+      // ),
       Marker(
         markerId: MarkerId('marker_1'),
         position: LatLng(40.42683167898305, -86.91004304711971),
@@ -469,12 +775,14 @@ class SampleState extends State<MapSample> {
       ),
       Marker(
         //pi kappa phi page
+
         markerId: MarkerId('marker_2'),
         position: LatLng(40.423816316813756, -86.91266646235619),
         infoWindow: InfoWindow(
           title: 'Phi Delta Theta',
           snippet: 'RyMwQOgO2lQBjIBCkvjI',
         ),
+        //icon: BitmapDescriptor.defaultMarkerWithHue(240.0)),
       ),
       Marker(
         // pi kappa phi page
@@ -494,14 +802,32 @@ class SampleState extends State<MapSample> {
           snippet: 'xUzgjY781qshdk1qQN3Z',
         ),
       ),
-      Marker(
-        markerId: MarkerId('marker_5'),
-        position: LatLng(40.42300892698927, -86.91172201817966),
-        infoWindow: InfoWindow(
-          title: 'Compliance Frat',
-          snippet: 'Rxh4I3iQ8d67AvRzyRmq',
-        ),
-      )]);
+    ]);
+
+    if (_pinLocation != null) {
+      try {
+        pin_add = true;
+        print(_pinLocation.latitude);
+        markers.add(Marker(
+          markerId: MarkerId('pin'),
+          position: _pinLocation,
+          draggable: true,
+          onDragEnd: (LatLng newPosition) {
+            setState(() {
+              print("This is after reaching here3\n");
+              _pinLocation = newPosition;
+            });
+          },
+
+          onTap: () {
+            print("This is after reaching here4\n");
+            _showConfirmationDialog(_pinLocation);
+          }, // Add this line
+        ));
+      } catch (e, stacktrace) {
+        print(stacktrace);
+      }
+    }
     return markers;
   }
 
@@ -515,40 +841,46 @@ class SampleState extends State<MapSample> {
       points: _pins.toList(),
       gradient: gradient,
       radius: 50,
-      opacity: 0.7,
+      opacity: 1,
     );
   }
 
   void _showConfirmationDialog(LatLng latLng) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Confirm"),
-          content: Text("Do you want to mark this location unsafe?"),
-          actions: <Widget>[
-            TextButton(
-              child: Text("Cancel"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text("Drop Pin"),
-              onPressed: () async {
-                setState(() {
-                  _pins.add(_createWeightedLatLng(
-                      latLng.latitude, latLng.longitude, 90000000000000000));
-                  _heatmaps.clear();
-                  _heatmaps.add(_createHeatmap());
-                });
-                await DatabaseService().addHeatMapData(latLng);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+    if (LatLng != null) {
+      print("This is after reaching here");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Confirm"),
+            content: Text("Do you want to mark this location unsafe?"),
+            actions: <Widget>[
+              TextButton(
+                child: Text("Cancel"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text("Drop Pin"),
+                onPressed: () async {
+                  setState(() {
+                    _pins.add(_createWeightedLatLng(
+                        latLng.latitude, latLng.longitude, 99999999999999999));
+                    _heatmaps.clear();
+                    _heatmaps.add(_createHeatmap());
+                  });
+                  await DatabaseService().addHeatMapData(latLng);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      pin_add = false;
+    } else {
+      print("Hello this is null");
+    }
   }
 }

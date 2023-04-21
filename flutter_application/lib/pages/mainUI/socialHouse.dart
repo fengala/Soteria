@@ -58,6 +58,7 @@ class _socialHousePageState extends State<socialHousePage> {
   @override
   Widget build(BuildContext context) {
     bool remember = false;
+
     //String asset = "assets/" + widget.title + "png";
     List<String> descriptions = widget.description.split("/");
     String asset = 'assets/logo.png';
