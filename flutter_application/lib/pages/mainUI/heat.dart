@@ -468,26 +468,34 @@ class SampleState extends State<MapSample> {
               myLocationEnabled: true,
               markers: Set.from(markers.map((Marker marker) {
                 return Marker(
-                    markerId: marker.markerId,
-                    position: marker.position,
-                    onTap: () {
-                      if (!pin_add) {
-                        print(
-                            "THis is reaching here and the value of pin_add is: \n");
-                        print(pin_add);
-                        _onMarkerTapped(marker.markerId);
-                      } else {
-                        _showConfirmationDialog(_pinLocation);
+                  markerId: marker.markerId,
+                  position: marker.position,
+                  onTap: () {
+                    if (!pin_add) {
+                      print(
+                          "THis is reaching here and the value of pin_add is: \n");
+                      print(pin_add);
+                      _onMarkerTapped(marker.markerId);
+                    } else {
+                      _showConfirmationDialog(_pinLocation);
 
-                        _pinLocation = null;
-                        _selectedMarkerId = null;
-                      }
-                    });
+                      _pinLocation = null;
+                      _selectedMarkerId = null;
+                    }
+                  },
+                  icon: (marker.markerId.value == 'marker_5' ||
+                          marker.markerId.value == 'marker_6' ||
+                          marker.markerId.value == 'marker_7')
+                      ? BitmapDescriptor.defaultMarkerWithHue(
+                          BitmapDescriptor.hueGreen)
+                      : BitmapDescriptor.defaultMarkerWithHue(
+                          BitmapDescriptor.hueRed),
+                );
               }))),
         ),
         Align(
           alignment:
-              Alignment.lerp(Alignment.topLeft, Alignment.centerLeft, 0.05),
+              Alignment.lerp(Alignment.topLeft, Alignment.centerLeft, 0.2),
           child: FloatingActionButton.extended(
             onPressed: () {
               //  Navigator.pop(this.context);

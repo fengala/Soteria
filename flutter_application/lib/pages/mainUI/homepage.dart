@@ -158,7 +158,7 @@ class TePage extends State<TPage> {
       ),
 
       Marker(
-        markerId: MarkerId('marker_6'),
+        markerId: MarkerId('marker_5'),
         position: LatLng(40.424251752591267, -86.90849323834374),
         infoWindow: InfoWindow(
           title: 'Brothers Bar',
@@ -166,15 +166,16 @@ class TePage extends State<TPage> {
         ),
       ),
       Marker(
-        markerId: MarkerId('marker_7'),
+        markerId: MarkerId('marker_6'),
         position: LatLng(40.423359382397024, -86.90054862019234),
         infoWindow: InfoWindow(
           title: 'Neon Cactus',
           snippet: 'kDeAi0S6dTF86nUVPZs2',
         ),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
       ),
       Marker(
-        markerId: MarkerId('marker_8'),
+        markerId: MarkerId('marker_7'),
         position: LatLng(40.42300892698927, -86.91172201817966),
         infoWindow: InfoWindow(
           title: 'Harrys Chocolate Shop',
@@ -361,12 +362,19 @@ class TePage extends State<TPage> {
                   markerId: marker.markerId,
                   position: marker.position,
                   onTap: () => _onMarkerTapped(marker.markerId),
+                  icon: (marker.markerId.value == 'marker_5' ||
+                          marker.markerId.value == 'marker_6' ||
+                          marker.markerId.value == 'marker_7')
+                      ? BitmapDescriptor.defaultMarkerWithHue(
+                          BitmapDescriptor.hueGreen)
+                      : BitmapDescriptor.defaultMarkerWithHue(
+                          BitmapDescriptor.hueRed),
                 );
               }))),
         ),
         Align(
           alignment:
-              Alignment.lerp(Alignment.topLeft, Alignment.centerLeft, 0.05),
+              Alignment.lerp(Alignment.topLeft, Alignment.centerLeft, 0.2),
           child: FloatingActionButton.extended(
             onPressed: () {
               Navigator.push(
