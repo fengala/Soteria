@@ -65,7 +65,15 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/logo.png
+    - assets/frat.png
     - assets/Phi Delta Theta.png
+    - assets/Pi Kappa Phi.jpg
+    - assets/Phi Sigma Kappa.jpg
+    - assets/Kappa Delta Rho.jpg
+    - assets/Phi Delta Theta.jpg
+    - assets/Neon Cactus.jpg
+    - assets/Harry's Chocolate Shop.jpg
+    - assets/Brothers Bar.jpg
 #    fonts:
 #      - family: Montserrat
 #        fonts:

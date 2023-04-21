@@ -68,6 +68,7 @@ class MapSample extends StatefulWidget {
 class SampleState extends State<MapSample> {
   Location _location = Location();
   LatLng _currentLocation;
+  MarkerId _selectedMarkerId;
 
   GoogleMapController mapController;
 
@@ -104,6 +105,12 @@ class SampleState extends State<MapSample> {
   Future<List<dynamic>> getAllpoints() async {
     var value = await DatabaseService().getHeatMapData();
     return value['Locations'];
+  }
+
+  void _onMarkerTapped(MarkerId markerId) {
+    setState(() {
+      _selectedMarkerId = markerId;
+    });
   }
 
   Future<void> _getUserLocation() async {
@@ -351,7 +358,13 @@ class SampleState extends State<MapSample> {
               zoom: 13,
             ),
             heatmaps: _heatmaps,
-            markers: _buildMarkers(),
+            markers: Set.from(_buildMarkers().map((Marker marker) {
+              return Marker(
+                markerId: marker.markerId,
+                position: marker.position,
+                onTap: () => _onMarkerTapped(marker.markerId),
+              );
+            })),
             onTap: _addPin,
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
@@ -433,21 +446,63 @@ class SampleState extends State<MapSample> {
     if (_pinLocation == null) {
       return {};
     }
-    return {
+    var markers = Set<Marker>.of([Marker(
+      markerId: MarkerId('pin'),
+      position: _pinLocation,
+      draggable: true,
+      onDragEnd: (LatLng newPosition) {
+        setState(() {
+          _pinLocation = newPosition;
+        });
+      },
+      onTap: () {
+        _showConfirmationDialog(_pinLocation);
+      }, // Add this line
+    ),
       Marker(
-        markerId: MarkerId('pin'),
-        position: _pinLocation,
-        draggable: true,
-        onDragEnd: (LatLng newPosition) {
-          setState(() {
-            _pinLocation = newPosition;
-          });
-        },
-        onTap: () {
-          _showConfirmationDialog(_pinLocation);
-        }, // Add this line
+        markerId: MarkerId('marker_1'),
+        position: LatLng(40.42683167898305, -86.91004304711971),
+        infoWindow: InfoWindow(
+          title: 'Pi Kappa Phi',
+          snippet: 'PZGBqfzO0TQeP3n9oLPc',
+        ),
       ),
-    };
+      Marker(
+        //pi kappa phi page
+        markerId: MarkerId('marker_2'),
+        position: LatLng(40.423816316813756, -86.91266646235619),
+        infoWindow: InfoWindow(
+          title: 'Phi Delta Theta',
+          snippet: 'RyMwQOgO2lQBjIBCkvjI',
+        ),
+      ),
+      Marker(
+        // pi kappa phi page
+        markerId: MarkerId('marker_3'),
+        position: LatLng(40.42763867988644, -86.9176749065325),
+        infoWindow: InfoWindow(
+          title: 'Phi Sigma Kappa',
+          snippet: 'vaUr8Utq4mEZR0GhqzVs',
+        ),
+      ),
+      Marker(
+        // pi kappa phi page
+        markerId: MarkerId('marker_4'),
+        position: LatLng(40.43676689062929, -86.91496347584936),
+        infoWindow: InfoWindow(
+          title: 'Kappa Delta Rho',
+          snippet: 'xUzgjY781qshdk1qQN3Z',
+        ),
+      ),
+      Marker(
+        markerId: MarkerId('marker_5'),
+        position: LatLng(40.42300892698927, -86.91172201817966),
+        infoWindow: InfoWindow(
+          title: 'Compliance Frat',
+          snippet: 'Rxh4I3iQ8d67AvRzyRmq',
+        ),
+      )]);
+    return markers;
   }
 
   WeightedLatLng _createWeightedLatLng(double lat, double lng, int weight) {

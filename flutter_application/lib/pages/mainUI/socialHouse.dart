@@ -8,6 +8,7 @@ import 'package:flutter_login_ui/pages/mainUI/reviewForSocials.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 import 'package:location/location.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../models/reviews.dart';
 import '../../services/auth.dart';
 import 'package:flutter_login_ui/pages/mainUI/placesPage.dart';
@@ -60,10 +61,14 @@ class _socialHousePageState extends State<socialHousePage> {
     bool remember = false;
     //String asset = "assets/" + widget.title + "png";
     List<String> descriptions = widget.description.split("/");
+    String asset = 'assets/logo.png';
     if (descriptions.length < 2) {
       for (int c = 0; c < 4; c++) {
         descriptions.add("No valid info");
       }
+    } else {
+      asset = 'assets/' + widget.title + '.jpg';
+      print(asset);
     }
     return Scaffold(
       backgroundColor: Colors.white,
@@ -112,12 +117,13 @@ class _socialHousePageState extends State<socialHousePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 100,
-                backgroundImage: AssetImage('assets/Phi Delta Theta.png'),
+                backgroundImage: AssetImage(asset),
               ),
               Text(
                 widget.title,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 37.5,
                     fontFamily: 'Montserrat',
@@ -189,7 +195,7 @@ class _socialHousePageState extends State<socialHousePage> {
                     fontWeight: FontWeight.w500),
               ),
               Container(
-                height: 70,
+                height: 90,
                 child: Card(
                   margin:
                       EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
@@ -283,12 +289,22 @@ class _socialHousePageState extends State<socialHousePage> {
                     Icons.email,
                     color: Colors.amber,
                   ),
-                  title: Text(
+                  title: GestureDetector( child: Text(
                     widget.contact,
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 15.0,
                         color: Colors.amber.shade900),
+                  ),
+    onTap: () {
+      if (widget.contact.contains('@')) {
+        // If it's an email address
+        launch('mailto:$widget.contact');
+      } else if (widget.contact.contains('-')) {
+        // If it's a phone number
+        launch('tel:$widget.contact');
+      }
+    },
                   ),
                 ),
               ),
