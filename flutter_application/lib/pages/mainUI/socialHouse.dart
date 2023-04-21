@@ -24,7 +24,6 @@ class socialHousePage extends StatefulWidget {
   final String num_stars;
   final String user_rate;
   final GeoPoint geoLoc;
-
   socialHousePage({
     Key key,
     @required this.title,

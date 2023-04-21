@@ -156,19 +156,30 @@ class TePage extends State<TPage> {
           snippet: 'Rxh4I3iQ8d67AvRzyRmq',
         ),
       ),
-      // if (_currentLocation != null)
-      //   Marker(
-      //     markerId: MarkerId('marker_5'),
-      //     position:
-      //     LatLng(_currentLocation.latitude, _currentLocation.longitude),
-      //     icon:
-      //     BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-      //     infoWindow: InfoWindow(
-      //       title: 'Your Location',
-      //       snippet: 'xUzgjY781qshdk1qQN3Z',
-      //     ),
-      //   ),
-    ]);
+      Marker(
+        markerId: MarkerId('marker_6'),
+        position: LatLng(40.424251752591267, -86.90849323834374),
+        infoWindow: InfoWindow(
+          title: 'Brothers Bar',
+          snippet: '3OY2xxBca4EBqbiLvn8P',
+        ),
+      ),
+      Marker(
+        markerId: MarkerId('marker_7'),
+        position: LatLng(40.423359382397024, -86.90054862019234),
+        infoWindow: InfoWindow(
+          title: 'Neon Cactus',
+          snippet: 'kDeAi0S6dTF86nUVPZs2',
+        ),
+      ),
+      Marker(
+        markerId: MarkerId('marker_8'),
+        position: LatLng(40.42300892698927, -86.91172201817966),
+        infoWindow: InfoWindow(
+          title: 'Harrys Chocolate Shop',
+          snippet: 'r58LiO7twsGLVGxf0KC0',
+        ),
+      ),    ]);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
