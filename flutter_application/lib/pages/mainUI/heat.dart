@@ -451,7 +451,7 @@ class SampleState extends State<MapSample> {
       ),
       body: Stack(children: [
         Padding(
-          padding: EdgeInsets.only(bottom: 0.0),
+          padding: EdgeInsets.only(bottom: 70.0),
           child: GoogleMap(
               mapType: MapType.normal,
               initialCameraPosition: CameraPosition(
@@ -506,7 +506,7 @@ class SampleState extends State<MapSample> {
           ),
         ),
         Positioned(
-            bottom: 70.0,
+            bottom: 100.0,
             left: -75.0,
             right: 0.0,
             child: Visibility(
