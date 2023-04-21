@@ -402,7 +402,31 @@ Future<void> main() async {
       expect(data2['type'], type2);
       expect(data3['name'], name3);
       expect(data3['type'], type3);
+    });
+  });
 
+  group('User Story #10 tests', () {
+    test("Getting a Single HeatMap Pin", () async {
+      var instance = FakeFirebaseFirestore();
+      var id = "1";
+      var locations = "40.424, -86.929";
+      instance.collection("heatMap").doc(id).set({'Locations': locations});
+
+      var snapshot = await instance.collection("heatMap").doc(id).get();
+      Map<String, dynamic> data = await snapshot.data();
+      expect(data['Locations'], locations);
+      print("Test Passed");
+    });
+
+    test("Getting Multiple HeatMap Pins", () async {
+      var instance = FakeFirebaseFirestore();
+      var id = "2";
+      var locations = "40.424, -86.929, 40.445, -35.342";
+      instance.collection("heatMap").doc(id).set({'Locations': locations});
+
+      var snapshot = await instance.collection("heatMap").doc(id).get();
+      Map<String, dynamic> data = await snapshot.data();
+      expect(data['Locations'], locations);
       print("Test Passed");
     });
   });
