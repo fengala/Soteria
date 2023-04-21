@@ -148,7 +148,7 @@ Future<void> main() async {
       print("Test Passed");
     });
 
-    test("Getting Notifications", () async {
+    test("Getting the right recipient", () async {
       var instance = FakeFirebaseFirestore();
       var id = "reciever";
       var time = "04/18/2023 10:50 PM";
@@ -330,6 +330,78 @@ Future<void> main() async {
 
       expect(data1['name'], username1);
       expect(data1['location'], location1);
+
+      print("Test Passed");
+    });
+  });
+
+  // print("#########################");
+  // print("#  User Story #7 Tests  #");
+  // print("#########################");
+  // print("");
+  group('User Story #7 tests', () {
+    test("Getting Social Houses Detail ", () async {
+      var instance = FakeFirebaseFirestore();
+      var id1 = "1";
+      var name1 = "SocialHouse1";
+      var location1 = [-40.32, 50.52];
+      var desc1 = "This is a sample Description";
+      instance
+          .collection("SocialHouse")
+          .doc(id1)
+          .set({'name': name1, 'location': location1, 'description': desc1});
+
+      var snapshot1 = await instance.collection("SocialHouse").doc(id1).get();
+      Map<String, dynamic> data1 = await snapshot1.data();
+
+      expect(data1['name'], name1);
+      expect(data1['location'], location1);
+      expect(data1['description'], desc1);
+
+      print("Test Passed");
+    });
+
+    test("Listing different types of Social Houses", () async {
+      var instance = FakeFirebaseFirestore();
+      var id1 = "1";
+      var name1 = "SocialHouse1";
+      var type1 = "Frat";
+      instance
+          .collection("SocialHouse")
+          .doc(id1)
+          .set({'name': name1, 'type': type1});
+
+      var snapshot1 = await instance.collection("SocialHouse").doc(id1).get();
+      Map<String, dynamic> data1 = await snapshot1.data();
+
+      var id2 = "2";
+      var name2 = "SocialHouse2";
+      var type2 = "Bar";
+      instance
+          .collection("SocialHouse")
+          .doc(id2)
+          .set({'name': name2, 'type': type2});
+
+      var snapshot2 = await instance.collection("SocialHouse").doc(id2).get();
+      Map<String, dynamic> data2 = await snapshot2.data();
+
+      var id3 = "3";
+      var name3 = "SocialHouse3";
+      var type3 = "Restaurant";
+      instance
+          .collection("SocialHouse")
+          .doc(id3)
+          .set({'name': name3, 'type': type3});
+
+      var snapshot3 = await instance.collection("SocialHouse").doc(id3).get();
+      Map<String, dynamic> data3 = await snapshot3.data();
+
+      expect(data1['name'], name1);
+      expect(data1['type'], type1);
+      expect(data2['name'], name2);
+      expect(data2['type'], type2);
+      expect(data3['name'], name3);
+      expect(data3['type'], type3);
 
       print("Test Passed");
     });
